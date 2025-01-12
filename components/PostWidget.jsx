@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment"; // For date formatting
 import Link from "next/link"; // For navigation between pages in Next.js
-<<<<<<< HEAD
 import Image from "next/image"; // For optimized images in Next.js
-=======
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
 
 import { getRecentPosts } from "../services"; // Importing the service to fetch recent posts
 
-const PostWidget = ({ slug }) => {
+const PostWidget = () => {
   const [recentPosts, setRecentPosts] = useState([]); // State to store recent posts
   const [loading, setLoading] = useState(true); // State to track loading status
   const [dots, setDots] = useState(""); // State to track dots animation
 
-  // useEffect to fetch recent posts when the component is mounted or slug changes
+  // useEffect to fetch recent posts when the component is mounted
   useEffect(() => {
     const fetchPosts = async () => {
       const result = await getRecentPosts();
@@ -54,21 +51,12 @@ const PostWidget = ({ slug }) => {
           >
             {/* Featured image section */}
             <div className="w-16 flex-none">
-<<<<<<< HEAD
               <Image
                 src={post.featuredImage.url} // URL of the post's featured image
                 alt={post.title} // Alt text for the image (post title)
                 width={60} // Fixed width for the image
                 height={60} // Fixed height for the image
                 className="rounded-full" // Styling to make the image circular
-=======
-              <img
-                src={post.featuredImage.url} // URL of the post's featured image
-                alt={post.title} // Alt text for the image (post title)
-                height="60px" // Fixed height for the image
-                width="60px" // Fixed width for the image
-                className="align-middle rounded-full" // Styling to make the image circular
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
               />
             </div>
             {/* Post details section */}
@@ -81,10 +69,6 @@ const PostWidget = ({ slug }) => {
               {/* Link to the individual post */}
               <Link
                 href={`/post/${post.slug}`} // Navigate to the post details page
-<<<<<<< HEAD
-=======
-                key={post.title} // Unique key for the link
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
                 className="text-lg text-white"
               >
                 {post.title} {/* Display the post title */}

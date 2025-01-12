@@ -1,9 +1,6 @@
 import React from "react";
-<<<<<<< HEAD
 import Link from "next/link"; // Import Link for navigation
 import Image from "next/image"; // Import Image for optimized image loading
-=======
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
 import { FaInstagram } from "react-icons/fa"; // Importing the Instagram icon from react-icons
 
 // Footer Component
@@ -18,19 +15,12 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-3 mb-4">
               {/* Logo image */}
-<<<<<<< HEAD
               <Image
                 src="/slt_pressclub_logo.png" // Path to the logo image
                 alt="SLT Pressclub Logo" // Alt text for accessibility
                 width={48} // Logo width
                 height={48} // Logo height
                 className="rounded-full" // Optional styling for the image
-=======
-              <img
-                src="/slt_pressclub_logo.png" // Path to the logo image
-                alt="Logo" // Alt text for accessibility
-                className="w-12 h-12" // Logo dimensions
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
               />
               {/* Website name */}
               <h2 className="text-2xl font-semibold">SLT Pressclub</h2>
@@ -48,7 +38,6 @@ const Footer = () => {
             {/* List of navigation links */}
             <ul className="space-y-2">
               <li>
-<<<<<<< HEAD
                 <Link href="/" passHref>
                   <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
                     Home
@@ -75,38 +64,6 @@ const Footer = () => {
                     Privacy Policy
                   </a>
                 </Link>
-=======
-                <a
-                  href="/" // Link to the Home page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/about" // Link to the About Us page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/contact" // Link to the Contact Us page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  Contact Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/privacy" // Link to the Privacy Policy page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  Privacy Policy
-                </a>
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
               </li>
             </ul>
           </div>
@@ -117,11 +74,7 @@ const Footer = () => {
             {/* Social media icons */}
             <div className="flex space-x-4">
               <a
-<<<<<<< HEAD
                 href="https://www.instagram.com/slt_pressclub/"
-=======
-                href="https://www.instagram.com/slt_pressclub/" // Instagram profile link
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
                 target="_blank" // Opens the link in a new tab
                 rel="noopener noreferrer" // Improves security when using target="_blank"
                 className="text-gray-400 hover:text-pink-500 transition duration-300"

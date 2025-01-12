@@ -1,3 +1,4 @@
+import React from "react";
 import Head from "next/head"; // Import for setting meta tags and page title
 
 const PrivacyPolicy = () => {

@@ -1,9 +1,6 @@
 import React from "react";
 import Link from "next/link"; // Importing Link from Next.js for client-side navigation
-<<<<<<< HEAD
 import Image from "next/image"; // Importing Image from Next.js for optimized image loading
-=======
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
 import SearchBar from "../components/SearchBar"; // Importing the SearchBar component
 
 // Header Component
@@ -17,7 +14,6 @@ const Header = () => {
           {/* Logo and Title Section */}
           <div className="flex items-center">
             {/* Logo with link to the home page */}
-<<<<<<< HEAD
             <Link href="/" passHref>
               <a className="flex items-center">
                 {/* Logo image */}
@@ -37,24 +33,6 @@ const Header = () => {
                 {/* Title text */}
                 SLT PRESSCLUB
               </a>
-=======
-            <Link href="/">
-              {/* Logo image */}
-              <img
-                src="/slt_pressclub_logo.png" // Path to the logo image
-                alt="SLT Press Club Logo" // Alt text for accessibility
-                height="50px" // Explicit height for the image
-                width="50px" // Explicit width for the image
-                className="mr-2" // Margin to create space between the logo and title
-              />
-            </Link>
-            {/* Title with link to the home page */}
-            <Link href="/">
-              <span className="cursor-pointer font-bold text-3xl text-white">
-                {/* Title text */}
-                SLT PRESSCLUB
-              </span>
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
             </Link>
           </div>
 

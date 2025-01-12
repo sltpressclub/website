@@ -25,7 +25,7 @@ const Categories = () => {
         Categories
       </h3>
 
-      <div className="">
+      <div>
         {/* Mapping through categories to render each category as a link */}
         {categories.map((category, index) => (
           <Link

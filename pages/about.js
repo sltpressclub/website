@@ -1,9 +1,6 @@
 import React from "react";
 import Head from "next/head";
-<<<<<<< HEAD
 import Image from "next/image"; // Import the Image component from next/image
-=======
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
 
 const About = () => {
   return (
@@ -41,13 +38,8 @@ const About = () => {
 
             {/* Image Section */}
             <div className="col-span-1">
-<<<<<<< HEAD
               {/* Optimized image using next/image */}
               <Image
-=======
-              {/* Replace with an actual image that represents the platform */}
-              <img
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
                 src="/slt_pressclub_logo.png" // Logo or placeholder image
                 alt="SLT Pressclub" // Alt text for the image
                 height={500} // Fixed height for the image

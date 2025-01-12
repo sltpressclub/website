@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { searchPostsAndUpcoming } from "../services"; // Import the service function to search posts, upcomings, and authors
 import { FaSearch } from "react-icons/fa"; // Import the magnifying glass icon for the search button
-<<<<<<< HEAD
 import Image from "next/image"; // Import Image component for optimized image handling
-=======
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
 
 const SearchBar = () => {
   // State for handling search input, results, loading, and modal visibility
@@ -45,7 +42,8 @@ const SearchBar = () => {
       setUpcomings(data.upcomings); // Set upcomings search results
       setAuthors(data.authors); // Set authors search results
       setIsSearchModalOpen(true); // Open the search modal once the search results are ready
-    } catch (err) {
+    } catch (error) {
+      // Use 'error' here
       setError("Failed to fetch search results. Please try again."); // Set error message if fetching fails
     } finally {
       setLoading(false); // Hide loading state after fetch completion
@@ -167,19 +165,12 @@ const SearchBar = () => {
                       className="bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl p-3"
                     >
                       <div className="flex items-center space-x-4">
-<<<<<<< HEAD
                         <Image
                           src={author.photo.url} // Author's photo
                           alt={author.name} // Author's name as alt text
                           width={40} // Set width for image
                           height={40} // Set height for image
                           className="rounded-full"
-=======
-                        <img
-                          src={author.photo.url} // Author's photo
-                          alt={author.name} // Author's name as alt text
-                          className="w-10 h-10 rounded-full"
->>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
                         />
                         <div>
                           <h4 className="text-blue-300 font-medium">
