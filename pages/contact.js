@@ -81,7 +81,11 @@ const Contact = () => {
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white">Contact Us</h2>
             <p className="text-lg text-white mt-4">
+<<<<<<< HEAD
               We&apos;d love to hear from you! Please fill out the form below.
+=======
+              We'd love to hear from you! Please fill out the form below.
+>>>>>>> aa30bf4946ae6a7d022f666372deb979c004d831
             </p>
           </div>
 
