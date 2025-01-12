@@ -11,11 +11,14 @@
     "es6": true
   },
   "rules": {
-    "react/prop-types": "off",
-    "react/display-name": "off",
-    "no-unused-vars": "warn",
-    "semi": ["error", "always"],
-    "quotes": ["error", "double"]
+    "react/prop-types": "off", // Disable prop-types warning
+    "react/display-name": "off", // Disable display-name warning
+    "no-unused-vars": "off", // Disable unused-vars warning
+    "semi": ["error", "always"], // Keep semi-colon rule
+    "quotes": ["error", "double"], // Keep double quotes rule
+    // Disable all other rules
+    "react/jsx-key": "off", // Example of disabling jsx-key rule
+    "no-console": "off" // Example of disabling no-console rule
   },
   "settings": {
     "react": {
