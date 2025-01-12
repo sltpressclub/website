@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment"; // For date formatting
 import Link from "next/link"; // For navigating between pages in Next.js
+import Image from "next/image"; // For optimized image handling in Next.js
 
 // PostCard component - Displays a card for each blog post
 const PostCard = ({ post }) => {
@@ -10,17 +11,19 @@ const PostCard = ({ post }) => {
       {/* Container for the featured image with a fixed height */}
       <div className="relative overflow-hidden shadow-md pb-80 mb-6">
         {/* Featured image for the post */}
-        <img
+        <Image
           src={post.featuredImage.url} // The URL of the featured image
           alt={post.title} // Alt text for the image (post title)
-          className="object-top absolute h-80 w-full object-cover shadow-lg rounded-t-2xl rounded-2xl" // Styling for the image
+          layout="fill" // Ensures the image fills the container
+          objectFit="cover" // Crops the image to fit the container
+          className="rounded-t-2xl rounded-2xl" // Styling for the image
+          priority // Optimizes loading of images above the fold
         />
       </div>
 
       {/* Post title with a link to the full post page */}
       <h1 className="transition duration-500 text-center mb-8 cursor-pointer text-white text-3xl font-semibold">
-        <Link href={`/post/${post.slug}`}>{post.title}</Link>{" "}
-        {/* Link to the individual post page */}
+        <Link href={`/post/${post.slug}`}>{post.title}</Link>
       </h1>
 
       {/* Container for post author and date */}
@@ -28,16 +31,16 @@ const PostCard = ({ post }) => {
         {/* Author details section */}
         <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
           {/* Author photo */}
-          <img
+          <Image
             src={post.author.photo.url} // URL of the author's photo
             alt={post.author.name} // Alt text for the photo
-            height="30px" // Fixed height for the image
-            width="30px" // Fixed width for the image
-            className="align-middle rounded-full" // Styling to make the photo circular
+            height={30} // Fixed height for the image
+            width={30} // Fixed width for the image
+            className="rounded-full" // Styling to make the photo circular
           />
           {/* Author name */}
           <p className="inline align-middle text-white ml-2 text-lg">
-            {post.author.name} {/* Display author's name */}
+            {post.author.name}
           </p>
         </div>
 
@@ -54,25 +57,24 @@ const PostCard = ({ post }) => {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" // Path for the calendar icon
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-          <span>{moment(post.createdAt).format("DD MMMM YYYY")}</span>{" "}
-          {/* Display post creation date in a formatted string */}
+          <span>{moment(post.createdAt).format("DD MMMM YYYY")}</span>
         </div>
       </div>
 
       {/* Post excerpt (a brief summary of the post) */}
       <p className="text-center text-white font-normal px-4 lg:px-20 mb-8">
-        {post.excerpt} {/* Display the excerpt */}
+        {post.excerpt}
       </p>
 
       {/* Button to navigate to the full post */}
       <div className="text-center">
         <Link href={`/post/${post.slug}`}>
-          <span className="transition duration-700 transform hover:-translate-y-0.5 hover:bg-white inline-block bg-white bg-opacity-50 text-lg font-medium rounded-full px-5 py-2 cursor-pointer shadow-lg">
-            Continue Reading... {/* Button text */}
-          </span>
+          <a className="transition duration-700 transform hover:-translate-y-0.5 hover:bg-white inline-block bg-white bg-opacity-50 text-lg font-medium rounded-full px-5 py-2 shadow-lg">
+            Continue Reading...
+          </a>
         </Link>
       </div>
     </div>

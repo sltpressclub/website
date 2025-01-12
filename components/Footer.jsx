@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link"; // Import Link for navigation
+import Image from "next/image"; // Import Image for optimized image loading
 import { FaInstagram } from "react-icons/fa"; // Importing the Instagram icon from react-icons
 
 // Footer Component
@@ -13,10 +15,12 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-3 mb-4">
               {/* Logo image */}
-              <img
+              <Image
                 src="/slt_pressclub_logo.png" // Path to the logo image
-                alt="Logo" // Alt text for accessibility
-                className="w-12 h-12" // Logo dimensions
+                alt="SLT Pressclub Logo" // Alt text for accessibility
+                width={48} // Logo width
+                height={48} // Logo height
+                className="rounded-full" // Optional styling for the image
               />
               {/* Website name */}
               <h2 className="text-2xl font-semibold">SLT Pressclub</h2>
@@ -34,36 +38,32 @@ const Footer = () => {
             {/* List of navigation links */}
             <ul className="space-y-2">
               <li>
-                <a
-                  href="/" // Link to the Home page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  Home
-                </a>
+                <Link href="/" passHref>
+                  <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
+                    Home
+                  </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/about" // Link to the About Us page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  About Us
-                </a>
+                <Link href="/about" passHref>
+                  <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
+                    About Us
+                  </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/contact" // Link to the Contact Us page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  Contact Us
-                </a>
+                <Link href="/contact" passHref>
+                  <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
+                    Contact Us
+                  </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/privacy" // Link to the Privacy Policy page
-                  className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300"
-                >
-                  Privacy Policy
-                </a>
+                <Link href="/privacy" passHref>
+                  <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
+                    Privacy Policy
+                  </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -74,7 +74,7 @@ const Footer = () => {
             {/* Social media icons */}
             <div className="flex space-x-4">
               <a
-                href="https://www.instagram.com/slt_pressclub/" // Instagram profile link
+                href="https://www.instagram.com/slt_pressclub/"
                 target="_blank" // Opens the link in a new tab
                 rel="noopener noreferrer" // Improves security when using target="_blank"
                 className="text-gray-400 hover:text-pink-500 transition duration-300"

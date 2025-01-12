@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { searchPostsAndUpcoming } from "../services"; // Import the service function to search posts, upcomings, and authors
 import { FaSearch } from "react-icons/fa"; // Import the magnifying glass icon for the search button
+import Image from "next/image"; // Import Image component for optimized image handling
 
 const SearchBar = () => {
   // State for handling search input, results, loading, and modal visibility
@@ -163,10 +164,12 @@ const SearchBar = () => {
                       className="bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl p-3"
                     >
                       <div className="flex items-center space-x-4">
-                        <img
+                        <Image
                           src={author.photo.url} // Author's photo
                           alt={author.name} // Author's name as alt text
-                          className="w-10 h-10 rounded-full"
+                          width={40} // Set width for image
+                          height={40} // Set height for image
+                          className="rounded-full"
                         />
                         <div>
                           <h4 className="text-blue-300 font-medium">
