@@ -1,7 +1,6 @@
 import React from "react";
 import moment from "moment"; // For date formatting
 import Link from "next/link"; // For navigating between pages in Next.js
-import Image from "next/image"; // For optimized image handling in Next.js
 
 // PostCard component - Displays a card for each blog post
 const PostCard = ({ post }) => {
@@ -11,7 +10,7 @@ const PostCard = ({ post }) => {
       {/* Container for the featured image with a fixed height */}
       <div className="relative overflow-hidden shadow-md pb-80 mb-6">
         {/* Featured image for the post */}
-        <Image
+        <img
           src={post.featuredImage.url} // The URL of the featured image
           alt={post.title} // Alt text for the image (post title)
           layout="fill" // Ensures the image fills the container
