@@ -1,6 +1,7 @@
 import { request, gql } from "graphql-request";
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
+// Get Posts
 export const getPosts = async () => {
   const query = gql`
     query MyQuery {
@@ -33,10 +34,10 @@ export const getPosts = async () => {
     }
   `;
   const result = await request(graphqlAPI, query);
-
   return result.postsConnection.edges;
 };
 
+// Get Post Details
 export const getPostDetails = async (slug) => {
   const query = gql`
     query GetPostDetails($slug: String!) {
@@ -65,11 +66,11 @@ export const getPostDetails = async (slug) => {
       }
     }
   `;
-
   const result = await request(graphqlAPI, query, { slug });
-
   return result.post;
 };
+
+// Get Recent Posts
 export const getRecentPosts = async () => {
   const query = gql`
     query GetRecentPosts {
@@ -84,10 +85,10 @@ export const getRecentPosts = async () => {
     }
   `;
   const result = await request(graphqlAPI, query);
-
   return result.posts;
 };
 
+// Get Categories
 export const getCategories = async () => {
   const query = gql`
     query GetCategories($first: Int) {
@@ -101,8 +102,8 @@ export const getCategories = async () => {
   return result.categories;
 };
 
+// Submit Comment
 export const submitComment = async (commentData) => {
-  // Send POST request to the API
   const response = await fetch("/api/comments", {
     method: "POST",
     headers: {
@@ -111,17 +112,16 @@ export const submitComment = async (commentData) => {
     body: JSON.stringify(commentData),
   });
 
-  // Handle non-OK responses
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.message || "Failed to submit comment.");
   }
 
-  // Parse JSON response
   const result = await response.json();
   return result;
 };
 
+// Get Comments
 export const getComments = async (slug) => {
   const query = gql`
     query GetComments($slug: String!) {
@@ -132,13 +132,12 @@ export const getComments = async (slug) => {
       }
     }
   `;
-
   const result = await request(graphqlAPI, query, { slug });
-
   return result.comments;
 };
+
+// Get Upcoming Events
 export const getUpcoming = async () => {
-  // Updated GraphQL query to fetch events in descending order of the date
   const query = gql`
     query MyQuery {
       upcomings(orderBy: date_ASC) {
@@ -153,39 +152,20 @@ export const getUpcoming = async () => {
       }
     }
   `;
-
-  // Execute the query and fetch results
   const result = await request(graphqlAPI, query);
-
-  // Return the list of upcoming events
   return result.upcomings;
 };
 
+// Search Posts and Upcoming Events
 export const searchPostsAndUpcoming = async (searchTerm) => {
-  try {
-    const query = gql`
-      query SearchPostsAndUpcoming($searchTerm: String!) {
-        posts(where: { title_contains: $searchTerm }) {
-          id
-          title
-          slug
-          excerpt
-          author {
-            id
-            name
-            bio
-            photo {
-              url
-            }
-          }
-        }
-        upcomings(where: { name_contains: $searchTerm }) {
-          id
-          name
-          slug
-          description
-        }
-        authors(where: { name_contains: $searchTerm }) {
+  const query = gql`
+    query SearchPostsAndUpcoming($searchTerm: String!) {
+      posts(where: { title_contains: $searchTerm }) {
+        id
+        title
+        slug
+        excerpt
+        author {
           id
           name
           bio
@@ -194,27 +174,34 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
           }
         }
       }
-    `;
-
-    // Fetch the data from the GraphQL API
-    const result = await request(graphqlAPI, query, { searchTerm });
-
-    if (!result) {
-      throw new Error("No results found.");
+      upcomings(where: { name_contains: $searchTerm }) {
+        id
+        name
+        slug
+        description
+      }
+      authors(where: { name_contains: $searchTerm }) {
+        id
+        name
+        bio
+        photo {
+          url
+        }
+      }
     }
-
-    return {
-      posts: result.posts,
-      upcomings: result.upcomings,
-      authors: result.authors,
-    };
-  } catch (error) {
-    // Log the error and display a message to the user
-    console.error("Error fetching search results:", error);
-    throw new Error("Failed to fetch search results. Please try again.");
+  `;
+  const result = await request(graphqlAPI, query, { searchTerm });
+  if (!result) {
+    throw new Error("No results found.");
   }
+  return {
+    posts: result.posts,
+    upcomings: result.upcomings,
+    authors: result.authors,
+  };
 };
 
+// Get Category Posts
 export const getCategoryPost = async (slug) => {
   const query = gql`
     query GetCategoryPost($slug: String!) {
@@ -245,12 +232,24 @@ export const getCategoryPost = async (slug) => {
       }
     }
   `;
+  const result = await request(graphqlAPI, query, { slug });
+  return result.postsConnection.edges.map((edge) => edge.node);
+};
 
-  try {
-    const result = await request(graphqlAPI, query, { slug });
-    return result.postsConnection.edges.map((edge) => edge.node);
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    return []; // Return an empty array in case of error
-  }
+// Get Authors
+export const getAuthors = async () => {
+  const query = gql`
+    query GetAuthors {
+      authors {
+        id
+        name
+        bio
+        photo {
+          url
+        }
+      }
+    }
+  `;
+  const result = await request(graphqlAPI, query);
+  return result.authors;
 };
