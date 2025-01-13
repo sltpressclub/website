@@ -1,17 +1,22 @@
 import React from "react";
+import Image from "next/image"; // Import Next.js Image component
 import moment from "moment"; // For date formatting
-import Link from "next/link"; // For navigating between pages in Next.js
+import Link from "next/link"; // For navigation
 
-// PostCard component - Displays a card for each blog post
+import { graphCMSImageLoader } from "../util"; // Assuming a custom loader for GraphCMS images
+
 const PostCard = ({ post }) => {
   return (
     <div className="bg-black bg-opacity-30 shadow-lg rounded-3xl p-0 lg:p-8 pb-12 mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
       {/* Featured Image */}
       <div className="relative overflow-hidden rounded-3xl shadow-md pb-[56.25%] mb-6">
-        <img
+        <Image
+          loader={graphCMSImageLoader} // Use custom GraphCMS image loader
           src={post.featuredImage.url}
           alt={post.title} // Better alt text for accessibility
-          className="absolute inset-0 w-full h-full object-cover rounded-3xl"
+          layout="fill" // Ensures the image fills the container
+          objectFit="cover" // Makes the image cover the container proportionally
+          className="rounded-3xl"
         />
       </div>
 
@@ -26,10 +31,13 @@ const PostCard = ({ post }) => {
       <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
         {/* Author Details */}
         <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
-          <img
+          <Image
+            loader={graphCMSImageLoader}
             src={post.author.photo.url}
             alt={`Photo of ${post.author.name}`} // Improved accessibility
-            className="w-10 h-10 rounded-full object-cover" // Rounded and consistent size
+            width={40} // Consistent size
+            height={40} // Consistent size
+            className="rounded-full object-cover" // Rounded and consistent size
           />
           <p className="inline align-middle text-white ml-2 text-lg">
             {post.author.name}
