@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { PostCard, Categories, PostWidget, Upcoming } from "../components/";
 import { getPosts } from "../services";
+import Loader from "../components/Loader"; // Import your Loader component
 
 export default function Home({ posts }) {
+  const [loading, setLoading] = useState(true);
+
+  // Simulate loading state while fetching the posts
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      setLoading(false);
+    }
+  }, [posts]);
+
+  if (loading) {
+    return <Loader />; // Show loader until posts are loaded
+  }
+
   return (
     <div className="flex flex-col min-h-screen w-full">
       <div className="w-full px-4 md:px-10 mb-8 flex-grow">
