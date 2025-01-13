@@ -45,6 +45,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/authors" passHref>
+                  <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
+                    Authors
+                  </a>
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" passHref>
                   <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
                     About Us
