@@ -32,7 +32,7 @@ const PostCard = ({ post }) => {
         {/* Author details section */}
         <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
           {/* Author photo */}
-          <Image
+          <img
             src={post.author.photo.url} // URL of the author's photo
             alt={post.author.name} // Alt text for the photo
             height={30} // Fixed height for the image

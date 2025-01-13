@@ -103,7 +103,7 @@ const PostDetail = ({ post }) => {
         <div className="px-4 lg:px-0">
           {/* Author and Date Section */}
           <div className="flex items-center mb-8 w-full">
-            <div className="hidden md:flex items-center justify-center lg:mb-0 lg:w-auto mr-8 items-center">
+            <div className="hidden md:flex items-center justify-center lg:mb-0 lg:w-auto mr-8">
               <Image
                 alt={post.author.name} // Author photo
                 height={30} // Image height
