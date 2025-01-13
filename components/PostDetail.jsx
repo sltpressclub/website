@@ -1,6 +1,5 @@
 import React from "react";
 import moment from "moment"; // For date formatting
-import Image from "next/image"; // For optimized images in Next.js
 import { graphCMSImageLoader } from "../util"; // Custom image loader for GraphCMS
 
 const PostDetail = ({ post }) => {
@@ -48,15 +47,13 @@ const PostDetail = ({ post }) => {
         );
       case "image":
         return (
-          <Image
+          <img
             key={index}
-            loader={graphCMSImageLoader}
             alt={obj.title}
+            src={obj.src} // Directly use the URL for the src attribute
             height={obj.height}
             width={obj.width}
-            src={obj.src}
             className="rounded-3xl"
-            layout="intrinsic"
           />
         );
       case "video":
@@ -81,14 +78,12 @@ const PostDetail = ({ post }) => {
     <div className="bg-black hover:bg-opacity-75 hover:-translate-y-1 duration-500 bg-opacity-50 rounded-3xl lg:p-8 pb-12 mb-8">
       {/* Post Featured Image */}
       <div className="relative overflow-hidden shadow-md mb-6">
-        <Image
-          loader={graphCMSImageLoader}
+        <img
           src={post.featuredImage.url}
           alt="Post featured image"
           className="object-top h-full w-full object-cover shadow-lg rounded-t-lg lg:rounded-lg"
           height={500}
           width={800}
-          layout="intrinsic"
         />
       </div>
 
@@ -96,8 +91,7 @@ const PostDetail = ({ post }) => {
         {/* Author and Date */}
         <div className="flex items-center mb-8 w-full">
           <div className="hidden md:flex items-center justify-center lg:mb-0 lg:w-auto mr-8">
-            <Image
-              loader={graphCMSImageLoader}
+            <img
               alt={post.author.name}
               height={30}
               width={30}
