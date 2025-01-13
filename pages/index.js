@@ -1,21 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Head from "next/head";
 import { PostCard, Categories, PostWidget, Upcoming } from "../components/";
 import { getPosts } from "../services";
 import Loader from "../components/Loader"; // Import your Loader component
 
 export default function Home({ posts }) {
-  const [loading, setLoading] = useState(true);
-
-  // Simulate loading state while fetching the posts
-  useEffect(() => {
-    if (posts && posts.length > 0) {
-      setLoading(false);
-    }
-  }, [posts]);
-
-  if (loading) {
-    return <Loader />; // Show loader until posts are loaded
+  // Display loader if no posts are available
+  if (!posts || posts.length === 0) {
+    return <Loader />;
   }
 
   return (
@@ -48,7 +40,8 @@ export default function Home({ posts }) {
   );
 }
 
-export async function getStaticProps() {
+// Fetch posts on every request
+export async function getServerSideProps() {
   const posts = (await getPosts()) || [];
   return {
     props: { posts },
