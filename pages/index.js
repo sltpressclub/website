@@ -13,12 +13,14 @@ export default function Home({ posts }) {
         </Head>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
+          {/* Main Content Section */}
           <div className="lg:col-span-8 col-span-1">
             {posts.map((post) => (
               <PostCard post={post.node} key={post.node.id} />
             ))}
           </div>
 
+          {/* Sidebar Section */}
           <div className="lg:col-span-4 col-span-1">
             <div className="relative top-8">
               <Upcoming />
