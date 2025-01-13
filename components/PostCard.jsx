@@ -9,14 +9,10 @@ const PostCard = ({ post }) => {
     <div className="bg-black bg-opacity-30 shadow-lg rounded-3xl p-0 lg:p-8 pb-12 mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
       {/* Container for the featured image with a fixed height */}
       <div className="relative overflow-hidden shadow-md pb-80 mb-6">
-        {/* Featured image for the post */}
         <img
-          src={post.featuredImage.url} // The URL of the featured image
-          alt={post.title} // Alt text for the image (post title)
-          layout="fill" // Ensures the image fills the container
-          objectFit="cover" // Crops the image to fit the container
-          className="rounded-t-2xl rounded-2xl" // Styling for the image
-          priority // Optimizes loading of images above the fold
+          src={post.featuredImage.url}
+          alt=""
+          className="object-top absolute h-80 w-full object-cover  shadow-lg rounded-t-lg lg:rounded-lg"
         />
       </div>
 
