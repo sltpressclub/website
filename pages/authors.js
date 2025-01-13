@@ -5,7 +5,7 @@ import { getAuthors } from "../services"; // Import service to fetch authors
 
 const Authors = ({ authors }) => {
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-900 text-white">
+    <div className="flex flex-col min-h-screen w-full bg-transparent text-white">
       <Head>
         <title>Authors | SLT Pressclub</title>
         <link rel="icon" href="/slt_pressclub_logo.png" />
