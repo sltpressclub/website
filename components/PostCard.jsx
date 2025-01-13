@@ -8,11 +8,11 @@ const PostCard = ({ post }) => {
     // Wrapper for each post card with background, padding, and hover effects
     <div className="bg-black bg-opacity-30 shadow-lg rounded-3xl p-0 lg:p-8 pb-12 mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
       {/* Container for the featured image with a fixed height */}
-      <div className="relative overflow-hidden shadow-md pb-80 mb-6">
+      <div className="relative overflow-hidden shadow-md mb-6">
         <img
           src={post.featuredImage.url}
           alt=""
-          className="object-top absolute w-full object-fill rounded-2xl"
+          className="object-top absolute w-full object-cover rounded-2xl"
         />
       </div>
 
