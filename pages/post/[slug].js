@@ -4,7 +4,7 @@ import {
   PostDetail,
   Categories,
   PostWidget,
-  Author,
+  Member, // Assuming 'Author' is renamed to 'Member'
   Comments,
   CommentsForm,
   Loader,
@@ -34,7 +34,9 @@ const PostDetails = ({ post }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="col-span-1 lg:col-span-8">
             <PostDetail post={post} />
-            <Author author={post.author} />
+            {/* Changed Author to Member here */}
+            <Member member={post.member} />{" "}
+            {/* Assuming 'member' is the correct property */}
             <CommentsForm slug={post.slug} />
             <Comments slug={post.slug} />
           </div>
