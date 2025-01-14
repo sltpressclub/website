@@ -9,7 +9,7 @@ export const getPosts = async () => {
         edges {
           cursor
           node {
-            member {
+            members {
               bio
               name
               id
@@ -47,7 +47,7 @@ export const getPostDetails = async (slug) => {
         featuredImage {
           url
         }
-        member {
+        members {
           name
           bio
           photo {
@@ -165,7 +165,7 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
         title
         slug
         excerpt
-        member {
+        members {
           id
           name
           bio
@@ -208,7 +208,7 @@ export const getCategoryPost = async (slug) => {
       postsConnection(where: { category_some: { slug: $slug } }) {
         edges {
           node {
-            member {
+            members {
               bio
               name
               id
