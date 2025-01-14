@@ -282,3 +282,47 @@ export const getMembers = async () => {
   const result = await fetchGraphQL(query);
   return result.members;
 };
+import { gql } from "graphql-request";
+import { fetchGraphQL } from "./graphqlClient"; // Assuming you have a GraphQL client set up
+
+// Fetch member by slug
+export const getMemberBySlug = async (slug) => {
+  const query = gql`
+    query GetMemberBySlug($slug: String!) {
+      member(where: { slug: $slug }) {
+        id
+        name
+        bio
+        role {
+          name
+        }
+        photo {
+          url
+        }
+        slug
+      }
+    }
+  `;
+
+  const variables = { slug };
+  const result = await fetchGraphQL(query, variables);
+  return result.member;
+};
+
+// Fetch posts by a specific member
+export const getPostsByMember = async (memberId) => {
+  const query = gql`
+    query GetPostsByMember($memberId: ID!) {
+      posts(where: { author: { id: $memberId } }) {
+        id
+        title
+        slug
+        content
+      }
+    }
+  `;
+
+  const variables = { memberId };
+  const result = await fetchGraphQL(query, variables);
+  return result.posts;
+};
