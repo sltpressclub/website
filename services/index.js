@@ -12,11 +12,11 @@ const fetchGraphQL = async (query, variables) => {
   }
 };
 
-// Get Posts
+// Get Latest Post
 export const getPosts = async () => {
   const query = gql`
     query GetPosts {
-      postsConnection(orderBy: createdAt_DESC) {
+      postsConnection(orderBy: createdAt_DESC, first: 1) {
         edges {
           cursor
           node {
@@ -266,12 +266,13 @@ export const getMembers = async () => {
   const query = gql`
     query GetMembers {
       members {
-        bio
+        id
         name
+        bio
+        role
         photo {
           url
         }
-        id
       }
     }
   `;

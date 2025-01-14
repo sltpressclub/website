@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { PostCard, Categories, PostWidget, Upcoming } from "../components/";
+import { PostCard, Upcoming } from "../components/"; // Removed PostWidget and Categories
 import { getPosts } from "../services";
 import Loader from "../components/Loader"; // Import your Loader component
 
@@ -22,6 +22,8 @@ export default function Home({ posts }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
           {/* Main Content Section */}
           <div className="lg:col-span-8 col-span-1">
+            {/* Text above the posts */}
+            <h2 className="text-3xl font-semibold mb-6">Latest Posts</h2>
             {posts.map((post) => (
               <PostCard post={post.node} key={post.node.id} />
             ))}
@@ -30,9 +32,7 @@ export default function Home({ posts }) {
           {/* Sidebar Section */}
           <div className="lg:col-span-4 col-span-1">
             <div className="relative top-8">
-              <Upcoming />
-              <PostWidget />
-              <Categories />
+              <Upcoming /> {/* Only Upcoming Events here */}
             </div>
           </div>
         </div>
