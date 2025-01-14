@@ -269,12 +269,13 @@ export const getMembers = async () => {
         id
         name
         bio
-        photo {
-          url
-        }
         role {
           name
         }
+        photo {
+          url
+        }
+        slug
       }
     }
   `;
