@@ -33,7 +33,14 @@ const Members = ({ members }) => {
 
 // Fetch members on every request
 export async function getServerSideProps() {
-  const members = (await getMembers()) || []; // Fetch members
+  let members = [];
+
+  try {
+    members = await getMembers(); // Fetch members
+  } catch (error) {
+    console.error("Error fetching members:", error);
+  }
+
   return {
     props: { members },
   };

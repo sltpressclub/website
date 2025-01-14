@@ -261,7 +261,6 @@ export const getCategoryPost = async (slug) => {
   return result.postsConnection.edges.map((edge) => edge.node);
 };
 
-// Get Members
 export const getMembers = async () => {
   const query = gql`
     query GetMembers {
@@ -277,6 +276,11 @@ export const getMembers = async () => {
     }
   `;
 
-  const result = await fetchGraphQL(query);
-  return result.members;
+  try {
+    const result = await fetchGraphQL(query); // Make sure fetchGraphQL is implemented correctly
+    return result.data.members; // Assuming 'data' is the correct structure
+  } catch (error) {
+    console.error("Error fetching members:", error);
+    return []; // Return an empty array if there's an error
+  }
 };
