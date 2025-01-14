@@ -3,6 +3,11 @@ import moment from "moment"; // For date formatting
 import Image from "next/image"; // Use Next.js Image component for optimization
 
 const PostDetail = ({ post }) => {
+  // Ensure post is available
+  if (!post) {
+    return <div>Loading...</div>; // Show loading if no post data is available
+  }
+
   // Safely render content fragments
   const getContentFragment = (index, text, obj, type) => {
     let modifiedText = text;
@@ -45,7 +50,7 @@ const PostDetail = ({ post }) => {
           <div key={index} className="my-8">
             <Image
               alt={obj.title || "Image"}
-              src={obj.src || ""}
+              src={obj.src || "/default-image.jpg"} // Default image if obj.src is missing
               width={obj.width || 800}
               height={obj.height || 600}
               className="rounded-3xl"
@@ -70,6 +75,9 @@ const PostDetail = ({ post }) => {
         return modifiedText;
     }
   };
+
+  // Log the post object to check if the data exists as expected
+  console.log(post);
 
   return (
     <div className="bg-black hover:bg-opacity-75 hover:-translate-y-1 duration-500 bg-opacity-50 rounded-3xl lg:p-8 pb-12 mb-8">

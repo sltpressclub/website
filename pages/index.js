@@ -5,7 +5,7 @@ import { getPosts } from "../services";
 import Loader from "../components/Loader"; // Import your Loader component
 
 export default function Home({ posts }) {
-  // Display loader if no posts are available
+  // Display loader if no posts are available or posts data is still empty
   if (!posts || posts.length === 0) {
     return <Loader />;
   }
@@ -49,6 +49,8 @@ export async function getServerSideProps() {
   } catch (error) {
     console.error("Error fetching posts:", error);
   }
+
+  // If no posts were fetched, the Loader will show until posts are available
   return {
     props: { posts },
   };
