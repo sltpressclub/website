@@ -1,10 +1,21 @@
 import { request, gql } from "graphql-request";
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
+// Utility function to handle GraphQL requests with error handling
+const fetchGraphQL = async (query, variables) => {
+  try {
+    const result = await request(graphqlAPI, query, variables);
+    return result;
+  } catch (error) {
+    console.error("GraphQL Request Error:", error);
+    throw new Error("Something went wrong while fetching data from GraphQL.");
+  }
+};
+
 // Get Posts
 export const getPosts = async () => {
   const query = gql`
-    query MyQuery {
+    query GetPosts {
       postsConnection(orderBy: createdAt_DESC) {
         edges {
           cursor
@@ -33,7 +44,8 @@ export const getPosts = async () => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query);
+
+  const result = await fetchGraphQL(query);
   return result.postsConnection.edges;
 };
 
@@ -66,7 +78,8 @@ export const getPostDetails = async (slug) => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query, { slug });
+
+  const result = await fetchGraphQL(query, { slug });
   return result.post;
 };
 
@@ -84,7 +97,8 @@ export const getRecentPosts = async () => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query);
+
+  const result = await fetchGraphQL(query);
   return result.posts;
 };
 
@@ -98,27 +112,33 @@ export const getCategories = async () => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query, { first: 20 });
+
+  const result = await fetchGraphQL(query, { first: 20 });
   return result.categories;
 };
 
 // Submit Comment
 export const submitComment = async (commentData) => {
-  const response = await fetch("/api/comments", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(commentData),
-  });
+  try {
+    const response = await fetch("/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(commentData),
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "Failed to submit comment.");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to submit comment.");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error submitting comment:", error);
+    throw new Error("Failed to submit comment.");
   }
-
-  const result = await response.json();
-  return result;
 };
 
 // Get Comments
@@ -132,14 +152,15 @@ export const getComments = async (slug) => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query, { slug });
+
+  const result = await fetchGraphQL(query, { slug });
   return result.comments;
 };
 
 // Get Upcoming Events
 export const getUpcoming = async () => {
   const query = gql`
-    query MyQuery {
+    query GetUpcoming {
       upcomings(orderBy: date_ASC) {
         id
         name
@@ -152,7 +173,8 @@ export const getUpcoming = async () => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query);
+
+  const result = await fetchGraphQL(query);
   return result.upcomings;
 };
 
@@ -190,10 +212,12 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query, { searchTerm });
+
+  const result = await fetchGraphQL(query, { searchTerm });
   if (!result) {
     throw new Error("No results found.");
   }
+
   return {
     posts: result.posts,
     upcomings: result.upcomings,
@@ -232,7 +256,8 @@ export const getCategoryPost = async (slug) => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query, { slug });
+
+  const result = await fetchGraphQL(query, { slug });
   return result.postsConnection.edges.map((edge) => edge.node);
 };
 
@@ -250,6 +275,7 @@ export const getMembers = async () => {
       }
     }
   `;
-  const result = await request(graphqlAPI, query);
+
+  const result = await fetchGraphQL(query);
   return result.members;
 };
