@@ -6,19 +6,32 @@ import Link from "next/link"; // For navigation
 import { graphCMSImageLoader } from "../util"; // Assuming a custom loader for GraphCMS images
 
 const PostCard = ({ post }) => {
+  // Ensure all required data exists
+  const member = post?.member;
+  const featuredImage = post?.featuredImage;
+
   return (
     <div className="bg-black bg-opacity-30 shadow-lg rounded-3xl p-0 lg:p-8 pb-12 mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
       {/* Featured Image */}
-      <div className="relative overflow-hidden rounded-3xl shadow-md pb-[56.25%] mb-6">
-        <Image
-          loader={graphCMSImageLoader} // Use custom GraphCMS image loader
-          src={post.featuredImage.url}
-          alt={post.title} // Better alt text for accessibility
-          layout="fill" // Ensures the image fills the container
-          objectFit="cover" // Makes the image cover the container proportionally
-          className="rounded-3xl"
-        />
-      </div>
+      {featuredImage && featuredImage.url ? (
+        <div className="relative overflow-hidden rounded-3xl shadow-md pb-[56.25%] mb-6">
+          <Image
+            loader={graphCMSImageLoader} // Use custom GraphCMS image loader
+            src={featuredImage.url}
+            alt={post.title || "Featured Image"} // Improved alt text for accessibility
+            layout="fill" // Ensures the image fills the container
+            objectFit="cover" // Makes the image cover the container proportionally
+            className="rounded-3xl"
+          />
+        </div>
+      ) : (
+        <div className="relative pb-[56.25%] mb-6 bg-gray-300 rounded-3xl">
+          {/* Placeholder for missing image */}
+          <span className="absolute inset-0 flex items-center justify-center text-white font-semibold">
+            No Image Available
+          </span>
+        </div>
+      )}
 
       {/* Post Title */}
       <h1 className="transition duration-500 text-center mb-8 cursor-pointer text-white text-3xl font-semibold">
@@ -30,19 +43,25 @@ const PostCard = ({ post }) => {
       {/* Post Member and Date */}
       <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
         {/* Member Details */}
-        <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
-          <Image
-            loader={graphCMSImageLoader}
-            src={post.member.photo.url}
-            alt={`Photo of ${post.member.name}`} // Improved accessibility
-            width={40} // Consistent size
-            height={40} // Consistent size
-            className="rounded-full object-cover" // Rounded and consistent size
-          />
-          <p className="inline align-middle text-white ml-2 text-lg">
-            {post.member.name}
-          </p>
-        </div>
+        {member && member.name && member.photo && member.photo.url ? (
+          <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
+            <Image
+              loader={graphCMSImageLoader}
+              src={member.photo.url}
+              alt={`Photo of ${member.name}`} // Improved accessibility
+              width={40} // Consistent size
+              height={40} // Consistent size
+              className="rounded-full object-cover" // Rounded and consistent size
+            />
+            <p className="inline align-middle text-white ml-2 text-lg">
+              {member.name}
+            </p>
+          </div>
+        ) : (
+          <div className="mb-4 lg:mb-0 w-full lg:w-auto mr-8">
+            <span className="text-white text-lg">Unknown Member</span>
+          </div>
+        )}
 
         {/* Post Date */}
         <div className="font-medium text-white">
@@ -66,7 +85,7 @@ const PostCard = ({ post }) => {
 
       {/* Post Excerpt */}
       <p className="text-center text-white font-normal px-4 lg:px-20 mb-8">
-        {post.excerpt}
+        {post.excerpt || "No excerpt available."}
       </p>
 
       {/* Read More Button */}

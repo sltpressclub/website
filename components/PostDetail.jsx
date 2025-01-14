@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment"; // For date formatting
-import { graphCMSImageLoader } from "../util"; // Custom image loader for GraphCMS
+import Image from "next/image"; // Use Next.js Image component for optimization
 
 const PostDetail = ({ post }) => {
+  // Safely render content fragments
   const getContentFragment = (index, text, obj, type) => {
     let modifiedText = text;
 
@@ -24,50 +25,46 @@ const PostDetail = ({ post }) => {
       case "heading-three":
         return (
           <h3 key={index} className="text-xl font-semibold mb-4 text-white">
-            {modifiedText.map((item, i) => (
-              <React.Fragment key={i}>{item}</React.Fragment>
-            ))}
+            {modifiedText}
           </h3>
         );
       case "paragraph":
         return (
           <p key={index} className="mb-8 text-white">
-            {modifiedText.map((item, i) => (
-              <React.Fragment key={i}>{item}</React.Fragment>
-            ))}
+            {modifiedText}
           </p>
         );
       case "heading-four":
         return (
           <h4 key={index} className="text-md font-semibold mb-4 text-white">
-            {modifiedText.map((item, i) => (
-              <React.Fragment key={i}>{item}</React.Fragment>
-            ))}
+            {modifiedText}
           </h4>
         );
       case "image":
         return (
-          <img
-            key={index}
-            alt={obj.title}
-            src={obj.src} // Directly use the URL for the src attribute
-            height={obj.height}
-            width={obj.width}
-            className="rounded-3xl"
-          />
+          <div key={index} className="my-8">
+            <Image
+              alt={obj.title || "Image"}
+              src={obj.src || ""}
+              width={obj.width || 800}
+              height={obj.height || 600}
+              className="rounded-3xl"
+            />
+          </div>
         );
       case "video":
         return (
-          <video
-            key={index}
-            controls
-            width={obj.width || "100%"}
-            height={obj.height || "auto"}
-            src={obj.src}
-            className="rounded-3xl"
-          >
-            Your browser does not support the video tag.
-          </video>
+          <div key={index} className="my-8">
+            <video
+              controls
+              width={obj.width || "100%"}
+              height={obj.height || "auto"}
+              src={obj.src}
+              className="rounded-3xl"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
         );
       default:
         return modifiedText;
@@ -78,8 +75,8 @@ const PostDetail = ({ post }) => {
     <div className="bg-black hover:bg-opacity-75 hover:-translate-y-1 duration-500 bg-opacity-50 rounded-3xl lg:p-8 pb-12 mb-8">
       {/* Post Featured Image */}
       <div className="relative overflow-hidden shadow-md mb-6">
-        <img
-          src={post.featuredImage.url}
+        <Image
+          src={post.featuredImage?.url || "/default-image.jpg"} // Fallback image
           alt="Post featured image"
           className="object-top h-full w-full object-cover shadow-lg rounded-t-lg lg:rounded-lg"
           height={500}
@@ -91,15 +88,15 @@ const PostDetail = ({ post }) => {
         {/* Member and Date */}
         <div className="flex items-center mb-8 w-full">
           <div className="hidden md:flex items-center justify-center lg:mb-0 lg:w-auto mr-8">
-            <img
-              alt={post.member.name}
+            <Image
+              alt={post.member?.name || "Unknown"}
               height={30}
               width={30}
               className="align-middle rounded-full"
-              src={post.member.photo.url}
+              src={post.member?.photo?.url || "/default-avatar.jpg"} // Fallback avatar
             />
             <p className="inline align-middle text-white ml-2 font-medium text-lg">
-              {post.member.name}
+              {post.member?.name || "Unknown Member"}
             </p>
           </div>
           <div className="font-medium text-white">
@@ -127,9 +124,9 @@ const PostDetail = ({ post }) => {
         <h1 className="mb-8 text-3xl font-semibold text-white">{post.title}</h1>
 
         {/* Post Content */}
-        {post.content.raw.children.map((typeObj, index) => {
-          const children = typeObj.children.map((item, itemindex) =>
-            getContentFragment(itemindex, item.text, item)
+        {post.content?.raw?.children?.map((typeObj, index) => {
+          const children = typeObj.children?.map((item, itemindex) =>
+            getContentFragment(itemindex, item.text, item, typeObj.type)
           );
 
           return getContentFragment(index, children, typeObj, typeObj.type);
