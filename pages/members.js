@@ -1,63 +1,42 @@
 import React from "react";
-import Head from "next/head"; // Import Head for SEO optimization
-import Member from "../components/Member"; // Assuming Member component exists
-import { getMembers } from "../services"; // Import the getMembers function from services folder
+import Head from "next/head";
+import { Member } from "../components"; // Import the Member component
+import { getMembers } from "../services"; // Import service to fetch members
+import Loader from "../components/Loader"; // Import the Loader component
 
-// Fetch member data on every request using getServerSideProps
-export async function getServerSideProps() {
-  let memberData = [];
-
-  try {
-    // Call the getMembers function to fetch data
-    memberData = (await getMembers()) || []; // Assuming getMembers returns the list of members
-  } catch (error) {
-    console.error("Error fetching member data:", error);
-  }
-
-  return {
-    props: { memberData }, // Return member data as props
-  };
-}
-
-const MembersPage = ({ memberData }) => {
+const Members = ({ members }) => {
   return (
-    <div className="container mx-auto p-8">
+    <div className="flex flex-col min-h-screen w-full bg-transparent text-white">
       <Head>
-        <title>Meet Our Team | SLT Pressclub</title>
-        <meta
-          name="description"
-          content="Learn more about the talented individuals in our SLT Pressclub team."
-        />
-        <meta property="og:title" content="Meet Our Team | SLT Pressclub" />
-        <meta
-          property="og:description"
-          content="Get to know the members of the SLT Pressclub and their roles in shaping our content and projects."
-        />
-        <meta property="og:image" content="/default-image.jpg" />
-        <meta property="og:url" content="https://yourwebsite.com/members" />
-        <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href="https://yourwebsite.com/members" />
-        <meta
-          name="keywords"
-          content="SLT Pressclub, team members, writers, content creators, press club"
-        />
+        <title>Members | SLT Pressclub</title>
+        <link rel="icon" href="/slt_pressclub_logo.png" />
       </Head>
 
-      <h1 className="text-white text-3xl font-semibold mb-12">Meet Our Team</h1>
+      {/* Member Grid */}
+      <div className="w-full px-4 md:px-10 mb-8 flex-grow">
+        <h1 className="text-4xl font-bold text-center mb-12">Our Members</h1>
 
-      {/* Grid layout for displaying members in 3 columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {memberData && memberData.length > 0 ? (
-          memberData.map((member) => (
-            <Member key={member.id} member={member} /> // Render the Member component
-          ))
+        {/* Member Cards */}
+        {members.length === 0 ? (
+          <Loader />
         ) : (
-          <p className="text-white">No members found.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+            {members.map((member) => (
+              <Member key={member.id} member={member} /> // Render the Member component
+            ))}
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default MembersPage;
+// Fetch members on every request
+export async function getServerSideProps() {
+  const members = (await getMembers()) || []; // Fetch members
+  return {
+    props: { members },
+  };
+}
+
+export default Members;
