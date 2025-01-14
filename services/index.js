@@ -9,7 +9,7 @@ export const getPosts = async () => {
         edges {
           cursor
           node {
-            members {
+            member {
               bio
               name
               id
@@ -47,7 +47,7 @@ export const getPostDetails = async (slug) => {
         featuredImage {
           url
         }
-        members {
+        member {
           name
           bio
           photo {
@@ -165,7 +165,7 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
         title
         slug
         excerpt
-        members {
+        member {
           id
           name
           bio
@@ -208,7 +208,7 @@ export const getCategoryPost = async (slug) => {
       postsConnection(where: { category_some: { slug: $slug } }) {
         edges {
           node {
-            members {
+            member {
               bio
               name
               id
@@ -236,18 +236,17 @@ export const getCategoryPost = async (slug) => {
   return result.postsConnection.edges.map((edge) => edge.node);
 };
 
+// Get Members
 export const getMembers = async () => {
   const query = gql`
     query GetMembers {
       members {
-        id
-        name
-        role
         bio
-        slug
+        name
         photo {
           url
         }
+        id
       }
     }
   `;
