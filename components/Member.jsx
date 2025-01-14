@@ -5,9 +5,9 @@ import { graphCMSImageLoader } from "../util"; // Custom image loader for GraphC
 
 const Member = ({ member }) => {
   // Fallback values for missing data
-  const { name, role, bio, photo, slug } = member || {};
+  const { name, bio, role, photo, slug } = member || {};
   const profileImageUrl = photo?.url || "/default-avatar.png"; // Fallback profile image
-  const profileRole = role || "No role specified"; // Fallback role
+  const profileRole = role?.name || "No role specified"; // Fallback role
   const profileBio = bio || "No bio available."; // Fallback bio
 
   return (
@@ -30,7 +30,7 @@ const Member = ({ member }) => {
       </h3>
 
       {/* Member Role */}
-      {role && <p className="text-gray-300 text-lg mb-4">{profileRole}</p>}
+      <p className="text-gray-300 text-lg mb-4">{profileRole}</p>
 
       {/* Member Bio */}
       <p className="text-white text-lg mb-6">{profileBio}</p>
