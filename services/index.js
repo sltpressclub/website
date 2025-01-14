@@ -9,7 +9,7 @@ export const getPosts = async () => {
         edges {
           cursor
           node {
-            author {
+            member {
               bio
               name
               id
@@ -47,7 +47,7 @@ export const getPostDetails = async (slug) => {
         featuredImage {
           url
         }
-        author {
+        member {
           name
           bio
           photo {
@@ -165,7 +165,7 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
         title
         slug
         excerpt
-        author {
+        member {
           id
           name
           bio
@@ -180,7 +180,7 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
         slug
         description
       }
-      authors(where: { name_contains: $searchTerm }) {
+      members(where: { name_contains: $searchTerm }) {
         id
         name
         bio
@@ -197,7 +197,7 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
   return {
     posts: result.posts,
     upcomings: result.upcomings,
-    authors: result.authors,
+    members: result.members,
   };
 };
 
@@ -208,7 +208,7 @@ export const getCategoryPost = async (slug) => {
       postsConnection(where: { category_some: { slug: $slug } }) {
         edges {
           node {
-            author {
+            member {
               bio
               name
               id
@@ -236,14 +236,15 @@ export const getCategoryPost = async (slug) => {
   return result.postsConnection.edges.map((edge) => edge.node);
 };
 
-// Get Authors
-export const getAuthors = async () => {
+export const getMembers = async () => {
   const query = gql`
-    query GetAuthors {
-      authors {
+    query GetMembers {
+      members {
         id
         name
+        role
         bio
+        slug
         photo {
           url
         }
@@ -251,5 +252,5 @@ export const getAuthors = async () => {
     }
   `;
   const result = await request(graphqlAPI, query);
-  return result.authors;
+  return result.members;
 };

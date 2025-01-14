@@ -45,9 +45,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/authors" passHref>
+                <Link href="/members" passHref>
+                  {" "}
+                  {/* Updated to members */}
                   <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
-                    Authors
+                    Members
                   </a>
                 </Link>
               </li>

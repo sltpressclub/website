@@ -1,28 +1,38 @@
 import React from "react";
-import Image from "next/image"; // Import Next.js Image component
+import Image from "next/image";
+import Link from "next/link"; // Import Link for navigation
+import { graphCMSImageLoader } from "../util";
 
-import { graphCMSImageLoader } from "../util"; // Custom loader for GraphCMS images
-
-const Author = ({ author }) => (
-  <div className="text-center mt-20 mb-8 p-12 relative rounded-3xl bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500">
-    {/* Author Image */}
-    <div className="absolute left-1/2 transform -translate-x-1/2 -top-14">
+const Member = ({ member }) => (
+  <div className="text-center mt-20 mb-8 p-12 rounded-3xl bg-black bg-opacity-50 hover:bg-opacity-75 transition duration-500">
+    {/* Member Image */}
+    <div className="mb-6">
       <Image
-        loader={graphCMSImageLoader} // Custom loader for GraphCMS images
-        alt={`Photo of ${author.name}`} // Improved alt text for accessibility
-        width={100}
-        height={100}
-        className="rounded-full object-cover shadow-lg" // Added shadow for better UI
-        src={author.photo.url}
+        loader={graphCMSImageLoader}
+        alt={`Photo of ${member.name}`}
+        width={120}
+        height={120}
+        className="rounded-full object-cover shadow-lg mx-auto" // Centered and shadow for better UI
+        src={member.photo.url}
       />
     </div>
 
-    {/* Author Name */}
-    <h3 className="text-white mt-16 mb-4 text-xl font-bold">{author.name}</h3>
+    {/* Member Name */}
+    <h3 className="text-white text-2xl font-bold mb-2">{member.name}</h3>
 
-    {/* Author Bio */}
-    <p className="text-white text-lg">{author.bio}</p>
+    {/* Member Role */}
+    <p className="text-gray-300 text-lg mb-4">{member.role}</p>
+
+    {/* Member Bio */}
+    <p className="text-white text-lg mb-6">{member.bio}</p>
+
+    {/* Button to Member Page */}
+    <Link href={`/members/${member.slug}`}>
+      <a className="inline-block bg-blue-500 text-white py-2 px-4 rounded-full shadow hover:bg-blue-600 transition duration-300">
+        View Profile
+      </a>
+    </Link>
   </div>
 );
 
-export default Author;
+export default Member;

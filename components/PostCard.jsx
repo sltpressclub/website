@@ -27,20 +27,20 @@ const PostCard = ({ post }) => {
         </Link>
       </h1>
 
-      {/* Post Author and Date */}
+      {/* Post Member and Date */}
       <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
-        {/* Author Details */}
+        {/* Member Details */}
         <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
           <Image
             loader={graphCMSImageLoader}
-            src={post.author.photo.url}
-            alt={`Photo of ${post.author.name}`} // Improved accessibility
+            src={post.member.photo.url}
+            alt={`Photo of ${post.member.name}`} // Improved accessibility
             width={40} // Consistent size
             height={40} // Consistent size
             className="rounded-full object-cover" // Rounded and consistent size
           />
           <p className="inline align-middle text-white ml-2 text-lg">
-            {post.author.name}
+            {post.member.name}
           </p>
         </div>
 
