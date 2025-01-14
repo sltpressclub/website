@@ -282,8 +282,6 @@ export const getMembers = async () => {
   const result = await fetchGraphQL(query);
   return result.members;
 };
-import { gql } from "graphql-request";
-import { fetchGraphQL } from "./graphqlClient"; // Assuming you have a GraphQL client set up
 
 // Fetch member by slug
 export const getMemberBySlug = async (slug) => {
