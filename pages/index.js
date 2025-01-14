@@ -15,6 +15,7 @@ export default function Home({ posts }) {
       <div className="w-full px-4 md:px-10 mb-8 flex-grow">
         <Head>
           <title>SLT Pressclub</title>
+          <meta name="description" content="SLT Pressclub Blog and Updates" />
           <link rel="icon" href="/slt_pressclub_logo.png" />
         </Head>
 
@@ -42,7 +43,12 @@ export default function Home({ posts }) {
 
 // Fetch posts on every request
 export async function getServerSideProps() {
-  const posts = (await getPosts()) || [];
+  let posts = [];
+  try {
+    posts = (await getPosts()) || [];
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
   return {
     props: { posts },
   };
