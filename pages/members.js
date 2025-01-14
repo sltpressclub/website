@@ -1,19 +1,15 @@
 import React from "react";
 import Head from "next/head"; // Import Head for SEO optimization
 import Member from "../components/Member"; // Assuming Member component exists
+import { getMembers } from "../services"; // Import the getMembers function from services folder
 
-// Fetch member data on every request
+// Fetch member data on every request using getServerSideProps
 export async function getServerSideProps() {
   let memberData = [];
 
   try {
-    // Example of fetching member data from an API or CMS
-    const res = await fetch("https://your-api-endpoint.com/members"); // Replace with your API endpoint
-    if (res.ok) {
-      memberData = await res.json(); // Parse the member data
-    } else {
-      console.error("Error fetching member data:", res.statusText);
-    }
+    // Call the getMembers function to fetch data
+    memberData = (await getMembers()) || []; // Assuming getMembers returns the list of members
   } catch (error) {
     console.error("Error fetching member data:", error);
   }
