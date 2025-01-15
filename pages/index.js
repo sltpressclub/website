@@ -1,8 +1,8 @@
 import React from "react";
 import Head from "next/head";
-import { PostCard, Upcoming } from "../components/"; // Removed PostWidget and Categories
+import { PostCard, Upcoming } from "../components/";
 import { getPosts } from "../services";
-import Loader from "../components/Loader"; // Import your Loader component
+import Loader from "../components/Loader";
 
 export default function Home({ posts }) {
   // Display loader if no posts are available or posts data is still empty
@@ -26,9 +26,11 @@ export default function Home({ posts }) {
             <h2 className="text-3xl font-semibold mb-6 text-white">
               Latest Posts
             </h2>
-            {posts.map((post) => (
-              <PostCard post={post.node} key={post.node.id} />
-            ))}
+            {posts?.map((post) =>
+              post?.node ? (
+                <PostCard post={post.node} key={post.node.id} />
+              ) : null
+            )}
           </div>
 
           {/* Sidebar Section */}
