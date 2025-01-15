@@ -8,6 +8,9 @@ const PostDetail = ({ post }) => {
     return <div>Loading...</div>; // Show loading if no post data is available
   }
 
+  // Log the post to check the structure
+  console.log("Post data:", post);
+
   // Safely render content fragments
   const getContentFragment = (index, text, obj, type) => {
     let modifiedText = text;
@@ -75,9 +78,6 @@ const PostDetail = ({ post }) => {
         return modifiedText;
     }
   };
-
-  // Log the post object to check if the data exists as expected
-  console.log(post);
 
   return (
     <div className="bg-black hover:bg-opacity-75 hover:-translate-y-1 duration-500 bg-opacity-50 rounded-3xl lg:p-8 pb-12 mb-8">

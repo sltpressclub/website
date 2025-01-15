@@ -68,29 +68,4 @@ export async function getServerSideProps({ params }) {
   }
 }
 
-// Fetch dynamic paths for SSR (optional, depending on your use case)
-export async function getServerSidePaths() {
-  try {
-    const posts = await getPosts();
-
-    if (!posts || posts.length === 0) {
-      return {
-        paths: [],
-        fallback: true,
-      };
-    }
-
-    return {
-      paths: posts.map(({ slug }) => ({ params: { slug } })),
-      fallback: true,
-    };
-  } catch (error) {
-    console.error("Error in getServerSidePaths:", error);
-    return {
-      paths: [],
-      fallback: true,
-    };
-  }
-}
-
 export default PostDetails;
