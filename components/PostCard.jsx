@@ -12,6 +12,9 @@ const PostCard = ({ post }) => {
 
   const { member, featuredImage, title, slug, createdAt, excerpt } = post;
 
+  // Log post data to the console
+  console.log("Post Data: ", post);
+
   return (
     <div className="bg-black bg-opacity-30 shadow-lg rounded-3xl p-0 lg:p-8 pb-12 mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
       {/* Featured Image */}
@@ -37,7 +40,8 @@ const PostCard = ({ post }) => {
       {/* Post Title */}
       <h1 className="transition duration-500 text-center mb-8 cursor-pointer text-white text-3xl font-semibold">
         <Link href={`/post/${slug}`}>
-          <a className="hover:underline">{title}</a>
+          <a className="hover:underline">{title || "Untitled Post"}</a>{" "}
+          {/* Fallback for title */}
         </Link>
       </h1>
 
@@ -65,23 +69,27 @@ const PostCard = ({ post }) => {
         )}
 
         {/* Post Date */}
-        <div className="font-medium text-white">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 inline mr-2 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-          <span>{moment(createdAt).format("DD MMMM YYYY")}</span>
-        </div>
+        {createdAt ? (
+          <div className="font-medium text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 inline mr-2 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            <span>{moment(createdAt).format("DD MMMM YYYY")}</span>
+          </div>
+        ) : (
+          <div className="font-medium text-white">Date Unknown</div>
+        )}
       </div>
 
       {/* Post Excerpt */}
