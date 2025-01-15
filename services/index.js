@@ -171,6 +171,31 @@ export const getCategories = async () => {
 };
 
 /**
+ * Fetch all members.
+ * @returns {Promise<Array>} - Array of members.
+ */
+export const getMembers = async () => {
+  const query = gql`
+    query GetMembers {
+      members {
+        id
+        name
+        bio
+        role {
+          name
+        }
+        photo {
+          url
+        }
+        slug
+      }
+    }
+  `;
+  const result = await fetchGraphQL(query);
+  return result.members;
+};
+
+/**
  * Submit a new comment.
  * @param {object} commentData - Data of the comment.
  * @returns {Promise<any>} - The result of the submission.
