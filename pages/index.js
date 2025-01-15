@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { PostCard, Upcoming } from "../components/";
+import { PostCard, Upcoming } from "../components";
 import { getPosts } from "../services";
 import Loader from "../components/Loader";
 
@@ -52,11 +52,11 @@ export default function Home({ posts }) {
   );
 }
 
-// Fetch posts on every request
+// Fetch posts on every request (Server-Side Rendering)
 export async function getServerSideProps() {
   let posts = [];
   try {
-    // Fetch posts from GraphQL service
+    // Fetch posts from the GraphQL service
     posts = (await getPosts()) || [];
     console.log("Posts structure: ", posts); // Log the structure of the posts
   } catch (error) {
