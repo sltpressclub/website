@@ -196,6 +196,74 @@ export const getMembers = async () => {
 };
 
 /**
+ * Fetch upcoming events.
+ * @returns {Promise<Array>} - Array of upcoming events.
+ */
+export const getUpcoming = async () => {
+  const query = gql`
+    query GetUpcoming {
+      upcomings(orderBy: date_ASC) {
+        id
+        name
+        slug
+        description
+        date
+        venue
+        requirement
+      }
+    }
+  `;
+  const result = await fetchGraphQL(query);
+  return result.upcomings;
+};
+
+/**
+ * Search for posts, events, and members.
+ * @param {string} searchTerm - The search term.
+ * @returns {Promise<object>} - Search results.
+ */
+export const searchPostsAndUpcoming = async (searchTerm) => {
+  const query = gql`
+    query SearchPostsAndUpcoming($searchTerm: String!) {
+      posts(where: { title_contains: $searchTerm }) {
+        id
+        title
+        slug
+        excerpt
+        member {
+          id
+          name
+          bio
+          photo {
+            url
+          }
+        }
+      }
+      upcomings(where: { name_contains: $searchTerm }) {
+        id
+        name
+        slug
+        description
+      }
+      members(where: { name_contains: $searchTerm }) {
+        id
+        name
+        bio
+        photo {
+          url
+        }
+      }
+    }
+  `;
+  const result = await fetchGraphQL(query, { searchTerm });
+  return {
+    posts: result.posts || [],
+    upcomings: result.upcomings || [],
+    members: result.members || [],
+  };
+};
+
+/**
  * Submit a new comment.
  * @param {object} commentData - Data of the comment.
  * @returns {Promise<any>} - The result of the submission.
