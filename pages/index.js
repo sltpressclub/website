@@ -1,49 +1,34 @@
-import React from "react";
-import Head from "next/head";
-import { PostCard, Upcoming } from "../components";
-import { getPosts } from "../services";
-import Loader from "../components/Loader";
+import Head from "next/head"; // Import for setting meta tags and page title
+import { PostCard, Categories, PostWidget, Upcoming } from "../components/"; // Importing required components
+import { getPosts } from "../services"; // Importing API call for fetching posts
 
 export default function Home({ posts }) {
-  // Log the fetched posts to check if data is being returned correctly
-  console.log("Fetched Posts: ", posts);
-
-  // Display loader if no posts are available or posts data is still empty
-  if (!posts || posts.length === 0) {
-    return <Loader />;
-  }
-
   return (
     <div className="flex flex-col min-h-screen w-full">
+      {/* Content Wrapper */}
       <div className="w-full px-4 md:px-10 mb-8 flex-grow">
+        {/* Page Head Section */}
         <Head>
-          <title>SLT Pressclub</title>
-          <meta name="description" content="SLT Pressclub Blog and Updates" />
-          <link rel="icon" href="/slt_pressclub_logo.png" />
+          <title>SLT Pressclub</title> {/* Page title */}
+          <link rel="icon" href="/slt_pressclub_logo.png" /> {/* Favicon */}
         </Head>
 
+        {/* Main Content Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
-          {/* Main Content Section */}
+          {/* Blog Posts Section */}
           <div className="lg:col-span-8 col-span-1">
-            <h2 className="text-3xl font-semibold mb-6 text-white">
-              Latest Posts
-            </h2>
-
-            {posts?.length > 0 ? (
-              posts.map((post) =>
-                post?.node ? (
-                  <PostCard post={post.node} key={post.node.id} />
-                ) : null
-              )
-            ) : (
-              <p className="text-white">No posts available.</p>
-            )}
+            {/* Display each post */}
+            {posts.map((post) => (
+              <PostCard post={post.node} key={post.node.id} />
+            ))}
           </div>
 
           {/* Sidebar Section */}
           <div className="lg:col-span-4 col-span-1">
             <div className="relative top-8">
-              <Upcoming /> {/* Only Upcoming Events here */}
+              <Upcoming /> {/* Component to display upcoming events or posts */}
+              <PostWidget /> {/* Widget to display related or recent posts */}
+              <Categories /> {/* Component to display post categories */}
             </div>
           </div>
         </div>
@@ -52,19 +37,12 @@ export default function Home({ posts }) {
   );
 }
 
-// Fetch posts on every request (Server-Side Rendering)
-export async function getServerSideProps() {
-  let posts = [];
-  try {
-    // Fetch posts from the GraphQL service
-    posts = (await getPosts()) || [];
-    console.log("Posts structure: ", posts); // Log the structure of the posts
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-  }
+// Fetch posts data at build time
+export async function getStaticProps() {
+  // Fetch posts from the service
+  const posts = (await getPosts()) || []; // Fallback to an empty array if no posts are available
 
-  // If no posts were fetched, the Loader will show until posts are available
   return {
-    props: { posts },
+    props: { posts }, // Pass posts as props to the component
   };
 }
