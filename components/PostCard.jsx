@@ -7,10 +7,14 @@ import { graphCMSImageLoader } from "../util"; // Assuming a custom loader for G
 const PostCard = ({ post }) => {
   // Ensure all required data exists
   if (!post) {
+    console.error("Post is missing or undefined", post);
     return null; // Avoid rendering if post is undefined or null
   }
 
   const { member, featuredImage, title, slug, createdAt, excerpt } = post;
+
+  // Log the post data for debugging
+  console.log("Post Data: ", post);
 
   return (
     <div className="bg-black bg-opacity-30 shadow-lg rounded-3xl p-0 lg:p-8 pb-12 mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
