@@ -2,8 +2,6 @@ import React from "react";
 import { useRouter } from "next/router";
 import {
   PostDetail,
-  Categories,
-  PostWidget,
   Member, // Assuming 'Author' is renamed to 'Member'
   Comments,
   CommentsForm,
@@ -22,30 +20,23 @@ const PostDetails = ({ post }) => {
   // If no post is found, show a 404 page
   if (!post) {
     return (
-      <div className="container mx-auto px-10 mb-8">
-        <h1>404 - Post Not Found</h1>
+      <div className="flex items-center justify-center h-screen text-center">
+        <h1 className="text-4xl font-bold">404 - Post Not Found</h1>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-10 mb-8">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="col-span-1 lg:col-span-8">
-          <PostDetail post={post} />
-          {/* Changed Author to Member here */}
-          <Member member={post.member} />{" "}
-          {/* Assuming 'member' is the correct property */}
-          <CommentsForm slug={post.slug} />
-          <Comments slug={post.slug} />
-        </div>
-        <div className="col-span-1 lg:col-span-4">
-          <div className="relative top-8">
-            <PostWidget />
-            <Categories />
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen w-full bg-gray-900 text-white p-8">
+      {/* Post Detail */}
+      <PostDetail post={post} />
+
+      {/* Member Details */}
+      {post.member && <Member member={post.member} />}
+
+      {/* Comments Section */}
+      <Comments slug={post.slug} />
+      <CommentsForm slug={post.slug} />
     </div>
   );
 };

@@ -23,7 +23,9 @@ export default function Home({ posts }) {
           {/* Main Content Section */}
           <div className="lg:col-span-8 col-span-1">
             {/* Text above the posts */}
-            <h2 className="text-3xl font-semibold mb-6">Latest Posts</h2>
+            <h2 className="text-3xl font-semibold mb-6 text-white">
+              Latest Posts
+            </h2>
             {posts.map((post) => (
               <PostCard post={post.node} key={post.node.id} />
             ))}

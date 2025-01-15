@@ -96,7 +96,7 @@ const PostDetail = ({ post }) => {
         {/* Member and Date */}
         <div className="flex items-center mb-8 w-full">
           <div className="hidden md:flex items-center justify-center lg:mb-0 lg:w-auto mr-8">
-            <Image
+            <img
               alt={post.member?.name || "Unknown"}
               height={30}
               width={30}
