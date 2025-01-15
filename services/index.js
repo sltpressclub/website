@@ -24,7 +24,7 @@ const fetchGraphQL = async (query, variables = {}) => {
 export const getPosts = async () => {
   const query = gql`
     query GetPosts {
-      postsConnection(orderBy: createdAt_DESC, first: 1) {  // Limit to only 1 post
+      postsConnection(orderBy: createdAt_DESC, first: 1) {
         edges {
           node {
             id
@@ -52,7 +52,6 @@ export const getPosts = async () => {
       }
     }
   `;
-
   const result = await fetchGraphQL(query);
   return result.postsConnection.edges.map((edge) => edge.node);
 };
