@@ -26,6 +26,9 @@ const PostDetails = ({ post }) => {
     );
   }
 
+  // Log post details to the console for debugging
+  console.log("Post Details:", post);
+
   return (
     <div className="min-h-screen w-full bg-gray-900 text-white p-8">
       {/* Post Detail */}
