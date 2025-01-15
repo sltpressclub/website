@@ -41,7 +41,8 @@ const PostDetails = ({ post }) => {
   );
 };
 
-export async function getStaticProps({ params }) {
+// Use getServerSideProps instead of getStaticProps for SSR
+export async function getServerSideProps({ params }) {
   try {
     const data = await getPostDetails(params.slug);
 
@@ -57,14 +58,18 @@ export async function getStaticProps({ params }) {
       },
     };
   } catch (error) {
-    console.error(`Error in getStaticProps for slug: ${params.slug}`, error);
+    console.error(
+      `Error in getServerSideProps for slug: ${params.slug}`,
+      error
+    );
     return {
       notFound: true,
     };
   }
 }
 
-export async function getStaticPaths() {
+// Fetch dynamic paths for SSR (optional, depending on your use case)
+export async function getServerSidePaths() {
   try {
     const posts = await getPosts();
 
@@ -80,7 +85,7 @@ export async function getStaticPaths() {
       fallback: true,
     };
   } catch (error) {
-    console.error("Error in getStaticPaths:", error);
+    console.error("Error in getServerSidePaths:", error);
     return {
       paths: [],
       fallback: true,
