@@ -5,6 +5,9 @@ import { getPosts } from "../services";
 import Loader from "../components/Loader";
 
 export default function Home({ posts }) {
+  // Log the fetched posts to check if data is being returned correctly
+  console.log("Fetched Posts: ", posts);
+
   // Display loader if no posts are available or posts data is still empty
   if (!posts || posts.length === 0) {
     return <Loader />;
@@ -22,14 +25,18 @@ export default function Home({ posts }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
           {/* Main Content Section */}
           <div className="lg:col-span-8 col-span-1">
-            {/* Text above the posts */}
             <h2 className="text-3xl font-semibold mb-6 text-white">
               Latest Posts
             </h2>
-            {posts?.map((post) =>
-              post?.node ? (
-                <PostCard post={post.node} key={post.node.id} />
-              ) : null
+
+            {posts?.length > 0 ? (
+              posts.map((post) =>
+                post?.node ? (
+                  <PostCard post={post.node} key={post.node.id} />
+                ) : null
+              )
+            ) : (
+              <p className="text-white">No posts available.</p>
             )}
           </div>
 
@@ -49,7 +56,9 @@ export default function Home({ posts }) {
 export async function getServerSideProps() {
   let posts = [];
   try {
+    // Fetch posts from GraphQL service
     posts = (await getPosts()) || [];
+    console.log("Posts structure: ", posts); // Log the structure of the posts
   } catch (error) {
     console.error("Error fetching posts:", error);
   }

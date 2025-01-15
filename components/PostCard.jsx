@@ -12,9 +12,6 @@ const PostCard = ({ post }) => {
 
   const { member, featuredImage, title, slug, createdAt, excerpt } = post;
 
-  // Log post data to the console
-  console.log("Post Data: ", post);
-
   return (
     <div className="bg-black bg-opacity-30 shadow-lg rounded-3xl p-0 lg:p-8 pb-12 mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
       {/* Featured Image */}
