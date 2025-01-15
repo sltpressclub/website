@@ -24,7 +24,7 @@ const fetchGraphQL = async (query, variables = {}) => {
 export const getPosts = async () => {
   const query = gql`
     query GetPosts {
-      postsConnection(orderBy: createdAt_DESC, first: 1) {
+      postsConnection(orderBy: createdAt_DESC, first: 10) {  // Adjust 'first' for multiple posts
         edges {
           node {
             id
@@ -52,8 +52,15 @@ export const getPosts = async () => {
       }
     }
   `;
-  const result = await fetchGraphQL(query);
-  return result.postsConnection.edges.map((edge) => edge.node);
+
+  try {
+    // Assuming you're using Apollo Client to fetch the posts
+    const response = await client.query({ query });
+    return response.data.postsConnection.edges; // Return the list of posts
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return [];
+  }
 };
 
 /**
