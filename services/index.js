@@ -2,36 +2,25 @@ import { request, gql } from "graphql-request";
 
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
-/**
- * Utility function to handle GraphQL requests with error handling.
- * @param {string} query - The GraphQL query string.
- * @param {object} variables - Variables for the query.
- * @returns {Promise<any>} - The result of the GraphQL request.
- */
-const fetchGraphQL = async (query, variables = {}) => {
-  try {
-    return await request(graphqlAPI, query, variables);
-  } catch (error) {
-    console.error("GraphQL Request Error:", error);
-    throw new Error("Failed to fetch data.");
-  }
-};
-
-/**
- * Fetch all posts with basic details.
- * @returns {Promise<Array>} - Array of posts.
- */
 export const getPosts = async () => {
   const query = gql`
-    query GetPosts {
-      postsConnection(orderBy: createdAt_DESC, first: 10) {  // Adjust 'first' for multiple posts
+    query MyQuery {
+      postsConnection(orderBy: createdAt_DESC) {
         edges {
+          cursor
           node {
-            id
-            title
-            slug
-            excerpt
+            member {
+              bio
+              name
+              id
+              photo {
+                url
+              }
+            }
             createdAt
+            slug
+            title
+            excerpt
             featuredImage {
               url
             }
@@ -39,35 +28,16 @@ export const getPosts = async () => {
               name
               slug
             }
-            member {
-              id
-              name
-              bio
-              photo {
-                url
-              }
-            }
           }
         }
       }
     }
   `;
+  const result = await request(graphqlAPI, query);
 
-  try {
-    // Assuming you're using Apollo Client to fetch the posts
-    const response = await client.query({ query });
-    return response.data.postsConnection.edges; // Return the list of posts
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    return [];
-  }
+  return result.postsConnection.edges;
 };
 
-/**
- * Fetch details of a specific post by slug.
- * @param {string} slug - The slug of the post.
- * @returns {Promise<object>} - Post details.
- */
 export const getPostDetails = async (slug) => {
   const query = gql`
     query GetPostDetails($slug: String!) {
@@ -108,10 +78,6 @@ export const getPostDetails = async (slug) => {
   }
 };
 
-/**
- * Fetch the most recent posts.
- * @returns {Promise<Array>} - Array of recent posts.
- */
 export const getRecentPosts = async () => {
   const query = gql`
     query GetRecentPosts {
@@ -130,11 +96,6 @@ export const getRecentPosts = async () => {
   return result.posts;
 };
 
-/**
- * Fetch posts by category slug.
- * @param {string} slug - The slug of the category.
- * @returns {Promise<Array>} - Array of posts in the category.
- */
 export const getCategoryPost = async (slug) => {
   const query = gql`
     query GetCategoryPost($slug: String!) {
@@ -166,10 +127,6 @@ export const getCategoryPost = async (slug) => {
   return result.postsConnection.edges.map((edge) => edge.node);
 };
 
-/**
- * Fetch all categories.
- * @returns {Promise<Array>} - Array of categories.
- */
 export const getCategories = async () => {
   const query = gql`
     query GetCategories {
@@ -184,10 +141,6 @@ export const getCategories = async () => {
   return result.categories;
 };
 
-/**
- * Fetch all members.
- * @returns {Promise<Array>} - Array of members.
- */
 export const getMembers = async () => {
   const query = gql`
     query GetMembers {
@@ -209,10 +162,6 @@ export const getMembers = async () => {
   return result.members;
 };
 
-/**
- * Fetch upcoming events.
- * @returns {Promise<Array>} - Array of upcoming events.
- */
 export const getUpcoming = async () => {
   const query = gql`
     query GetUpcoming {
@@ -231,11 +180,6 @@ export const getUpcoming = async () => {
   return result.upcomings;
 };
 
-/**
- * Search for posts, events, and members.
- * @param {string} searchTerm - The search term.
- * @returns {Promise<object>} - Search results.
- */
 export const searchPostsAndUpcoming = async (searchTerm) => {
   const query = gql`
     query SearchPostsAndUpcoming($searchTerm: String!) {
@@ -277,11 +221,6 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
   };
 };
 
-/**
- * Submit a new comment.
- * @param {object} commentData - Data of the comment.
- * @returns {Promise<any>} - The result of the submission.
- */
 export const submitComment = async (commentData) => {
   try {
     const response = await fetch("/api/comments", {
@@ -303,11 +242,6 @@ export const submitComment = async (commentData) => {
   }
 };
 
-/**
- * Fetch comments for a specific post by slug.
- * @param {string} slug - The slug of the post.
- * @returns {Promise<Array>} - Array of comments.
- */
 export const getComments = async (slug) => {
   const query = gql`
     query GetComments($slug: String!) {
@@ -323,11 +257,6 @@ export const getComments = async (slug) => {
   return result.comments;
 };
 
-/**
- * Fetch member by slug.
- * @param {string} slug - The slug of the member.
- * @returns {Promise<object>} - Member details.
- */
 export const getMemberBySlug = async (slug) => {
   const query = gql`
     query GetMemberBySlug($slug: String!) {
@@ -349,11 +278,6 @@ export const getMemberBySlug = async (slug) => {
   return result.member;
 };
 
-/**
- * Fetch posts by a specific member ID.
- * @param {string} memberId - The ID of the member.
- * @returns {Promise<Array>} - Array of posts by the member.
- */
 export const getPostsByMember = async (memberId) => {
   const query = gql`
     query GetPostsByMember($memberId: ID!) {
