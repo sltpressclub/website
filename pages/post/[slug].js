@@ -41,31 +41,51 @@ const PostDetails = ({ post }) => {
   );
 };
 
-export default PostDetails;
-
-// Fetch data at build time
 export async function getStaticProps({ params }) {
-  const data = await getPostDetails(params.slug);
+  try {
+    const data = await getPostDetails(params.slug);
 
-  // If no post is found, return notFound to trigger 404
-  if (!data) {
+    if (!data) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: {
+        post: data,
+      },
+    };
+  } catch (error) {
+    console.error(`Error in getStaticProps for slug: ${params.slug}`, error);
     return {
       notFound: true,
     };
   }
-
-  return {
-    props: {
-      post: data,
-    },
-  };
 }
 
-// Specify dynamic routes to pre-render pages based on data
 export async function getStaticPaths() {
-  const posts = await getPosts();
-  return {
-    paths: posts.map(({ node: { slug } }) => ({ params: { slug } })),
-    fallback: true, // Fallback to loading state if the page isn't generated
-  };
+  try {
+    const posts = await getPosts();
+
+    if (!posts || posts.length === 0) {
+      return {
+        paths: [],
+        fallback: true,
+      };
+    }
+
+    return {
+      paths: posts.map(({ slug }) => ({ params: { slug } })),
+      fallback: true,
+    };
+  } catch (error) {
+    console.error("Error in getStaticPaths:", error);
+    return {
+      paths: [],
+      fallback: true,
+    };
+  }
 }
+
+export default PostDetails;
