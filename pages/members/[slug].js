@@ -1,9 +1,18 @@
 import React from "react";
 import Head from "next/head";
-import { getMemberPosts } from "../services"; // Import the service for fetching posts by member
-import { PostCard } from "../components"; // Assuming you have a PostCard component
+import { getMemberBySlug, getPostsByMember } from "../../services";
+import { PostCard } from "../../components";
 
 const MemberProfile = ({ member, posts }) => {
+  if (!member) {
+    return (
+      <div className="container mx-auto text-center py-20">
+        <h1 className="text-4xl font-bold">Member Not Found</h1>
+        <p className="mt-4 text-lg">The requested profile does not exist.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto p-8">
       <Head>
@@ -22,45 +31,50 @@ const MemberProfile = ({ member, posts }) => {
       {/* Member Info */}
       <div className="text-center mb-12">
         <h1 className="text-3xl font-semibold">{member.name}</h1>
-        <p className="text-lg text-gray-600">{member.bio}</p>
-        <h3 className="text-xl font-bold mt-8">Posts by {member.name}</h3>
+        <p className="text-lg text-gray-600 mt-2">{member.bio}</p>
+        {member.role?.name && (
+          <p className="text-sm text-gray-500">{member.role.name}</p>
+        )}
       </div>
 
       {/* Display Posts */}
-      {posts.length === 0 ? (
-        <p>No posts found by this member.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
-      )}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-6">Posts by {member.name}</h2>
+        {posts.length === 0 ? (
+          <p>No posts found for this member.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {posts.map((post) => (
+              <PostCard key={post.slug} post={post} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-// Fetch member and posts on every request based on the slug
+export default MemberProfile;
+
 export async function getServerSideProps({ params }) {
   const { slug } = params;
 
-  // Fetch member by slug
-  const member = await getMemberBySlug(slug); // Fetch member data by slug
-  if (!member) {
+  try {
+    const member = await getMemberBySlug(slug);
+    if (!member) {
+      return { notFound: true }; // Trigger a 404 if no member is found
+    }
+
+    const posts = await getPostsByMember(member.id);
+
     return {
-      notFound: true, // Show 404 if no member is found
+      props: {
+        member,
+        posts,
+      },
     };
+  } catch (error) {
+    console.error("Error fetching member or posts:", error);
+    return { notFound: true };
   }
-
-  // Fetch posts by the member's id or slug
-  const posts = await getMemberPosts(slug); // Fetch posts by member
-
-  return {
-    props: {
-      member,
-      posts,
-    },
-  };
 }
-
-export default MemberProfile;

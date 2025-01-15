@@ -1,37 +1,37 @@
 import { request, gql } from "graphql-request";
+
 const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
-// Utility function to handle GraphQL requests with error handling
-const fetchGraphQL = async (query, variables) => {
+/**
+ * Utility function to handle GraphQL requests with error handling.
+ * @param {string} query - The GraphQL query string.
+ * @param {object} variables - Variables for the query.
+ * @returns {Promise<any>} - The result of the GraphQL request.
+ */
+const fetchGraphQL = async (query, variables = {}) => {
   try {
-    const result = await request(graphqlAPI, query, variables);
-    return result;
+    return await request(graphqlAPI, query, variables);
   } catch (error) {
     console.error("GraphQL Request Error:", error);
-    throw new Error("Something went wrong while fetching data from GraphQL.");
+    throw new Error("Failed to fetch data.");
   }
 };
 
-// Get Latest Post
+/**
+ * Fetch all posts with basic details.
+ * @returns {Promise<Array>} - Array of posts.
+ */
 export const getPosts = async () => {
   const query = gql`
     query GetPosts {
-      postsConnection(orderBy: createdAt_DESC, first: 1) {
+      postsConnection(orderBy: createdAt_DESC, first: 10) {
         edges {
-          cursor
           node {
-            member {
-              bio
-              name
-              id
-              photo {
-                url
-              }
-            }
-            createdAt
-            slug
+            id
             title
+            slug
             excerpt
+            createdAt
             featuredImage {
               url
             }
@@ -39,35 +39,39 @@ export const getPosts = async () => {
               name
               slug
             }
+            member {
+              id
+              name
+              bio
+              photo {
+                url
+              }
+            }
           }
         }
       }
     }
   `;
-
   const result = await fetchGraphQL(query);
-  return result.postsConnection.edges;
+  return result.postsConnection.edges.map((edge) => edge.node);
 };
 
-// Get Post Details
+/**
+ * Fetch details of a specific post by slug.
+ * @param {string} slug - The slug of the post.
+ * @returns {Promise<object>} - Post details.
+ */
 export const getPostDetails = async (slug) => {
   const query = gql`
     query GetPostDetails($slug: String!) {
       post(where: { slug: $slug }) {
+        id
         title
         excerpt
+        createdAt
         featuredImage {
           url
         }
-        member {
-          name
-          bio
-          photo {
-            url
-          }
-        }
-        createdAt
-        slug
         content {
           raw
         }
@@ -75,49 +79,102 @@ export const getPostDetails = async (slug) => {
           name
           slug
         }
+        member {
+          id
+          name
+          bio
+          photo {
+            url
+          }
+        }
       }
     }
   `;
-
   const result = await fetchGraphQL(query, { slug });
   return result.post;
 };
 
-// Get Recent Posts
+/**
+ * Fetch the most recent posts.
+ * @returns {Promise<Array>} - Array of recent posts.
+ */
 export const getRecentPosts = async () => {
   const query = gql`
     query GetRecentPosts {
-      posts(orderBy: createdAt_ASC, last: 3) {
+      posts(orderBy: createdAt_DESC, first: 3) {
+        id
         title
+        slug
         featuredImage {
           url
         }
         createdAt
-        slug
       }
     }
   `;
-
   const result = await fetchGraphQL(query);
   return result.posts;
 };
 
-// Get Categories
+/**
+ * Fetch posts by category slug.
+ * @param {string} slug - The slug of the category.
+ * @returns {Promise<Array>} - Array of posts in the category.
+ */
+export const getCategoryPost = async (slug) => {
+  const query = gql`
+    query GetCategoryPost($slug: String!) {
+      postsConnection(where: { category_some: { slug: $slug } }) {
+        edges {
+          node {
+            id
+            title
+            slug
+            excerpt
+            createdAt
+            featuredImage {
+              url
+            }
+            member {
+              id
+              name
+              bio
+              photo {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await fetchGraphQL(query, { slug });
+  return result.postsConnection.edges.map((edge) => edge.node);
+};
+
+/**
+ * Fetch all categories.
+ * @returns {Promise<Array>} - Array of categories.
+ */
 export const getCategories = async () => {
   const query = gql`
-    query GetCategories($first: Int) {
-      categories(first: $first) {
+    query GetCategories {
+      categories {
+        id
         name
         slug
       }
     }
   `;
-
-  const result = await fetchGraphQL(query, { first: 20 });
+  const result = await fetchGraphQL(query);
   return result.categories;
 };
 
-// Submit Comment
+/**
+ * Submit a new comment.
+ * @param {object} commentData - Data of the comment.
+ * @returns {Promise<any>} - The result of the submission.
+ */
 export const submitComment = async (commentData) => {
   try {
     const response = await fetch("/api/comments", {
@@ -129,162 +186,41 @@ export const submitComment = async (commentData) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to submit comment.");
+      throw new Error("Failed to submit comment.");
     }
 
-    const result = await response.json();
-    return result;
+    return await response.json();
   } catch (error) {
     console.error("Error submitting comment:", error);
     throw new Error("Failed to submit comment.");
   }
 };
 
-// Get Comments
+/**
+ * Fetch comments for a specific post by slug.
+ * @param {string} slug - The slug of the post.
+ * @returns {Promise<Array>} - Array of comments.
+ */
 export const getComments = async (slug) => {
   const query = gql`
     query GetComments($slug: String!) {
       comments(where: { post: { slug: $slug } }, orderBy: createdAt_DESC) {
+        id
         name
-        createdAt
         comment
+        createdAt
       }
     }
   `;
-
   const result = await fetchGraphQL(query, { slug });
   return result.comments;
 };
 
-// Get Upcoming Events
-export const getUpcoming = async () => {
-  const query = gql`
-    query GetUpcoming {
-      upcomings(orderBy: date_ASC) {
-        id
-        name
-        slug
-        createdAt
-        date
-        description
-        venue
-        requirement
-      }
-    }
-  `;
-
-  const result = await fetchGraphQL(query);
-  return result.upcomings;
-};
-
-// Search Posts and Upcoming Events
-export const searchPostsAndUpcoming = async (searchTerm) => {
-  const query = gql`
-    query SearchPostsAndUpcoming($searchTerm: String!) {
-      posts(where: { title_contains: $searchTerm }) {
-        id
-        title
-        slug
-        excerpt
-        member {
-          id
-          name
-          bio
-          photo {
-            url
-          }
-        }
-      }
-      upcomings(where: { name_contains: $searchTerm }) {
-        id
-        name
-        slug
-        description
-      }
-      members(where: { name_contains: $searchTerm }) {
-        id
-        name
-        bio
-        photo {
-          url
-        }
-      }
-    }
-  `;
-
-  const result = await fetchGraphQL(query, { searchTerm });
-  if (!result) {
-    throw new Error("No results found.");
-  }
-
-  return {
-    posts: result.posts,
-    upcomings: result.upcomings,
-    members: result.members,
-  };
-};
-
-// Get Category Posts
-export const getCategoryPost = async (slug) => {
-  const query = gql`
-    query GetCategoryPost($slug: String!) {
-      postsConnection(where: { category_some: { slug: $slug } }) {
-        edges {
-          node {
-            member {
-              bio
-              name
-              id
-              photo {
-                url
-              }
-            }
-            createdAt
-            slug
-            title
-            excerpt
-            featuredImage {
-              url
-            }
-            category {
-              name
-              slug
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  const result = await fetchGraphQL(query, { slug });
-  return result.postsConnection.edges.map((edge) => edge.node);
-};
-
-// Get Members
-export const getMembers = async () => {
-  const query = gql`
-    query GetMembers {
-      members {
-        id
-        name
-        bio
-        role {
-          name
-        }
-        photo {
-          url
-        }
-        slug
-      }
-    }
-  `;
-
-  const result = await fetchGraphQL(query);
-  return result.members;
-};
-
-// Fetch member by slug
+/**
+ * Fetch member by slug.
+ * @param {string} slug - The slug of the member.
+ * @returns {Promise<object>} - Member details.
+ */
 export const getMemberBySlug = async (slug) => {
   const query = gql`
     query GetMemberBySlug($slug: String!) {
@@ -302,26 +238,30 @@ export const getMemberBySlug = async (slug) => {
       }
     }
   `;
-
-  const variables = { slug };
-  const result = await fetchGraphQL(query, variables);
+  const result = await fetchGraphQL(query, { slug });
   return result.member;
 };
 
-// Fetch posts by a specific member
+/**
+ * Fetch posts by a specific member ID.
+ * @param {string} memberId - The ID of the member.
+ * @returns {Promise<Array>} - Array of posts by the member.
+ */
 export const getPostsByMember = async (memberId) => {
   const query = gql`
     query GetPostsByMember($memberId: ID!) {
-      posts(where: { author: { id: $memberId } }) {
+      posts(where: { member: { id: $memberId } }, orderBy: createdAt_DESC) {
         id
         title
         slug
-        content
+        excerpt
+        createdAt
+        featuredImage {
+          url
+        }
       }
     }
   `;
-
-  const variables = { memberId };
-  const result = await fetchGraphQL(query, variables);
-  return result.posts;
+  const result = await fetchGraphQL(query, { memberId });
+  return result.posts || [];
 };
