@@ -37,8 +37,8 @@ export default function Home({ posts }) {
   );
 }
 
-// Fetch posts data at build time
-export async function getStaticProps() {
+// Fetch posts data at request time using getServerSideProps
+export async function getServerSideProps() {
   // Fetch posts from the service
   const posts = (await getPosts()) || []; // Fallback to an empty array if no posts are available
 
