@@ -89,7 +89,7 @@ export const getRecentPosts = async () => {
       }
     }
   `;
-  const result = await fetchGraphQL(query);
+  const result = await request(graphqlAPI, query);
   return result.posts;
 };
 
@@ -120,7 +120,7 @@ export const getCategoryPost = async (slug) => {
       }
     }
   `;
-  const result = await fetchGraphQL(query, { slug });
+  const result = await request(query, { slug });
   return result.postsConnection.edges.map((edge) => edge.node);
 };
 
@@ -134,7 +134,7 @@ export const getCategories = async () => {
       }
     }
   `;
-  const result = await fetchGraphQL(query);
+  const result = await request(graphqlAPI, query);
   return result.categories;
 };
 

@@ -69,7 +69,7 @@ export async function getServerSideProps({ params }) {
       return { notFound: true }; // Trigger a 404 if no member is found
     }
 
-    // Fetch the posts for the member
+    // Fetch the posts for the member using the slug
     const posts = await getPostsByMember(slug);
     console.log("Fetched posts for member:", posts);
 
