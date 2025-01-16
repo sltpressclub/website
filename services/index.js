@@ -50,6 +50,7 @@ export const getPostDetails = async (slug) => {
         member {
           name
           bio
+          slug
           role {
             name
           }
