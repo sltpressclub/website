@@ -80,10 +80,10 @@ const PostDetail = ({ post }) => {
   };
 
   return (
-    <div className="bg-black hover:bg-opacity-75 hover:-translate-y-1 duration-500 bg-opacity-50 rounded-3xl lg:p-8 pb-12 mb-8">
+    <div className="">
       {/* Post Featured Image */}
       <div className="relative overflow-hidden shadow-md mb-6">
-        <Image
+        <img
           src={post.featuredImage?.url || "/default-image.jpg"} // Fallback image
           alt="Post featured image"
           className="object-top h-full w-full object-cover shadow-lg rounded-t-lg lg:rounded-lg"
