@@ -47,12 +47,12 @@ export const getPostDetails = async (slug) => {
         featuredImage {
           url
         }
-        member {
+        members {
+        id
+        name
+        bio
+        role {
           name
-          bio
-          photo {
-            url
-          }
         }
         createdAt
         slug
