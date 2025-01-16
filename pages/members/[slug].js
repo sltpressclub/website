@@ -3,7 +3,8 @@ import Head from "next/head";
 import { getPostsByMember } from "../../services";
 import { PostCard } from "../../components";
 
-const MemberProfile = ({ posts }) => {
+const SlugPage = ({ posts }) => {
+  // Check if posts are empty or undefined
   if (!posts || posts.length === 0) {
     return (
       <div className="container mx-auto text-center py-20">
@@ -18,16 +19,13 @@ const MemberProfile = ({ posts }) => {
   return (
     <div className="container mx-auto p-8">
       <Head>
-        <title>Member Posts | SLT Pressclub</title>
+        <title>Posts by Member</title>
         <meta
           name="description"
-          content="Browse posts by member on SLT Pressclub"
+          content="Posts by a specific member on SLT Pressclub"
         />
-        <meta property="og:title" content="Member Posts" />
-        <meta property="og:description" content="Read posts on SLT Pressclub" />
       </Head>
 
-      {/* Display Posts */}
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-6">Posts</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -40,26 +38,33 @@ const MemberProfile = ({ posts }) => {
   );
 };
 
-export default MemberProfile;
+export default SlugPage;
 
 export async function getServerSideProps({ params }) {
   const { slug } = params;
 
   try {
-    // Fetch posts by the member using their slug
+    console.log("Fetching posts for member with slug:", slug); // Log slug
     const posts = await getPostsByMember(slug);
 
     if (!posts || posts.length === 0) {
-      console.warn("No posts found for slug:", slug);
+      console.warn("No posts found for member with slug:", slug); // Log if no posts
+      return {
+        props: {
+          posts: [], // Return empty posts if none found
+        },
+      };
     }
+
+    console.log("Fetched posts for member:", posts); // Log fetched posts
 
     return {
       props: {
-        posts,
+        posts, // Pass posts to component
       },
     };
   } catch (error) {
-    console.error("Error fetching posts by member:", error.message);
-    return { notFound: true };
+    console.error("Error fetching posts for slug:", slug, error); // Log error
+    return { notFound: true }; // Trigger 404 if error occurs
   }
 }
