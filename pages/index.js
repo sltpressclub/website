@@ -27,8 +27,6 @@ export default function Home({ posts }) {
           <div className="lg:col-span-4 col-span-1">
             <div className="relative top-8">
               <Upcoming /> {/* Component to display upcoming events or posts */}
-              <PostWidget /> {/* Widget to display related or recent posts */}
-              <Categories /> {/* Component to display post categories */}
             </div>
           </div>
         </div>

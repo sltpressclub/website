@@ -160,32 +160,54 @@ export const getMembers = async () => {
 };
 
 export const getUpcoming = async () => {
+  // Updated GraphQL query to fetch events in descending order of the date
   const query = gql`
-    query GetUpcoming {
+    query MyQuery {
       upcomings(orderBy: date_ASC) {
         id
         name
         slug
-        description
+        createdAt
         date
+        description
         venue
         requirement
       }
     }
   `;
-  const result = await fetchGraphQL(query);
+
+  // Execute the query and fetch results
+  const result = await request(graphqlAPI, query);
+
+  // Return the list of upcoming events
   return result.upcomings;
 };
 
 export const searchPostsAndUpcoming = async (searchTerm) => {
-  const query = gql`
-    query SearchPostsAndUpcoming($searchTerm: String!) {
-      posts(where: { title_contains: $searchTerm }) {
-        id
-        title
-        slug
-        excerpt
-        member {
+  try {
+    const query = gql`
+      query SearchPostsAndUpcoming($searchTerm: String!) {
+        posts(where: { title_contains: $searchTerm }) {
+          id
+          title
+          slug
+          excerpt
+          member {
+            id
+            name
+            bio
+            photo {
+              url
+            }
+          }
+        }
+        upcomings(where: { name_contains: $searchTerm }) {
+          id
+          name
+          slug
+          description
+        }
+        members(where: { name_contains: $searchTerm }) {
           id
           name
           bio
@@ -194,30 +216,26 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
           }
         }
       }
-      upcomings(where: { name_contains: $searchTerm }) {
-        id
-        name
-        slug
-        description
-      }
-      members(where: { name_contains: $searchTerm }) {
-        id
-        name
-        bio
-        photo {
-          url
-        }
-      }
-    }
-  `;
-  const result = await fetchGraphQL(query, { searchTerm });
-  return {
-    posts: result.posts || [],
-    upcomings: result.upcomings || [],
-    members: result.members || [],
-  };
-};
+    `;
 
+    // Fetch the data from the GraphQL API
+    const result = await request(graphqlAPI, query, { searchTerm });
+
+    if (!result) {
+      throw new Error("No results found.");
+    }
+
+    return {
+      posts: result.posts,
+      upcomings: result.upcomings,
+      members: result.members,
+    };
+  } catch (error) {
+    // Log the error and display a message to the user
+    console.error("Error fetching search results:", error);
+    throw new Error("Failed to fetch search results. Please try again.");
+  }
+};
 export const submitComment = async (commentData) => {
   try {
     const response = await fetch("/api/comments", {

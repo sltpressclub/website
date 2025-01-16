@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   PostDetail,
-  Member, // Assuming 'Author' is renamed to 'Member'
+  Member,
   Comments,
   CommentsForm,
+  PostWidget,
   Loader,
 } from "../../components";
-import { getPosts, getPostDetails, getComments } from "../../services";
+import { getPostDetails, getComments } from "../../services";
 
 const PostDetails = ({ post }) => {
   const router = useRouter();
@@ -52,6 +53,7 @@ const PostDetails = ({ post }) => {
       {/* Comments Section */}
       <Comments slug={post.slug} />
       <CommentsForm slug={post.slug} />
+      <PostWidget />
     </div>
   );
 };
