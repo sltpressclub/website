@@ -138,27 +138,6 @@ export const getCategories = async () => {
   return result.categories;
 };
 
-export const getMembers = async () => {
-  const query = gql`
-    query GetMembers {
-      members {
-        id
-        name
-        bio
-        role {
-          name
-        }
-        photo {
-          url
-        }
-        slug
-      }
-    }
-  `;
-  const result = await fetchGraphQL(query);
-  return result.members;
-};
-
 export const getUpcoming = async () => {
   // Updated GraphQL query to fetch events in descending order of the date
   const query = gql`
@@ -273,6 +252,27 @@ export const getComments = async (slug) => {
   return result.comments;
 };
 
+export const getMembers = async () => {
+  const query = gql`
+    query GetMembers {
+      members {
+        id
+        name
+        bio
+        role {
+          name
+        }
+        photo {
+          url
+        }
+        slug
+      }
+    }
+  `;
+  const result = await request(query);
+  return result.members;
+};
+
 export const getMemberBySlug = async (slug) => {
   const query = gql`
     query GetMemberBySlug($slug: String!) {
@@ -290,7 +290,7 @@ export const getMemberBySlug = async (slug) => {
       }
     }
   `;
-  const result = await fetchGraphQL(query, { slug });
+  const result = await request(query, { slug });
   return result.member;
 };
 
@@ -309,6 +309,6 @@ export const getPostsByMember = async (memberId) => {
       }
     }
   `;
-  const result = await fetchGraphQL(query, { memberId });
+  const result = await request(query, { memberId });
   return result.posts || [];
 };
