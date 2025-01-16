@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { searchPostsAndUpcoming } from "../services"; // Import the service function to search posts, upcomings, and authors
-import { FaSearch } from "react-icons/fa"; // Import the magnifying glass icon for the search button
-import Image from "next/image"; // Import Image component for optimized image handling
+import { searchPostsAndUpcoming } from "../services"; // Service function to fetch search results
+import { FaSearch } from "react-icons/fa"; // Magnifying glass icon
+import Image from "next/image"; // Optimized image component
 
 const SearchBar = () => {
-  // State for handling search input, results, loading, and modal visibility
-  const [searchTerm, setSearchTerm] = useState(""); // Search term entered by the user
-  const [posts, setPosts] = useState([]); // Store search results for posts
-  const [upcomings, setUpcomings] = useState([]); // Store search results for upcoming events
-  const [authors, setAuthors] = useState([]); // Store search results for authors
-  const [loading, setLoading] = useState(false); // Handle loading state during fetch
-  const [error, setError] = useState(null); // Handle errors that may occur during fetch
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false); // Control modal visibility when search results are ready
-  const [selectedEvent, setSelectedEvent] = useState(null); // Store the selected event for detailed view
+  const [searchTerm, setSearchTerm] = useState(""); // Search input
+  const [posts, setPosts] = useState([]); // Posts search results
+  const [upcomings, setUpcomings] = useState([]); // Upcoming events search results
+  const [members, setMembers] = useState([]); // Members search results
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error state
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false); // Modal visibility
+  const [selectedEvent, setSelectedEvent] = useState(null); // Selected event for detailed view
 
-  // Format the event date to a more readable format
+  // Format date for display
   const formatDateTime = (date) => {
     const options = {
       weekday: "long",
@@ -29,55 +28,44 @@ const SearchBar = () => {
     return new Date(date).toLocaleDateString("en-US", options);
   };
 
-  // Handle search logic when the form is submitted
+  // Handle search submission
   const handleSearch = async (e) => {
-    e.preventDefault(); // Prevent page reload on form submission
-    setLoading(true); // Show loading state
-    setError(null); // Reset error state before fetching
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
     try {
-      // Call the service function to fetch posts, upcomings, and authors based on the search term
       const data = await searchPostsAndUpcoming(searchTerm);
-      setPosts(data.posts); // Set posts search results
-      setUpcomings(data.upcomings); // Set upcomings search results
-      setAuthors(data.authors); // Set authors search results
-      setIsSearchModalOpen(true); // Open the search modal once the search results are ready
+      setPosts(data.posts);
+      setUpcomings(data.upcomings);
+      setMembers(data.members);
+      setIsSearchModalOpen(true);
     } catch (error) {
-      // Use 'error' here
-      setError("Failed to fetch search results. Please try again."); // Set error message if fetching fails
+      setError("Failed to fetch search results. Please try again.");
     } finally {
-      setLoading(false); // Hide loading state after fetch completion
+      setLoading(false);
     }
   };
 
-  // Handle opening the modal for a specific upcoming event
+  // Open event details modal
   const openEventModal = (event) => {
-    setSelectedEvent(event); // Set the selected event for detailed view
+    setSelectedEvent(event);
   };
 
-  // Handle closing the search results modal
-  const closeSearchModal = () => {
-    setIsSearchModalOpen(false); // Set modal visibility to false
-  };
-
-  // Handle closing the upcoming event details modal
-  const closeEventModal = () => {
-    setSelectedEvent(null); // Reset selected event
-  };
+  // Close modals
+  const closeSearchModal = () => setIsSearchModalOpen(false);
+  const closeEventModal = () => setSelectedEvent(null);
 
   return (
     <div className="w-full max-w-sm mx-auto">
       <form onSubmit={handleSearch} className="flex items-center space-x-2">
-        {/* Search input field */}
         <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update search term state as user types
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full p-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition duration-300 bg-transparent text-white"
         />
-
-        {/* Magnifying glass icon for the search button */}
         <button
           type="submit"
           className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
@@ -89,26 +77,17 @@ const SearchBar = () => {
       {/* Search Results Modal */}
       {isSearchModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-md flex justify-center items-center z-50">
-          <div
-            className="bg-black bg-opacity-30 hover:bg-opacity-50 transition duration-500 p-6 rounded-3xl w-3/4 max-w-2xl max-h-[80vh] overflow-y-auto"
-            style={{
-              paddingRight: "15px", // Adjust padding for scrollbar inside modal
-              scrollbarWidth: "thin", // Firefox scrollbar style
-              scrollbarColor: "#4a90e2 rgba(255, 255, 255, 0.1)", // Firefox scrollbar color
-            }}
-          >
+          <div className="bg-black bg-opacity-30 p-6 rounded-3xl w-3/4 max-w-2xl max-h-[80vh] overflow-y-auto">
             <h2 className="font-semibold text-xl text-white mb-4">
               Search Results
             </h2>
 
-            {/* Display loading message if search is in progress */}
             {loading && <p className="text-white text-center">Loading...</p>}
-            {/* Display error message if fetching fails */}
             {error && <p className="text-red-500 text-center">{error}</p>}
 
-            {/* Render posts search results */}
+            {/* Posts Results */}
             {posts.length > 0 && (
-              <div className="mt-4 p-4 rounded-2xl bg-black bg-opacity-30 hover:bg-opacity-50 transition duration-500">
+              <div className="mt-4">
                 <h3 className="font-semibold text-lg text-white mb-4">Posts</h3>
                 <ul className="space-y-2">
                   {posts.map((post) => (
@@ -117,7 +96,7 @@ const SearchBar = () => {
                       className="p-2 bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl"
                     >
                       <a
-                        href={`/post/${post.slug}`} // Link to individual post page
+                        href={`/post/${post.slug}`}
                         className="text-blue-300 hover:underline"
                       >
                         {post.title}
@@ -129,10 +108,10 @@ const SearchBar = () => {
               </div>
             )}
 
-            {/* Render upcomings search results */}
+            {/* Upcoming Events Results */}
             {upcomings.length > 0 && (
               <div className="mt-4">
-                <h3 className="font-semibold text-lg mb-4 text-white">
+                <h3 className="font-semibold text-lg text-white mb-4">
                   Upcoming Events
                 </h3>
                 <ul className="space-y-4">
@@ -140,7 +119,7 @@ const SearchBar = () => {
                     <li
                       key={upcoming.id}
                       className="p-2 bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl cursor-pointer"
-                      onClick={() => openEventModal(upcoming)} // Open modal for event details
+                      onClick={() => openEventModal(upcoming)}
                     >
                       <div className="text-blue-300">{upcoming.name}</div>
                       <p className="text-white text-sm">
@@ -152,31 +131,31 @@ const SearchBar = () => {
               </div>
             )}
 
-            {/* Render authors search results */}
-            {authors.length > 0 && (
+            {/* Members Results */}
+            {members.length > 0 && (
               <div className="mt-4">
                 <h3 className="font-semibold text-lg text-white mb-4">
-                  Authors
+                  Members
                 </h3>
                 <ul className="space-y-2">
-                  {authors.map((author) => (
+                  {members.map((member) => (
                     <li
-                      key={author.id}
+                      key={member.id}
                       className="bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl p-3"
                     >
                       <div className="flex items-center space-x-4">
                         <Image
-                          src={author.photo.url} // Author's photo
-                          alt={author.name} // Author's name as alt text
-                          width={40} // Set width for image
-                          height={40} // Set height for image
+                          src={member.photo.url}
+                          alt={member.name}
+                          width={40}
+                          height={40}
                           className="rounded-full"
                         />
                         <div>
                           <h4 className="text-blue-300 font-medium">
-                            {author.name}
+                            {member.name}
                           </h4>
-                          <p className="text-white text-sm">{author.bio}</p>
+                          <p className="text-white text-sm">{member.bio}</p>
                         </div>
                       </div>
                     </li>
@@ -185,20 +164,18 @@ const SearchBar = () => {
               </div>
             )}
 
-            {/* Handle no results case */}
             {posts.length === 0 &&
               upcomings.length === 0 &&
-              authors.length === 0 &&
+              members.length === 0 &&
               searchTerm &&
               !loading &&
               !error && (
                 <p className="text-gray-500 text-center">No results found.</p>
               )}
 
-            {/* Close search modal button */}
             <div className="mt-4 flex justify-end">
               <button
-                onClick={closeSearchModal} // Close the search modal when clicked
+                onClick={closeSearchModal}
                 className="bg-red-500 text-white px-4 py-2 rounded-3xl hover:bg-red-600"
               >
                 Close
@@ -211,7 +188,7 @@ const SearchBar = () => {
       {/* Event Details Modal */}
       {selectedEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
-          <div className="bg-black bg-opacity-75 hover:bg-opacity-100 transition duration-500 p-6 rounded-3xl w-3/4 max-w-lg shadow-lg">
+          <div className="bg-black bg-opacity-75 p-6 rounded-3xl w-3/4 max-w-lg shadow-lg">
             <h2 className="text-2xl font-semibold text-white mb-4">
               {selectedEvent.name}
             </h2>
@@ -230,7 +207,7 @@ const SearchBar = () => {
             </p>
             <div className="mt-6 flex justify-end">
               <button
-                onClick={closeEventModal} // Close the event modal when clicked
+                onClick={closeEventModal}
                 className="bg-red-500 text-white px-4 py-2 rounded-3xl hover:bg-red-700"
               >
                 Close
