@@ -269,7 +269,7 @@ export const getMembers = async () => {
       }
     }
   `;
-  const result = await request(query);
+  const result = await request(graphqlAPI, query);
   return result.members;
 };
 

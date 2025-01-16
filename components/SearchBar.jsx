@@ -144,7 +144,7 @@ const SearchBar = () => {
                       className="bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl p-3"
                     >
                       <div className="flex items-center space-x-4">
-                        <Image
+                        <img
                           src={member.photo.url}
                           alt={member.name}
                           width={40}
