@@ -1,54 +1,40 @@
 import React from "react";
 import Head from "next/head";
-import { getMemberBySlug, getPostsByMember } from "../../services";
+import { getPostsByMember } from "../../services";
 import { PostCard } from "../../components";
 
-const MemberProfile = ({ member, posts }) => {
-  if (!member || !posts) {
+const MemberProfile = ({ posts }) => {
+  if (!posts || posts.length === 0) {
     return (
       <div className="container mx-auto text-center py-20">
-        <h1 className="text-4xl font-bold">Member Not Found</h1>
+        <h1 className="text-4xl font-bold">No Posts Found</h1>
         <p className="mt-4 text-lg">
-          The requested profile or posts are not available.
+          There are no posts available for this member.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-8 text-white">
+    <div className="container mx-auto p-8">
       <Head>
-        <title>{member.name} | SLT Pressclub</title>
+        <title>Member Posts | SLT Pressclub</title>
         <meta
           name="description"
-          content={`Profile and posts by ${member.name}`}
+          content="Browse posts by member on SLT Pressclub"
         />
-        <meta property="og:title" content={member.name} />
-        <meta
-          property="og:description"
-          content={`Read posts by ${member.name} on SLT Pressclub`}
-        />
+        <meta property="og:title" content="Member Posts" />
+        <meta property="og:description" content="Read posts on SLT Pressclub" />
       </Head>
-
-      {/* Member Info */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-semibold">{member.name}</h1>
-        <p className="text-lg mt-2">{member.bio}</p>
-        {member.role?.name && <p className="text-sm ">{member.role.name}</p>}
-      </div>
 
       {/* Display Posts */}
       <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-6">Posts by {member.name}</h2>
-        {posts.length === 0 ? (
-          <p>No posts found for this member.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {posts.map((post) => (
-              <PostCard key={post.slug} post={post} />
-            ))}
-          </div>
-        )}
+        <h2 className="text-2xl font-bold mb-6">Posts</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {posts.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -60,31 +46,20 @@ export async function getServerSideProps({ params }) {
   const { slug } = params;
 
   try {
-    // Fetch the member data using the slug
-    const member = await getMemberBySlug(slug);
-    console.log("Fetched member:", member);
-
-    if (!member) {
-      console.error("Member not found for slug:", slug);
-      return { notFound: true }; // Trigger a 404 if no member is found
-    }
-
-    // Fetch the posts for the member using the slug
+    // Fetch posts by the member using their slug
     const posts = await getPostsByMember(slug);
-    console.log("Fetched posts for member:", posts);
 
     if (!posts || posts.length === 0) {
-      console.warn("No posts found for member:", slug);
+      console.warn("No posts found for slug:", slug);
     }
 
     return {
       props: {
-        member,
         posts,
       },
     };
   } catch (error) {
-    console.error("Error fetching member or posts:", error.message);
+    console.error("Error fetching posts by member:", error.message);
     return { notFound: true };
   }
 }

@@ -120,7 +120,7 @@ export const getCategoryPost = async (slug) => {
       }
     }
   `;
-  const result = await request(query, { slug });
+  const result = await request(graphqlAPI, query, { slug });
   return result.postsConnection.edges.map((edge) => edge.node);
 };
 
@@ -300,13 +300,10 @@ export const getMemberBySlug = async (slug) => {
   }
 };
 
-export const getPostsByMember = async () => {
+export const getPostsByMember = async (slug) => {
   const query = gql`
-    query GetPostsByMember {
-      posts(
-        where: { member: { slug: "amankauroo" } }
-        orderBy: createdAt_DESC
-      ) {
+    query GetPostsByMember($slug: String!) {
+      posts(where: { member: { slug: $slug } }, orderBy: createdAt_DESC) {
         id
         title
         slug
@@ -325,13 +322,10 @@ export const getPostsByMember = async () => {
   `;
 
   try {
-    const result = await request(graphqlAPI, query);
+    const result = await request(graphqlAPI, query, { slug });
     return result.posts || []; // Return posts array (empty if no posts found)
   } catch (error) {
-    console.error(
-      "Error fetching posts by member 'amankauroo':",
-      error.message
-    );
+    console.error("Error fetching posts by member:", error.message);
     return [];
   }
 };
