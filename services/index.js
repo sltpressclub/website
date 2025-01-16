@@ -42,13 +42,20 @@ export const getPostDetails = async (slug) => {
   const query = gql`
     query GetPostDetails($slug: String!) {
       post(where: { slug: $slug }) {
-        id
         title
         excerpt
-        createdAt
         featuredImage {
           url
         }
+        member {
+          name
+          bio
+          photo {
+            url
+          }
+        }
+        createdAt
+        slug
         content {
           raw
         }
@@ -56,28 +63,14 @@ export const getPostDetails = async (slug) => {
           name
           slug
         }
-        member {
-          id
-          name
-          bio
-          role
-          photo {
-            url
-          }
-        }
       }
     }
   `;
 
-  try {
-    const result = await fetchGraphQL(query, { slug });
-    return result.post || null; // Return null if no post is found
-  } catch (error) {
-    console.error(`Error fetching post details for slug: ${slug}`, error);
-    return null; // Return null in case of error
-  }
-};
+  const result = await request(graphqlAPI, query, { slug });
 
+  return result.post;
+};
 export const getRecentPosts = async () => {
   const query = gql`
     query GetRecentPosts {
