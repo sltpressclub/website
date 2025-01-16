@@ -4,11 +4,13 @@ import { getMemberBySlug, getPostsByMember } from "../../services";
 import { PostCard } from "../../components";
 
 const MemberProfile = ({ member, posts }) => {
-  if (!member) {
+  if (!member || !posts) {
     return (
       <div className="container mx-auto text-center py-20">
         <h1 className="text-4xl font-bold">Member Not Found</h1>
-        <p className="mt-4 text-lg">The requested profile does not exist.</p>
+        <p className="mt-4 text-lg">
+          The requested profile or posts are not available.
+        </p>
       </div>
     );
   }
@@ -60,17 +62,22 @@ export async function getServerSideProps({ params }) {
   const { slug } = params;
 
   try {
-    // Fetching member data by slug
+    // Fetch the member data using the slug
     const member = await getMemberBySlug(slug);
-    console.log("Member data:", member); // Log the member data
+    console.log("Fetched member:", member);
 
     if (!member) {
+      console.error("Member not found for slug:", slug);
       return { notFound: true }; // Trigger a 404 if no member is found
     }
 
-    // Fetching posts by member's slug
+    // Fetch the posts for the member
     const posts = await getPostsByMember(slug);
-    console.log("Posts data:", posts); // Log the posts data
+    console.log("Fetched posts for member:", posts);
+
+    if (!posts || posts.length === 0) {
+      console.warn("No posts found for member:", slug);
+    }
 
     return {
       props: {
@@ -79,7 +86,7 @@ export async function getServerSideProps({ params }) {
       },
     };
   } catch (error) {
-    console.error("Error fetching member or posts:", error);
+    console.error("Error fetching member or posts:", error.message);
     return { notFound: true };
   }
 }

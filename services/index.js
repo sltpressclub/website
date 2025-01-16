@@ -274,49 +274,56 @@ export const getMembers = async () => {
 };
 
 export const getMemberBySlug = async (slug) => {
-  try {
-    const query = gql`
-      query GetMemberBySlug($slug: String!) {
-        member(where: { slug: $slug }) {
-          id
+  const query = gql`
+    query GetMemberBySlug($slug: String!) {
+      member(where: { slug: $slug }) {
+        id
+        name
+        bio
+        role {
           name
-          bio
-          role {
-            name
-          }
-          photo {
-            url
-          }
-          slug
         }
+        photo {
+          url
+        }
+        slug
       }
-    `;
+    }
+  `;
+
+  try {
     const result = await request(graphqlAPI, query, { slug });
-    return result.member;
+    return result.member || null; // Return the member object or null if not found
   } catch (error) {
-    console.error("Error fetching member by slug:", error.message);
+    console.error("Error fetching member:", error.message);
     return null;
   }
 };
 
 export const getPostsByMember = async (slug) => {
-  try {
-    const query = gql`
-      query GetPostsByMember($slug: String!) {
-        posts(where: { member: { slug: $slug } }, orderBy: createdAt_DESC) {
+  const query = gql`
+    query GetPostsByMember($slug: String!) {
+      posts(where: { member: { slug: $slug } }, orderBy: createdAt_DESC) {
+        id
+        title
+        slug
+        excerpt
+        createdAt
+        featuredImage {
+          url
+        }
+        member {
           id
-          title
+          name
           slug
-          excerpt
-          createdAt
-          featuredImage {
-            url
-          }
         }
       }
-    `;
+    }
+  `;
+
+  try {
     const result = await request(graphqlAPI, query, { slug });
-    return result.posts || [];
+    return result.posts || []; // Return posts array (empty if no posts found)
   } catch (error) {
     console.error("Error fetching posts by member:", error.message);
     return [];
