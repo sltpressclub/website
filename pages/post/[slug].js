@@ -42,7 +42,7 @@ const PostDetails = ({ post }) => {
   console.log("Post Details:", post);
 
   return (
-    <div className="min-h-screen w-full text-white p-8">
+    <div className="min-h-screen w-full text-white lg:p-8 p-2">
       {/* Post Detail */}
       <PostDetail post={post} />
 
