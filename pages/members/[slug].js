@@ -16,7 +16,7 @@ const MemberProfile = ({ member, posts }) => {
   }
 
   return (
-    <div className="container mx-auto p-8">
+    <div className="container mx-auto p-8 text-white">
       <Head>
         <title>{member.name} | SLT Pressclub</title>
         <meta
@@ -33,10 +33,8 @@ const MemberProfile = ({ member, posts }) => {
       {/* Member Info */}
       <div className="text-center mb-12">
         <h1 className="text-3xl font-semibold">{member.name}</h1>
-        <p className="text-lg text-gray-600 mt-2">{member.bio}</p>
-        {member.role?.name && (
-          <p className="text-sm text-gray-500">{member.role.name}</p>
-        )}
+        <p className="text-lg mt-2">{member.bio}</p>
+        {member.role?.name && <p className="text-sm ">{member.role.name}</p>}
       </div>
 
       {/* Display Posts */}
