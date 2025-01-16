@@ -50,6 +50,9 @@ export const getPostDetails = async (slug) => {
         member {
           name
           bio
+          role {
+            name
+          }
           photo {
             url
           }
