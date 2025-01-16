@@ -60,13 +60,17 @@ export async function getServerSideProps({ params }) {
   const { slug } = params;
 
   try {
+    // Fetching member data by slug
     const member = await getMemberBySlug(slug);
+    console.log("Member data:", member); // Log the member data
+
     if (!member) {
       return { notFound: true }; // Trigger a 404 if no member is found
     }
 
-    // Now we pass the slug to getPostsByMember instead of member.id
+    // Fetching posts by member's slug
     const posts = await getPostsByMember(slug);
+    console.log("Posts data:", posts); // Log the posts data
 
     return {
       props: {
