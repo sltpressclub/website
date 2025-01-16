@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   PostDetail,
@@ -7,10 +7,22 @@ import {
   CommentsForm,
   Loader,
 } from "../../components";
-import { getPosts, getPostDetails } from "../../services";
+import { getPosts, getPostDetails, getComments } from "../../services";
 
 const PostDetails = ({ post }) => {
   const router = useRouter();
+  const [comments, setComments] = useState([]); // State to store comments
+
+  useEffect(() => {
+    if (post?.slug) {
+      const fetchComments = async () => {
+        const fetchedComments = await getComments(post.slug);
+        console.log("Fetched Comments:", fetchedComments); // Log the comments
+        setComments(fetchedComments);
+      };
+      fetchComments();
+    }
+  }, [post?.slug]);
 
   // Show loading state while the page is being generated
   if (router.isFallback) {
