@@ -8,7 +8,7 @@ const MemberPost = ({ posts }) => {
 
   // Show loading state while the page is being generated in the background (for fallback pages)
   if (router.isFallback) {
-    return <Loader />; // Display a loading indicator while data is being fetched
+    return <Loader />;
   }
 
   return (
@@ -39,8 +39,8 @@ const MemberPost = ({ posts }) => {
 
 export default MemberPost;
 
-// Fetch data at build time using getStaticProps
-export async function getStaticProps({ params }) {
+// Fetch data on each request using getServerSideProps
+export async function getServerSideProps({ params }) {
   try {
     // Fetch the posts for a specific member using the slug from params
     const posts = await getMemberPosts(params.slug);
@@ -52,8 +52,8 @@ export async function getStaticProps({ params }) {
   }
 }
 
-// Fetch dynamic routes at build time using getStaticPaths
-export async function getStaticPaths() {
+// Fetch dynamic routes at request time using getServerSidePaths
+export async function getServerSidePaths() {
   try {
     // Fetch the members from the API
     const members = await getMembers();
