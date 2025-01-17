@@ -303,7 +303,7 @@ export const getMemberBySlug = async (slug) => {
 export const getPostsByMember = async (slug) => {
   const query = gql`
     query GetPostsByMember($slug: String!) {
-      posts(where: { category: { slug: $slug } }, orderBy: createdAt_DESC) {
+      posts(where: { member: { slug: $slug } }, orderBy: createdAt_DESC) {
         id
         title
         slug
