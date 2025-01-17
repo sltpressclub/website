@@ -300,10 +300,12 @@ export const getMemberBySlug = async (slug) => {
   }
 };
 
-export const getPostsByMember = async (slug) => {
+import { gql, request } from "graphql-request";
+
+export const getPostsByCMember = async (slug) => {
   const query = gql`
-    query GetPostsByMember($slug: String!) {
-      posts(where: { member: { slug: $slug } }, orderBy: createdAt_DESC) {
+    query GetPostsByCategory($slug: String!) {
+      posts(where: { category: { slug: $slug } }, orderBy: createdAt_DESC) {
         id
         title
         slug
@@ -311,11 +313,6 @@ export const getPostsByMember = async (slug) => {
         createdAt
         featuredImage {
           url
-        }
-        member {
-          id
-          name
-          slug
         }
       }
     }
@@ -325,7 +322,7 @@ export const getPostsByMember = async (slug) => {
     const result = await request(graphqlAPI, query, { slug });
     return result.posts || []; // Return posts array (empty if no posts found)
   } catch (error) {
-    console.error("Error fetching posts by member:", error.message);
+    console.error("Error fetching posts by category:", error.message);
     return [];
   }
 };

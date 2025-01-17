@@ -10,7 +10,7 @@ const SlugPage = ({ posts }) => {
       <div className="container mx-auto text-center py-20">
         <h1 className="text-4xl font-bold">No Posts Found</h1>
         <p className="mt-4 text-lg">
-          There are no posts available for this member.
+          There are no posts available for this category.
         </p>
       </div>
     );
@@ -19,10 +19,10 @@ const SlugPage = ({ posts }) => {
   return (
     <div className="container mx-auto p-8">
       <Head>
-        <title>Posts by Member</title>
+        <title>Posts by Category</title>
         <meta
           name="description"
-          content="Posts by a specific member on SLT Pressclub"
+          content="Posts under a specific category on SLT Pressclub"
         />
       </Head>
 
@@ -44,11 +44,11 @@ export async function getServerSideProps({ params }) {
   const { slug } = params;
 
   try {
-    console.log("Fetching posts for member with slug:", slug); // Log slug
+    console.log("Fetching posts for category with slug:", slug); // Log slug
     const posts = await getPostsByMember(slug);
 
     if (!posts || posts.length === 0) {
-      console.warn("No posts found for member with slug:", slug); // Log if no posts
+      console.warn("No posts found for category with slug:", slug); // Log if no posts
       return {
         props: {
           posts: [], // Return empty posts if none found
@@ -56,7 +56,7 @@ export async function getServerSideProps({ params }) {
       };
     }
 
-    console.log("Fetched posts for member:", posts); // Log fetched posts
+    console.log("Fetched posts for category:", posts); // Log fetched posts
 
     return {
       props: {
@@ -64,7 +64,7 @@ export async function getServerSideProps({ params }) {
       },
     };
   } catch (error) {
-    console.error("Error fetching posts for slug:", slug, error); // Log error
+    console.error("Error fetching posts for category slug:", slug, error); // Log error
     return { notFound: true }; // Trigger 404 if error occurs
   }
 }
