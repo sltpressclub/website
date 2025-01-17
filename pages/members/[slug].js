@@ -1,31 +1,35 @@
 import React from "react";
-import { useRouter } from "next/router"; // Importing useRouter for routing and fallback detection
-import { getMembers, getPostsByMember } from "../../services"; // Functions to fetch members and posts by a member
-import { PostCard, Categories, Loader } from "../../components"; // Components for posts, categories, and loading indicator
+import { useRouter } from "next/router"; // Importing useRouter for routing and dynamic paths
+import { getMembers, getMemberPosts } from "../../services"; // Importing functions to fetch members and posts by a specific member
+import { PostCard, Categories, Loader } from "../../components"; // Importing components for displaying post cards, categories, and a loading indicator
 
-const SlugPage = ({ posts }) => {
+const MemberPost = ({ posts }) => {
   const router = useRouter();
 
-  // Display a loader while the fallback page is being generated
+  // Show loading state while the page is being generated in the background (for fallback pages)
   if (router.isFallback) {
-    return <Loader />;
+    return <Loader />; // Display a loading indicator while data is being fetched
   }
 
   return (
     <div className="container mx-auto px-10 mb-8">
+      {/* Main container for the page */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Grid layout for main content and sidebar */}
         <div className="col-span-1 lg:col-span-8">
-          {/* Display posts if available, else show a message */}
+          {/* Column for displaying posts */}
           {posts.length > 0 ? (
+            // If there are posts, display each post using the PostCard component
             posts.map((post, index) => <PostCard key={index} post={post} />)
           ) : (
-            <p>No posts available for this member</p>
+            <p>No posts available for this member</p> // Display message if no posts found
           )}
         </div>
         <div className="col-span-1 lg:col-span-4">
-          {/* Sidebar */}
+          {/* Sidebar section */}
           <div className="relative lg:sticky top-8">
-            <Categories />
+            <Categories />{" "}
+            {/* Display the Categories component in the sidebar */}
           </div>
         </div>
       </div>
@@ -33,29 +37,33 @@ const SlugPage = ({ posts }) => {
   );
 };
 
-export default SlugPage;
+export default MemberPost;
 
-// Fetch posts for a specific member at build time
+// Fetch data at build time using getStaticProps
 export async function getStaticProps({ params }) {
   try {
-    const posts = await getPostsByMember(params.slug);
-    return { props: { posts } };
+    // Fetch the posts for a specific member using the slug from params
+    const posts = await getMemberPosts(params.slug);
+    return { props: { posts } }; // Return the posts as props
   } catch (error) {
     console.error("Error fetching posts for member:", error);
-    return { props: { posts: [] } }; // Return an empty array if there's an error
+    // If there's an error fetching posts, return an empty array
+    return { props: { posts: [] } };
   }
 }
 
-// Generate dynamic paths for members at build time
+// Fetch dynamic routes at build time using getStaticPaths
 export async function getStaticPaths() {
   try {
-    const members = await getMembers(); // Fetch all members
+    // Fetch the members from the API
+    const members = await getMembers();
     return {
-      paths: members.map(({ slug }) => ({ params: { slug } })), // Generate paths from member slugs
-      fallback: true, // Enable fallback for on-demand page generation
+      paths: members.map(({ slug }) => ({ params: { slug } })), // Map each member's slug to a path
+      fallback: true, // Enable fallback for dynamic member pages
     };
   } catch (error) {
     console.error("Error fetching members:", error);
-    return { paths: [], fallback: true }; // Return fallback as true to allow dynamic generation
+    // If there's an error fetching members, return empty paths
+    return { paths: [], fallback: true }; // Fallback to true for on-demand page generation
   }
 }

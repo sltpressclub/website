@@ -273,55 +273,33 @@ export const getMembers = async () => {
   return result.members;
 };
 
-export const getMemberBySlug = async (slug) => {
+export const getMemberPosts = async (slug) => {
   const query = gql`
-    query GetMemberBySlug($slug: String!) {
-      member(where: { slug: $slug }) {
-        id
-        name
-        bio
-        role {
-          name
-        }
-        photo {
-          url
-        }
-        slug
-      }
-    }
-  `;
-
-  try {
-    const result = await request(graphqlAPI, query, { slug });
-    return result.member || null; // Return the member object or null if not found
-  } catch (error) {
-    console.error("Error fetching member:", error.message);
-    return null;
-  }
-};
-
-export const getPostsByMember = async (slug) => {
-  const query = gql`
-    query GetPostsByMember($slug: String!) {
-      posts(where: { member: { slug: $slug } }, orderBy: createdAt_DESC) {
-        id
-        title
-        slug
-        excerpt
-        createdAt
-        featuredImage {
-          url
+    query GetMemberPosts($slug: String!) {
+      postsConnection(where: { member: { slug: $slug } }) {
+        edges {
+          node {
+            id
+            title
+            slug
+            excerpt
+            createdAt
+            featuredImage {
+              url
+            }
+            member {
+              id
+              name
+              bio
+              photo {
+                url
+              }
+            }
+          }
         }
       }
     }
   `;
-
-  try {
-    const result = await request(graphqlAPI, query, { slug });
-    console.log("GraphQL result:", result); // Debug: Log the result
-    return result.posts || [];
-  } catch (error) {
-    console.error("Error fetching posts by member:", error.message);
-    return [];
-  }
+  const result = await request(graphqlAPI, query, { slug });
+  return result.postsConnection.edges.map((edge) => edge.node); // Map the response to extract the posts
 };
