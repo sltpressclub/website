@@ -1,37 +1,32 @@
 import React from "react";
-import Head from "next/head";
-import { getPostsByMember } from "../../services";
-import { PostCard } from "../../components";
+import { useRouter } from "next/router"; // Importing useRouter for routing and fallback detection
+import { getMembers, getPostsByMember } from "../../services"; // Functions to fetch members and posts by a member
+import { PostCard, Categories, Loader } from "../../components"; // Components for posts, categories, and loading indicator
 
 const SlugPage = ({ posts }) => {
-  // Check if posts are empty or undefined
-  if (!posts || posts.length === 0) {
-    return (
-      <div className="container mx-auto text-center py-20">
-        <h1 className="text-4xl font-bold">No Posts Found</h1>
-        <p className="mt-4 text-lg">
-          There are no posts available for this category.
-        </p>
-      </div>
-    );
+  const router = useRouter();
+
+  // Display a loader while the fallback page is being generated
+  if (router.isFallback) {
+    return <Loader />;
   }
 
   return (
-    <div className="container mx-auto p-8">
-      <Head>
-        <title>Posts by Category</title>
-        <meta
-          name="description"
-          content="Posts under a specific category on SLT Pressclub"
-        />
-      </Head>
-
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-6">Posts</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
+    <div className="container mx-auto px-10 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="col-span-1 lg:col-span-8">
+          {/* Display posts if available, else show a message */}
+          {posts.length > 0 ? (
+            posts.map((post, index) => <PostCard key={index} post={post} />)
+          ) : (
+            <p>No posts available for this member</p>
+          )}
+        </div>
+        <div className="col-span-1 lg:col-span-4">
+          {/* Sidebar */}
+          <div className="relative lg:sticky top-8">
+            <Categories />
+          </div>
         </div>
       </div>
     </div>
@@ -40,31 +35,27 @@ const SlugPage = ({ posts }) => {
 
 export default SlugPage;
 
-export async function getServerSideProps({ params }) {
-  const { slug } = params;
-
+// Fetch posts for a specific member at build time
+export async function getStaticProps({ params }) {
   try {
-    console.log("Fetching posts for category with slug:", slug); // Log slug
-    const posts = await getPostsByMember(slug);
+    const posts = await getPostsByMember(params.slug);
+    return { props: { posts } };
+  } catch (error) {
+    console.error("Error fetching posts for member:", error);
+    return { props: { posts: [] } }; // Return an empty array if there's an error
+  }
+}
 
-    if (!posts || posts.length === 0) {
-      console.warn("No posts found for category with slug:", slug); // Log if no posts
-      return {
-        props: {
-          posts: [], // Return empty posts if none found
-        },
-      };
-    }
-
-    console.log("Fetched posts for category:", posts); // Log fetched posts
-
+// Generate dynamic paths for members at build time
+export async function getStaticPaths() {
+  try {
+    const members = await getMembers(); // Fetch all members
     return {
-      props: {
-        posts, // Pass posts to component
-      },
+      paths: members.map(({ slug }) => ({ params: { slug } })), // Generate paths from member slugs
+      fallback: true, // Enable fallback for on-demand page generation
     };
   } catch (error) {
-    console.error("Error fetching posts for category slug:", slug, error); // Log error
-    return { notFound: true }; // Trigger 404 if error occurs
+    console.error("Error fetching members:", error);
+    return { paths: [], fallback: true }; // Return fallback as true to allow dynamic generation
   }
 }
