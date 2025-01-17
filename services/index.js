@@ -300,9 +300,7 @@ export const getMemberBySlug = async (slug) => {
   }
 };
 
-import { gql, request } from "graphql-request";
-
-export const getPostsByCMember = async (slug) => {
+export const getPostsByMember = async (slug) => {
   const query = gql`
     query GetPostsByCategory($slug: String!) {
       posts(where: { category: { slug: $slug } }, orderBy: createdAt_DESC) {
