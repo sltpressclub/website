@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { getPostsByCategory } from "../../services";
+import { getPostsByMember } from "../../services";
 import { PostCard } from "../../components";
 
 const SlugPage = ({ posts }) => {
@@ -45,7 +45,7 @@ export async function getServerSideProps({ params }) {
 
   try {
     console.log("Fetching posts for category with slug:", slug); // Log slug
-    const posts = await getPostsByCategory(slug);
+    const posts = await getPostsByMember(slug);
 
     if (!posts || posts.length === 0) {
       console.warn("No posts found for category with slug:", slug); // Log if no posts
