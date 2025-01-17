@@ -318,9 +318,10 @@ export const getPostsByMember = async (slug) => {
 
   try {
     const result = await request(graphqlAPI, query, { slug });
-    return result.posts || []; // Return posts array (empty if no posts found)
+    console.log("GraphQL result:", result); // Debug: Log the result
+    return result.posts || [];
   } catch (error) {
-    console.error("Error fetching posts by category:", error.message);
+    console.error("Error fetching posts by member:", error.message);
     return [];
   }
 };
