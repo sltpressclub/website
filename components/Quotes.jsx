@@ -30,19 +30,25 @@ const Quotes = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="space-y-4">
-        {quotes.map((quote) => (
-          <div key={quote.id} className="p-4 bg-gray-100 rounded-lg shadow-md">
-            <p className="text-xl font-semibold italic">"{quote.quote}"</p>
-            <p className="text-sm text-gray-600">- {quote.name}</p>
-            <p className="text-xs text-gray-400">
-              {new Date(quote.createdAt).toLocaleDateString()}
-            </p>
-          </div>
-        ))}
+      <div className="overflow-x-auto whitespace-nowrap">
+        {/* Container for the carousel */}
+        <div className="flex gap-4">
+          {quotes.map((quote) => (
+            <div
+              key={quote.id}
+              className="relative flex-shrink-0 w-64 h-64 bg-gray-100 rounded-lg shadow-md p-4 flex flex-col justify-between"
+            >
+              <p className="text-xl font-semibold italic">"{quote.quote}"</p>
+              <p className="text-sm text-gray-600">- {quote.name}</p>
+              <p className="text-xs text-gray-400">
+                {new Date(quote.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Quotes; // Export with the correct name
+export default Quotes;
