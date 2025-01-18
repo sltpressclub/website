@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { PostCard, Upcoming, Gallery, History } from "../components"; // Importing required components
+import { PostCard, Upcoming, Gallery, History, Quote } from "../components"; // Importing required components
 import { getPosts } from "../services"; // Importing API call for fetching posts
 
 export default function Home({ posts }) {
@@ -36,6 +36,10 @@ export default function Home({ posts }) {
         <div className="mt-12">
           <h2 className="text-center text-3xl font-semibold mb-6">Gallery</h2>
           <Gallery />
+        </div>
+        <div className="mt-12">
+          <h2 className="text-center text-3xl font-semibold mb-6">Quotes</h2>
+          <Quote />
         </div>
         <div className="mt-12">
           <h2 className="text-center text-3xl font-semibold mb-6">History</h2>
