@@ -15,14 +15,14 @@ export default function Home({ posts, gallery }) {
 
         {/* Main Content Section */}
         <div className="grid grid-cols-1 gap-12 w-full">
-          {/* Top Section: PostCards and Upcoming Side by Side */}
+          {/* Top Section: PostCard and Upcoming Side by Side */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* Blog Posts Section */}
+            {/* Blog Post Section (Display Only One Post) */}
             <div className="lg:col-span-8 col-span-1">
-              {/* Display each post */}
-              {posts.map((post) => (
-                <PostCard post={post.node} key={post.node.id} />
-              ))}
+              {/* Check if posts exist and display the only post */}
+              {posts.length > 0 && (
+                <PostCard post={posts[0].node} key={posts[0].node.id} />
+              )}
             </div>
 
             {/* Sidebar Section */}
@@ -38,8 +38,10 @@ export default function Home({ posts, gallery }) {
           <div className="w-full">
             <Gallery gallery={gallery} /> {/* Full-width gallery */}
           </div>
+
+          {/* History Section */}
           <div className="w-full">
-            <History /> {/* Full-width gallery */}
+            <History /> {/* Full-width history section */}
           </div>
         </div>
       </div>
