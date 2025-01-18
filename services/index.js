@@ -5,7 +5,7 @@ const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 export const getPosts = async () => {
   const query = gql`
     query MyQuery {
-      postsConnection(orderBy: createdAt_DESC) {
+      postsConnection(orderBy: createdAt_DESC, first: 1) {
         edges {
           cursor
           node {
@@ -302,4 +302,21 @@ export const getMemberPosts = async (slug) => {
   `;
   const result = await request(graphqlAPI, query, { slug });
   return result.postsConnection.edges.map((edge) => edge.node); // Map the response to extract the posts
+};
+
+export const getGalleryData = async () => {
+  const query = gql`
+    query GetGalleryData {
+      galleries {
+        date
+        name
+        id
+        slug
+        imageUrl
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query);
+  return result.galleries;
 };
