@@ -31,7 +31,7 @@ const Gallery = () => {
               className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-lg overflow-hidden"
             >
               <img
-                src={gallery.imageUrl}
+                src={gallery.photo}
                 alt={`Gallery image of ${gallery.name}`}
                 className="w-full h-full object-cover"
               />
