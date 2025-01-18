@@ -308,11 +308,13 @@ export const getGalleryData = async () => {
   const query = gql`
     query GetGalleryData {
       galleries {
-        date
-        name
         id
-        slug
-        imageUrl
+        name
+        photo {
+          url
+        }
+        date
+        description
       }
     }
   `;
