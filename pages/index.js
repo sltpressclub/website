@@ -1,6 +1,8 @@
-import Head from "next/head"; // Import for setting meta tags and page title
-import { PostCard, Categories, PostWidget, Upcoming } from "../components/"; // Importing required components
+import React from "react";
+import Head from "next/head";
+import { PostCard, Upcoming } from "../components"; // Importing required components
 import { getPosts } from "../services"; // Importing API call for fetching posts
+import Gallery from "../components/Gallery"; // Importing the Gallery component
 
 export default function Home({ posts }) {
   return (
@@ -29,6 +31,12 @@ export default function Home({ posts }) {
               <Upcoming /> {/* Component to display upcoming events or posts */}
             </div>
           </div>
+        </div>
+
+        {/* Gallery Section */}
+        <div className="mt-12">
+          <h2 className="text-center text-3xl font-semibold mb-6">Gallery</h2>
+          <Gallery />
         </div>
       </div>
     </div>
