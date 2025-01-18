@@ -4,7 +4,6 @@ import { getGalleryData } from "../../services"; // Import the function to fetch
 const Gallery = () => {
   const [galleries, setGalleries] = useState([]);
 
-  // Fetch gallery data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,6 +17,10 @@ const Gallery = () => {
     fetchData();
   }, []);
 
+  if (!galleries.length) {
+    return <p className="text-center text-gray-500">No galleries available.</p>;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="overflow-x-auto whitespace-nowrap">
@@ -25,11 +28,11 @@ const Gallery = () => {
           {galleries.map((gallery) => (
             <div
               key={gallery.id}
-              className="relative flex-shrink-0 w-64 h-64 bg-gray-200 rounded-lg overflow-hidden"
+              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-lg overflow-hidden"
             >
               <img
                 src={gallery.imageUrl}
-                alt={gallery.name}
+                alt={`Gallery image of ${gallery.name}`}
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-sm p-2 rounded">
