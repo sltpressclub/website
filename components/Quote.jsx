@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getQuote } from "../services"; // Import the function to fetch quote data
+import { getQuotes } from "../services"; // Import the function to fetch quote data
 
 const Quotes = () => {
   const [quotes, setQuotes] = useState([]);

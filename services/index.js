@@ -322,3 +322,19 @@ export const getGalleryData = async () => {
   const result = await request(graphqlAPI, query);
   return result.galleries;
 };
+
+export const getQuotes = async () => {
+  const query = gql`
+    query GetQuotes {
+      quotes {
+        name
+        quote
+        id
+        createdAt
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query);
+  return result.quotes;
+};
