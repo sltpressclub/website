@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router"; // Importing useRouter for routing and dynamic paths
-import { getMembers, getMemberPosts } from "../../services"; // Importing functions to fetch members and posts by a specific member
+import { getMemberPosts } from "../../services"; // Importing functions to fetch members and posts by a specific member
 import { PostCard, Loader } from "../../components"; // Importing components for displaying post cards and a loading indicator
 
 const MemberPost = ({ posts }) => {

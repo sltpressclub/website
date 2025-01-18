@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getGalleryData } from "../../services"; // Import the function to fetch gallery data
+import { getGalleryData } from "../services"; // Import the function to fetch gallery data
 
 const Gallery = () => {
   const [galleries, setGalleries] = useState([]);
