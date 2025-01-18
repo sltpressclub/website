@@ -45,4 +45,4 @@ const Quotes = () => {
   );
 };
 
-export default Quote;
+export default Quotes; // Export with the correct name

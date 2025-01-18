@@ -13,4 +13,4 @@ export { default as Footer } from "./Footer";
 export { default as Loader } from "./Loader";
 export { default as Gallery } from "./Gallery";
 export { default as History } from "./History";
-export { default as Quote } from "./Quote";
+export { default as Quotes } from "./Quotes";
