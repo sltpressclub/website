@@ -51,6 +51,9 @@ export default function Home({ posts, gallery }) {
 
 // Fetch data at request time using getServerSideProps
 export async function getServerSideProps() {
+  console.log("Posts:", posts);
+  console.log("Gallery:", gallery);
+
   try {
     // Fetch posts and gallery data
     const posts = (await getPosts()) || []; // Fallback to an empty array if no posts are available
