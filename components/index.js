@@ -12,3 +12,4 @@ export { default as SearchBar } from "./SearchBar";
 export { default as Footer } from "./Footer";
 export { default as Loader } from "./Loader";
 export { default as Gallery } from "./Gallery";
+export { default as History } from "./History";

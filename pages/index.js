@@ -1,5 +1,5 @@
 import Head from "next/head"; // Import for setting meta tags and page title
-import { PostCard, Upcoming, Gallery } from "../components/"; // Importing required components
+import { PostCard, Upcoming, Gallery, History } from "../components/"; // Importing required components
 import { getPosts, getGalleryData } from "../services"; // Importing API calls for fetching posts and gallery data
 
 export default function Home({ posts, gallery }) {
@@ -37,6 +37,9 @@ export default function Home({ posts, gallery }) {
           {/* Gallery Section: Full-width */}
           <div className="w-full">
             <Gallery gallery={gallery} /> {/* Full-width gallery */}
+          </div>
+          <div className="w-full">
+            <History /> {/* Full-width gallery */}
           </div>
         </div>
       </div>
