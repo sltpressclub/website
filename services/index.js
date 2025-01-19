@@ -374,3 +374,29 @@ export const getQuotes = async () => {
   const result = await request(graphqlAPI, query);
   return result.quotes;
 };
+
+import { gql } from "graphql-request";
+
+export const GET_CLUBS = gql`
+  query MyQuery {
+    clubs {
+      id
+      name
+      slug
+      description
+      featuredImage {
+        url
+      }
+    }
+  }
+`;
+
+export const getClubs = async () => {
+  try {
+    const result = await request(graphqlAPI, GET_CLUBS);
+    return result.clubs;
+  } catch (error) {
+    console.error("Error fetching clubs:", error);
+    return [];
+  }
+};

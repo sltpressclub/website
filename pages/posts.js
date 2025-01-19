@@ -1,10 +1,10 @@
 import React from "react";
 import { getPosts } from "../services"; // Importing function to fetch all posts
-import { PostCard, Loader } from "../components"; // Importing PostCard and Loader components
+import { PostCard, Loader } from "../components"; // Import PostCard and Loader components
 
 const AllPosts = ({ posts }) => {
   // Display loader if no posts are fetched yet
-  if (!posts) {
+  if (!posts || posts.length === 0) {
     return <Loader />;
   }
 
@@ -14,13 +14,9 @@ const AllPosts = ({ posts }) => {
       {/* Main grid container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Render posts */}
-        {posts.length > 0 ? (
-          posts.map((post, index) => <PostCard key={index} post={post} />)
-        ) : (
-          <p className="text-center col-span-full">
-            No posts available at the moment.
-          </p>
-        )}
+        {posts.map((post) => (
+          <PostCard post={post.node} key={post.node.id} />
+        ))}
       </div>
     </div>
   );
