@@ -14,3 +14,4 @@ export { default as Loader } from "./Loader";
 export { default as Gallery } from "./Gallery";
 export { default as History } from "./History";
 export { default as Quotes } from "./Quotes";
+export { default as Mission } from "./Mission";

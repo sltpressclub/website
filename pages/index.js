@@ -7,6 +7,7 @@ import {
   History,
   Quotes,
   PostWidget,
+  Mission,
 } from "../components"; // Importing required components
 import { getPost } from "../services"; // Importing API call for fetching posts
 
@@ -57,6 +58,10 @@ export default function Home({ posts }) {
             Recent Post
           </h2>
           <PostWidget />
+        </div>
+        <div className="mt-12">
+          <h2 className="text-center text-3xl font-semibold mb-6">Mission</h2>
+          <Mission />
         </div>
       </div>
     </div>
