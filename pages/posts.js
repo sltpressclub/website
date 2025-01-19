@@ -1,6 +1,6 @@
 import React from "react";
-import { getPosts } from "../../services"; // Importing function to fetch all posts
-import { PostCard, Loader } from "../../components"; // Importing PostCard and Loader components
+import { getPosts } from "../services"; // Importing function to fetch all posts
+import { PostCard, Loader } from "../components"; // Importing PostCard and Loader components
 
 const AllPosts = ({ posts }) => {
   // Display loader if no posts are fetched yet
