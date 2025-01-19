@@ -82,7 +82,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="/about-us" passHref>
+              <Link href="/about" passHref>
                 <a
                   onClick={toggleMenu}
                   className="text-xl font-bold hover:text-gray-400"
@@ -92,7 +92,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="/contact-us" passHref>
+              <Link href="/contact" passHref>
                 <a
                   onClick={toggleMenu}
                   className="text-xl font-bold hover:text-gray-400"
@@ -102,7 +102,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link href="/privacy-policy" passHref>
+              <Link href="/privacy" passHref>
                 <a
                   onClick={toggleMenu}
                   className="text-xl font-bold hover:text-gray-400"

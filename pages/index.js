@@ -8,7 +8,7 @@ import {
   Quotes,
   PostWidget,
 } from "../components"; // Importing required components
-import { getPosts } from "../services"; // Importing API call for fetching posts
+import { getPost } from "../services"; // Importing API call for fetching posts
 
 export default function Home({ posts }) {
   return (
@@ -66,7 +66,7 @@ export default function Home({ posts }) {
 // Fetch posts data at request time using getServerSideProps
 export async function getServerSideProps() {
   // Fetch posts from the service
-  const posts = (await getPosts()) || []; // Fallback to an empty array if no posts are available
+  const posts = (await getPost()) || []; // Fallback to an empty array if no posts are available
 
   return {
     props: { posts }, // Pass posts as props to the component
