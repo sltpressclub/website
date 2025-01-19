@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getClubs } from "../services"; // Import the function to fetch clubs
 
-const ClubCarousel = () => {
+const Clubs = () => {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,4 +50,4 @@ const ClubCarousel = () => {
   );
 };
 
-export default ClubCarousel;
+export default Clubs;
