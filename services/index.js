@@ -1,86 +1,340 @@
-import React, { useState, useEffect } from "react";
-import moment from "moment"; // For date formatting
-import Link from "next/link"; // For navigation between pages in Next.js
-import Image from "next/image"; // For optimized images in Next.js
-import { getRecentPosts } from "../services"; // Service to fetch recent posts
-import { graphCMSImageLoader } from "../util"; // Custom loader for GraphCMS images
+import { request, gql } from "graphql-request";
 
-const PostWidget = () => {
-  const [recentPosts, setRecentPosts] = useState([]); // State to store recent posts
-  const [loading, setLoading] = useState(true); // State to track loading status
-  const [dots, setDots] = useState(""); // State to track dots animation
+const graphqlAPI = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
-  // Fetch recent posts when the component mounts
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const result = await getRecentPosts();
-      setRecentPosts(result); // Update state with fetched posts
-      setLoading(false); // Stop loading
-    };
-    fetchPosts();
-  }, []);
-
-  // Animate dots in "Loading..."
-  useEffect(() => {
-    if (loading) {
-      const interval = setInterval(() => {
-        setDots((prev) => (prev.length < 3 ? prev + "." : ""));
-      }, 500);
-      return () => clearInterval(interval);
+export const getPosts = async () => {
+  const query = gql`
+    query MyQuery {
+      postsConnection(orderBy: createdAt_DESC, first: 1) {
+        edges {
+          cursor
+          node {
+            member {
+              bio
+              name
+              id
+              photo {
+                url
+              }
+            }
+            createdAt
+            slug
+            title
+            excerpt
+            featuredImage {
+              url
+            }
+            category {
+              name
+              slug
+            }
+          }
+        }
+      }
     }
-  }, [loading]);
+  `;
+  const result = await request(graphqlAPI, query);
 
-  return (
-    <div className="bg-black bg-opacity-30 rounded-3xl p-5 mb-8 hover:-translate-y-1 hover:bg-opacity-50 transition duration-700">
-      {/* Widget header */}
-      <h3 className="text-white text-xl mb-8 font-semibold border-b pb-4">
-        Recent Posts
-      </h3>
-
-      {/* Loading state */}
-      {loading ? (
-        <div className="text-center text-white text-lg">
-          Loading{dots} {/* Animated dots */}
-        </div>
-      ) : (
-        // Posts grid: 3 columns, 2 rows
-        <div className="grid grid-cols-3 gap-4">
-          {recentPosts.slice(0, 6).map((post) => (
-            <div
-              key={post.title} // Unique key for each post
-              className="bg-black bg-opacity-30 hover:-translate-y-1 hover:bg-opacity-50 transition duration-200 rounded-xl p-4 flex flex-col justify-between"
-            >
-              {/* Featured image */}
-              <div className="relative w-full aspect-square mb-4">
-                <Image
-                  loader={graphCMSImageLoader}
-                  src={post.featuredImage.url} // Post's featured image URL
-                  alt={post.title} // Alt text for accessibility
-                  layout="fill" // Ensure the image fills the square
-                  objectFit="cover" // Make sure the image covers the square
-                  className="rounded-lg"
-                />
-              </div>
-              {/* Post details */}
-              <div>
-                {/* Post creation date */}
-                <p className="text-white text-sm">
-                  {moment(post.createdAt).format("DD MMM YYYY")}
-                </p>
-                {/* Link to post */}
-                <Link
-                  href={`/post/${post.slug}`}
-                  className="text-lg text-white hover:underline"
-                >
-                  {post.title}
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return result.postsConnection.edges;
 };
 
-export default PostWidget;
+export const getPostDetails = async (slug) => {
+  const query = gql`
+    query GetPostDetails($slug: String!) {
+      post(where: { slug: $slug }) {
+        title
+        excerpt
+        featuredImage {
+          url
+        }
+        member {
+          name
+          bio
+          slug
+          role {
+            name
+          }
+          photo {
+            url
+          }
+        }
+        createdAt
+        slug
+        content {
+          raw
+        }
+        category {
+          name
+          slug
+        }
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query, { slug });
+
+  return result.post;
+};
+export const getRecentPosts = async () => {
+  const query = gql`
+    query GetRecentPosts {
+      posts(orderBy: createdAt_DESC, first: 6) {
+        id
+        title
+        slug
+        featuredImage {
+          url
+        }
+        createdAt
+      }
+    }
+  `;
+  const result = await request(graphqlAPI, query);
+  return result.posts;
+};
+
+export const getCategoryPost = async (slug) => {
+  const query = gql`
+    query GetCategoryPost($slug: String!) {
+      postsConnection(where: { category_some: { slug: $slug } }) {
+        edges {
+          node {
+            id
+            title
+            slug
+            excerpt
+            createdAt
+            featuredImage {
+              url
+            }
+            member {
+              id
+              name
+              bio
+              photo {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await request(graphqlAPI, query, { slug });
+  return result.postsConnection.edges.map((edge) => edge.node);
+};
+
+export const getCategories = async () => {
+  const query = gql`
+    query GetCategories {
+      categories {
+        id
+        name
+        slug
+      }
+    }
+  `;
+  const result = await request(graphqlAPI, query);
+  return result.categories;
+};
+
+export const getUpcoming = async () => {
+  // Updated GraphQL query to fetch events in descending order of the date
+  const query = gql`
+    query MyQuery {
+      upcomings(orderBy: date_ASC, last: 3) {
+        id
+        name
+        slug
+        createdAt
+        date
+        description
+        venue
+        requirement
+      }
+    }
+  `;
+
+  // Execute the query and fetch results
+  const result = await request(graphqlAPI, query);
+
+  // Return the list of upcoming events
+  return result.upcomings;
+};
+
+export const searchPostsAndUpcoming = async (searchTerm) => {
+  try {
+    const query = gql`
+      query SearchPostsAndUpcoming($searchTerm: String!) {
+        posts(where: { title_contains: $searchTerm }) {
+          id
+          title
+          slug
+          excerpt
+          member {
+            id
+            name
+            bio
+            photo {
+              url
+            }
+          }
+        }
+        upcomings(where: { name_contains: $searchTerm }) {
+          id
+          name
+          slug
+          description
+        }
+        members(where: { name_contains: $searchTerm }) {
+          id
+          name
+          bio
+          photo {
+            url
+          }
+        }
+      }
+    `;
+
+    // Fetch the data from the GraphQL API
+    const result = await request(graphqlAPI, query, { searchTerm });
+
+    if (!result) {
+      throw new Error("No results found.");
+    }
+
+    return {
+      posts: result.posts,
+      upcomings: result.upcomings,
+      members: result.members,
+    };
+  } catch (error) {
+    // Log the error and display a message to the user
+    console.error("Error fetching search results:", error);
+    throw new Error("Failed to fetch search results. Please try again.");
+  }
+};
+export const submitComment = async (commentData) => {
+  try {
+    const response = await fetch("/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(commentData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit comment.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error submitting comment:", error);
+    throw new Error("Failed to submit comment.");
+  }
+};
+
+export const getComments = async (slug) => {
+  const query = gql`
+    query GetComments($slug: String!) {
+      comments(where: { post: { slug: $slug } }, orderBy: createdAt_DESC) {
+        name
+        createdAt
+        comment
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query, { slug });
+
+  return result.comments;
+};
+
+export const getMembers = async () => {
+  const query = gql`
+    query GetMembers {
+      members {
+        id
+        name
+        bio
+        role {
+          name
+        }
+        photo {
+          url
+        }
+        slug
+      }
+    }
+  `;
+  const result = await request(graphqlAPI, query);
+  return result.members;
+};
+
+export const getMemberPosts = async (slug) => {
+  const query = gql`
+    query GetMemberPosts($slug: String!) {
+      postsConnection(where: { member: { slug: $slug } }) {
+        edges {
+          node {
+            id
+            title
+            slug
+            excerpt
+            createdAt
+            featuredImage {
+              url
+            }
+            member {
+              id
+              name
+              bio
+              photo {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await request(graphqlAPI, query, { slug });
+  return result.postsConnection.edges.map((edge) => edge.node); // Map the response to extract the posts
+};
+
+export const getGalleryData = async () => {
+  const query = gql`
+    query GetGalleryData {
+      galleries {
+        id
+        name
+        photo {
+          url
+        }
+        date
+        description
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query);
+  return result.galleries;
+};
+
+export const getQuotes = async () => {
+  const query = gql`
+    query GetQuotes {
+      quotes {
+        name
+        quote
+        id
+        createdAt
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query);
+  return result.quotes;
+};

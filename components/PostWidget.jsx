@@ -43,39 +43,41 @@ const PostWidget = () => {
           Loading{dots} {/* Animated dots */}
         </div>
       ) : (
-        // Loop through recent posts
-        recentPosts.map((post) => (
-          <div
-            key={post.title} // Unique key for each post
-            className="flex items-center w-full mb-4 bg-black bg-opacity-30 hover:-translate-y-1 hover:bg-opacity-50 transition duration-200 rounded-xl p-4"
-          >
-            {/* Featured image */}
-            <div className="w-16 h-16 flex-none relative">
-              <Image
-                loader={graphCMSImageLoader}
-                src={post.featuredImage.url} // Post's featured image URL
-                alt={post.title} // Alt text for accessibility
-                width={60} // Set width for consistent size
-                height={60} // Set height for consistent size
-                className="rounded-full object-cover" // Ensure circular images
-              />
+        // Posts grid: 3 columns, 2 rows
+        <div className="grid grid-cols-3 gap-4">
+          {recentPosts.slice(0, 6).map((post) => (
+            <div
+              key={post.title} // Unique key for each post
+              className="bg-black bg-opacity-30 hover:-translate-y-1 hover:bg-opacity-50 transition duration-200 rounded-xl p-4 flex flex-col justify-between"
+            >
+              {/* Featured image */}
+              <div className="relative w-full aspect-square mb-4">
+                <Image
+                  loader={graphCMSImageLoader}
+                  src={post.featuredImage.url} // Post's featured image URL
+                  alt={post.title} // Alt text for accessibility
+                  layout="fill" // Ensure the image fills the square
+                  objectFit="cover" // Make sure the image covers the square
+                  className="rounded-lg"
+                />
+              </div>
+              {/* Post details */}
+              <div>
+                {/* Post creation date */}
+                <p className="text-white text-sm">
+                  {moment(post.createdAt).format("DD MMM YYYY")}
+                </p>
+                {/* Link to post */}
+                <Link
+                  href={`/post/${post.slug}`}
+                  className="text-lg text-white hover:underline"
+                >
+                  {post.title}
+                </Link>
+              </div>
             </div>
-            {/* Post details */}
-            <div className="flex-grow ml-4">
-              {/* Post creation date */}
-              <p className="text-white text-sm">
-                {moment(post.createdAt).format("DD MMM YYYY")}
-              </p>
-              {/* Link to post */}
-              <Link
-                href={`/post/${post.slug}`}
-                className="text-lg text-white hover:underline"
-              >
-                {post.title}
-              </Link>
-            </div>
-          </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );
