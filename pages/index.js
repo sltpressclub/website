@@ -8,7 +8,6 @@ import {
   Quotes,
   PostWidget,
   Mission,
-  Clubs,
 } from "../components"; // Importing required components
 import { getPost } from "../services"; // Importing API call for fetching posts
 
@@ -63,10 +62,6 @@ export default function Home({ posts }) {
         <div className="mt-12">
           <h2 className="text-center text-3xl font-semibold mb-6">Mission</h2>
           <Mission />
-        </div>
-        <div className="mt-12">
-          <h2 className="text-center text-3xl font-semibold mb-6">Clubs</h2>
-          <Clubs />
         </div>
       </div>
     </div>
