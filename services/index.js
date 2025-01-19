@@ -377,7 +377,7 @@ export const getQuotes = async () => {
 
 export const getClubs = async () => {
   const query = gql`
-    query GetClubs {
+    query getClubs {
       clubs {
         id
         name
@@ -391,5 +391,5 @@ export const getClubs = async () => {
   `;
 
   const result = await request(graphqlAPI, query);
-  return result.quotes;
+  return result.clubs;
 };
