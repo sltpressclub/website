@@ -22,13 +22,13 @@ const Gallery = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 rounded-3xl bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1">
       <div className="overflow-x-auto whitespace-nowrap">
         <div className="flex gap-4">
           {galleries.map((gallery) => (
             <div
               key={gallery.id}
-              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-lg overflow-hidden"
+              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-2xl overflow-hidden"
             >
               {/* Corrected access to the photo URL */}
               <img
