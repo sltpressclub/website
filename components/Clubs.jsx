@@ -34,7 +34,7 @@ const Clubs = () => {
               <img
                 src={club.featuredImage.url}
                 alt={club.name}
-                className="object-cover w-full h-full"
+                className="object-cover w-100 h-100"
               />
             </div>
 
