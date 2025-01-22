@@ -64,6 +64,10 @@ export default function Home({ posts }) {
           </h2>
           <Mission />
         </div>
+        <div className="mt-12">
+          <h2 className="text-center text-3xl font-semibold mb-6">Clubs</h2>
+          <Clubs />
+        </div>
       </div>
     </div>
   );
