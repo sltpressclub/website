@@ -50,6 +50,10 @@ export default function Home({ posts }) {
           <h2 className="text-center text-3xl font-semibold mb-6">History</h2>
           <History />
         </div>
+        <div className="mt-12">
+          <h2 className="text-center text-3xl font-semibold mb-6">Quotes</h2>
+          <Quotes />
+        </div>
       </div>
     </div>
   );
