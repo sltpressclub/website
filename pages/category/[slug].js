@@ -26,13 +26,6 @@ const CategoryPost = ({ posts }) => {
             <p>No posts available for this category</p> // Display message if no posts found
           )}
         </div>
-        <div className="col-span-1 lg:col-span-4">
-          {/* Sidebar section */}
-          <div className="relative lg:sticky top-8">
-            <Categories />{" "}
-            {/* Display the Categories component in the sidebar */}
-          </div>
-        </div>
       </div>
     </div>
   );
