@@ -22,7 +22,6 @@ export default function Home({ posts }) {
           <title>SLT Pressclub</title> {/* Page title */}
           <link rel="icon" href="/slt_pressclub_logo.png" /> {/* Favicon */}
         </Head>
-
         {/* Main Content Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
           {/* Blog Posts Section */}
@@ -40,7 +39,6 @@ export default function Home({ posts }) {
             </div>
           </div>
         </div>
-
         {/* Gallery Section */}
         <div className="mt-12">
           <h2 className="text-center text-3xl font-semibold mb-6">Gallery</h2>
@@ -59,6 +57,12 @@ export default function Home({ posts }) {
             Recent Posts
           </h2>
           <PostWidget />
+        </div>
+        <div className="mt-12">
+          <h2 className="text-center text-3xl font-semibold mb-6">
+            Our Mission
+          </h2>
+          <Mission />
         </div>
       </div>
     </div>
