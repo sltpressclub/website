@@ -4,7 +4,7 @@ import Link from "next/link"; // For navigating between pages in Next.js
 
 const PostCard = ({ post }) => {
   return (
-    <div className="relative bg-black bg-opacity-30 shadow-lg rounded-3xl overflow-hidden mb-8 hover:bg-opacity-60 transition duration-700 hover:-translate-y-1">
+    <div className="relative rounded-3xl overflow-hidden m-4">
       {/* Background image for the post */}
       <div
         className="absolute inset-0 bg-cover bg-center"
