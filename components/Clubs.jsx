@@ -30,7 +30,7 @@ const Clubs = () => {
             className="flex-none w-64 bg-black bg-opacity-30 rounded-xl p-4"
           >
             {/* Club image */}
-            <div className="relative w-40 h-40 mb-4 rounded-2xl overflow-hidden ">
+            <div className="relative w-40 h-40 mb-4 rounded-2xl overflow-hidden">
               <img
                 src={club.featuredImage.url}
                 alt={club.name}
