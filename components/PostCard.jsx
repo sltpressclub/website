@@ -7,7 +7,7 @@ const PostCard = ({ post }) => {
     <div className="relative rounded-3xl overflow-hidden m-4">
       {/* Background image for the post */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center bg-black bg-opacity-30"
         style={{
           backgroundImage: `url(${post.featuredImage.url})`, // Set image as background
         }}
