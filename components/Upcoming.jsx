@@ -20,7 +20,7 @@ const Modal = ({ isOpen, onClose, event }) => {
   };
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-3xl flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
       <div className="bg-black bg-opacity-75 hover:bg-opacity-100 transition duration-500 p-6 rounded-3xl w-3/4 max-w-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-white mb-4">{event.name}</h2>
         <p className="text-white mb-2">
@@ -99,7 +99,7 @@ const Upcoming = () => {
   };
 
   return (
-    <div className="relative bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1 transition duration-500 p-8 mb-8 rounded-3xl shadow-lg">
+    <div className="relative bg-black blur-3xl bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1 transition duration-500 p-8 mb-8 rounded-3xl shadow-lg">
       <h1 className="text-white text-xl mb-8 font-semibold border-b pb-4">
         Upcoming Events
       </h1>
