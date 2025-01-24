@@ -3,13 +3,13 @@ import React from "react";
 const History = () => {
   return (
     <div
-      className="relative w-screen bg-cover bg-center flex items-center justify-center rounded-3xl"
+      className="relative h-[500px] bg-cover bg-center flex items-center justify-center rounded-3xl overflow-hidden"
       style={{
         backgroundImage: `url('/history.png')`,
       }}
     >
       {/* Overlay for dark effect */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-50 rounded-3xl"></div>
 
       {/* Content */}
       <div className="relative text-center text-white p-4">
