@@ -41,7 +41,6 @@ export default function Home({ posts }) {
         </div>
         {/* Gallery Section */}
         <div className="mt-12">
-          <h2 className="text-center text-3xl font-semibold mb-6">Gallery</h2>
           <Gallery />
         </div>
         <div className="mt-12">

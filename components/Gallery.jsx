@@ -3,6 +3,7 @@ import { getGalleryData } from "../services"; // Import the function to fetch ga
 
 const Gallery = () => {
   const [galleries, setGalleries] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null); // Track the selected image for full-screen view
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,14 +24,15 @@ const Gallery = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 rounded-3xl bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1">
+      {/* Gallery grid */}
       <div className="overflow-x-auto whitespace-nowrap">
         <div className="flex gap-4">
           {galleries.map((gallery) => (
             <div
               key={gallery.id}
-              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-2xl overflow-hidden"
+              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-2xl overflow-hidden cursor-pointer"
+              onClick={() => setSelectedImage(gallery.photo.url)} // Set the selected image on click
             >
-              {/* Corrected access to the photo URL */}
               <img
                 src={gallery.photo.url}
                 alt={`Gallery image of ${gallery.name}`}
@@ -44,6 +46,27 @@ const Gallery = () => {
           ))}
         </div>
       </div>
+
+      {/* Full-screen modal for the selected image */}
+      {selectedImage && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-75 flex items-center justify-center">
+          {/* Full-screen image */}
+          <div className="relative">
+            <img
+              src={selectedImage}
+              alt="Full screen"
+              className="max-w-full max-h-screen rounded-lg"
+            />
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 bg-red-600 text-white rounded-full p-2 shadow-lg hover:bg-red-700"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
