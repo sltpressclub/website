@@ -34,7 +34,7 @@ export default function Home({ posts }) {
 
           {/* Sidebar Section */}
           <div className="lg:col-span-4 col-span-1">
-            <div className="relative top-8">
+            <div className="relative">
               <Upcoming /> {/* Component to display upcoming events or posts */}
             </div>
           </div>
