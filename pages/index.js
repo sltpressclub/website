@@ -40,31 +40,22 @@ export default function Home({ posts }) {
           </div>
         </div>
         {/* Gallery Section */}
-        <div className="mt-12">
+        <div className="mt-8">
           <Gallery />
         </div>
-        <div className="mt-12">
-          <h2 className="text-center text-3xl font-semibold mb-6">History</h2>
+        <div className="mt-8">
           <History />
         </div>
         <div className="mt-12">
-          <h2 className="text-center text-3xl font-semibold mb-6">Quotes</h2>
           <Quotes />
         </div>
-        <div className="mt-12">
-          <h2 className="text-center text-3xl font-semibold mb-6">
-            Recent Posts
-          </h2>
+        <div className="mt-8">
           <PostWidget />
         </div>
-        <div className="mt-12">
-          <h2 className="text-center text-3xl font-semibold mb-6">
-            Our Mission
-          </h2>
+        <div className="mt-8">
           <Mission />
         </div>
-        <div className="mt-12">
-          <h2 className="text-center text-3xl font-semibold mb-6">Clubs</h2>
+        <div className="mt-8">
           <Clubs />
         </div>
       </div>

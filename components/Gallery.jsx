@@ -13,7 +13,7 @@ const Modal = ({ isOpen, onClose, image }) => {
         <img
           src={image}
           alt="Full screen"
-          className="max-w-full max-h-screen rounded-lg"
+          className="max-w-full max-h-screen rounded-3xl"
         />
         {/* Close button */}
         <button
@@ -65,8 +65,8 @@ const Gallery = () => {
   const closeModal = () => setSelectedImage(null);
 
   return (
-    <div className="container mx-auto p-8 rounded-3xl bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1">
-      <h1 className="text-white text-xl mb-5 font-semibold">Gallery</h1>
+    <div className="container mx-auto p-8 rounded-3xl bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1 transition duration-700">
+      <h1 className="text-white text-2xl mb-5 font-semibold">Gallery</h1>
       {loading ? (
         <div className="text-center text-white text-lg">
           Loading{dots} {/* Animated dots */}
