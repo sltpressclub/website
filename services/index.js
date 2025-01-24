@@ -38,6 +38,43 @@ export const getPost = async () => {
   return result.postsConnection.edges;
 };
 
+export const getFeaturedPosts = async () => {
+  const query = gql`
+    query GetFeaturedPosts {
+      postsConnection(orderBy: createdAt_DESC, where: { featuredPost: true }) {
+        edges {
+          cursor
+          node {
+            member {
+              bio
+              name
+              id
+              photo {
+                url
+              }
+            }
+            createdAt
+            slug
+            title
+            excerpt
+            featuredImage {
+              url
+            }
+            category {
+              name
+              slug
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query);
+
+  return result.postsConnection.edges;
+};
+
 export const getPosts = async () => {
   const query = gql`
     query MyQuery {

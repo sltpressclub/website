@@ -9,6 +9,7 @@ import {
   PostWidget,
   Mission,
   Clubs,
+  FeaturedPost,
 } from "../components"; // Importing required components
 import { getPost } from "../services"; // Importing API call for fetching posts
 
@@ -57,6 +58,9 @@ export default function Home({ posts }) {
         </div>
         <div className="mt-8">
           <Clubs />
+        </div>
+        <div className="mt-8">
+          <FeaturedPost />
         </div>
       </div>
     </div>
