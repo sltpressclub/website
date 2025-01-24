@@ -3,7 +3,7 @@ import React from "react";
 const History = () => {
   return (
     <div
-      className="relative h-screen bg-cover bg-center flex items-center justify-center"
+      className="relative w-screen bg-cover bg-center flex items-center justify-center rounded-3xl"
       style={{
         backgroundImage: `url('/history.png')`,
       }}
@@ -20,7 +20,7 @@ const History = () => {
         </p>
         <a
           href="/history"
-          className="inline-block bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded transition duration-300"
+          className="inline-block bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-6 rounded-3xl transition duration-300"
         >
           View History
         </a>
