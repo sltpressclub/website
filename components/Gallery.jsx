@@ -20,7 +20,7 @@ const Modal = ({ isOpen, onClose, image }) => {
           onClick={onClose}
           className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-red-700"
         >
-          ✕
+          Close
         </button>
       </div>
     </div>,
@@ -66,9 +66,7 @@ const Gallery = () => {
 
   return (
     <div className="container mx-auto p-8 rounded-3xl bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1">
-      <h1 className="text-white text-xl mb-8 font-semibold border-b pb-4">
-        Gallery
-      </h1>
+      <h1 className="text-white text-xl mb-5 font-semibold">Gallery</h1>
       {loading ? (
         <div className="text-center text-white text-lg">
           Loading{dots} {/* Animated dots */}
