@@ -73,7 +73,7 @@ const Quotes = () => {
         {quotes.map((quote, index) => (
           <div
             key={index}
-            className="flex-shrink-0 w-[300px] h-[400px] bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-6 rounded-3xl shadow-lg transform transition-transform duration-300 flex items-center justify-center"
+            className="flex-shrink-0 w-[300px] h-[400px] bg-black bg-opacity-50 text-white p-6 rounded-3xl shadow-lg transform transition-transform duration-300 flex items-center justify-center"
             style={{
               transform: index === 0 ? "scale(1)" : "scale(0.85)", // Initial zoom effect
               opacity: index === 0 ? 1 : 0.5,
