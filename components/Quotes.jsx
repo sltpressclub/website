@@ -6,6 +6,7 @@ const Quotes = () => {
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state for data fetch
   const [currentIndex, setCurrentIndex] = useState(0); // Track the current visible quote
+  const [isSwiping, setIsSwiping] = useState(false); // Animation lock during swipe
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,15 +24,23 @@ const Quotes = () => {
   }, []);
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? quotes.length - 1 : prevIndex - 1
-    );
+    if (!isSwiping) {
+      setIsSwiping(true);
+      setTimeout(() => setIsSwiping(false), 300);
+      setCurrentIndex((prevIndex) =>
+        prevIndex === 0 ? quotes.length - 1 : prevIndex - 1
+      );
+    }
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === quotes.length - 1 ? 0 : prevIndex + 1
-    );
+    if (!isSwiping) {
+      setIsSwiping(true);
+      setTimeout(() => setIsSwiping(false), 300);
+      setCurrentIndex((prevIndex) =>
+        prevIndex === quotes.length - 1 ? 0 : prevIndex + 1
+      );
+    }
   };
 
   // Handlers for swipe gestures
@@ -39,7 +48,7 @@ const Quotes = () => {
     onSwipedLeft: handleNext,
     onSwipedRight: handlePrev,
     preventDefaultTouchmoveEvent: true,
-    trackMouse: false,
+    trackMouse: true,
   });
 
   if (loading) {
@@ -52,33 +61,36 @@ const Quotes = () => {
 
   return (
     <div
-      className="container mx-auto px-4 py-8 text-center"
+      className="container mx-auto px-4 py-8 flex justify-center items-center"
       {...handlers} // Apply swipe handlers to the main container
     >
-      <div className="relative flex items-center justify-center">
-        {/* Button for Previous Quote (Desktop only) */}
+      <div className="relative w-[400px] h-[500px]">
+        {/* Arrow Buttons for Desktop */}
         <button
           onClick={handlePrev}
-          className="hidden md:block absolute left-0 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100"
+          className="hidden md:block absolute left-[-50px] top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100 z-10"
         >
           &lt;
         </button>
 
-        {/* Quote Display */}
-        <div className="w-[400px] h-[500px] mx-4 bg-gray-800 bg-opacity-50 text-white p-6 rounded-lg shadow-md flex flex-col justify-center">
-          <p className="text-xl font-semibold italic mb-4 overflow-hidden">
+        {/* Quote Card */}
+        <div
+          className={`absolute inset-0 bg-gray-800 bg-opacity-50 text-white p-6 rounded-lg shadow-md flex justify-center items-center text-center transition-transform duration-300 ${
+            isSwiping ? "transform scale-95 opacity-50" : ""
+          }`}
+          style={{
+            transform: `translateX(${isSwiping ? "-50%" : "0"})`,
+          }}
+        >
+          <p className="text-3xl font-semibold italic">
             "{quotes[currentIndex].quote}"
-          </p>
-          <p className="text-sm text-gray-300">- {quotes[currentIndex].name}</p>
-          <p className="text-xs text-gray-400 mt-2">
-            {new Date(quotes[currentIndex].createdAt).toLocaleDateString()}
           </p>
         </div>
 
-        {/* Button for Next Quote (Desktop only) */}
+        {/* Arrow Buttons for Desktop */}
         <button
           onClick={handleNext}
-          className="hidden md:block absolute right-0 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100"
+          className="hidden md:block absolute right-[-50px] top-1/2 transform -translate-y-1/2 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100 z-10"
         >
           &gt;
         </button>
