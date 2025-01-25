@@ -56,6 +56,15 @@ const Quotes = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Title Section */}
+      <div className="text-center mb-8">
+        <h2 className="text-4xl font-bold text-white inline-block relative pb-2">
+          Quotes
+          <span className="absolute bottom-0 left-1/2 w-full h-1 bg-white opacity-50 transform -translate-x-1/2 hover:opacity-75 hover:bg-black transition-all duration-300"></span>
+        </h2>
+      </div>
+
+      {/* Quote Carousel */}
       <div
         className="flex gap-4 overflow-x-scroll no-scrollbar scroll-smooth"
         ref={scrollRef}
@@ -64,7 +73,7 @@ const Quotes = () => {
         {quotes.map((quote, index) => (
           <div
             key={index}
-            className="flex-shrink-0 w-[300px] h-[400px] bg-gray-800 text-white p-6 rounded-lg shadow-lg transform transition-transform duration-300"
+            className="flex-shrink-0 w-[300px] h-[400px] bg-black bg-opacity-50 text-white p-6 rounded-3xl shadow-lg transform transition-transform duration-300 flex items-center justify-center"
             style={{
               transform: index === 0 ? "scale(1)" : "scale(0.85)", // Initial zoom effect
               opacity: index === 0 ? 1 : 0.5,
