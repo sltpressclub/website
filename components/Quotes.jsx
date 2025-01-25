@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable"; // Import swipeable hook
 import { getQuotes } from "../services"; // Import the function to fetch quote data
 
 const Quotes = () => {
@@ -33,6 +34,14 @@ const Quotes = () => {
     );
   };
 
+  // Handlers for swipe gestures
+  const handlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: false,
+  });
+
   if (loading) {
     return <p className="text-center text-gray-500">Loading quotes...</p>;
   }
@@ -42,19 +51,22 @@ const Quotes = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 text-center">
+    <div
+      className="container mx-auto px-4 py-8 text-center"
+      {...handlers} // Apply swipe handlers to the main container
+    >
       <div className="relative flex items-center justify-center">
-        {/* Button for Previous Quote */}
+        {/* Button for Previous Quote (Desktop only) */}
         <button
           onClick={handlePrev}
-          className="absolute left-0 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100"
+          className="hidden md:block absolute left-0 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100"
         >
           &lt;
         </button>
 
         {/* Quote Display */}
-        <div className="w-96 h-auto mx-4 bg-gray-800 bg-opacity-50 text-white p-6 rounded-lg shadow-md">
-          <p className="text-xl font-semibold italic mb-4">
+        <div className="w-[400px] h-[500px] mx-4 bg-gray-800 bg-opacity-50 text-white p-6 rounded-lg shadow-md flex flex-col justify-center">
+          <p className="text-xl font-semibold italic mb-4 overflow-hidden">
             "{quotes[currentIndex].quote}"
           </p>
           <p className="text-sm text-gray-300">- {quotes[currentIndex].name}</p>
@@ -63,10 +75,10 @@ const Quotes = () => {
           </p>
         </div>
 
-        {/* Button for Next Quote */}
+        {/* Button for Next Quote (Desktop only) */}
         <button
           onClick={handleNext}
-          className="absolute right-0 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100"
+          className="hidden md:block absolute right-0 bg-gray-800 text-white px-4 py-2 rounded-full opacity-70 hover:opacity-100"
         >
           &gt;
         </button>

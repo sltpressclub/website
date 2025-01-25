@@ -14,7 +14,7 @@ const PostCard = ({ post }) => {
       ></div>
 
       {/* Overlay for dimming the image */}
-      <div className="absolute inset-0 bg-black bg-opacity-50 hover:bg-opacity-75"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-50 transition duration-500 hover:bg-opacity-75"></div>
 
       {/* Content container */}
       <div className="relative p-8 text-white flex flex-col justify-end h-full">
