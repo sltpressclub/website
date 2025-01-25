@@ -66,10 +66,9 @@ const Gallery = () => {
 
   return (
     <div className="container mx-auto p-4 rounded-3xl">
-      <h2 className="text-4xl font-bold text-white inline-block relative pb-2">
-        Quotes
-        <span className="absolute bottom-0 left-1/2 w-full h-1 bg-white opacity-50 transform -translate-x-1/2 hover:opacity-75 hover:bg-black transition-all duration-300"></span>
-      </h2>
+      <h3 className="text-4xl font-bold text-white inline-block relative pb-2 mb-4">
+        Gallery
+      </h3>
       {loading ? (
         <div className="text-center text-white text-lg">
           Loading{dots} {/* Animated dots */}
@@ -80,7 +79,7 @@ const Gallery = () => {
         </div>
       ) : galleries.length > 0 ? (
         <div className="overflow-x-auto whitespace-nowrap">
-          <div className="flex gap-4">
+          <div className="flex gap-6">
             {galleries.map((gallery) => (
               <div
                 key={gallery.id}

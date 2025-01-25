@@ -44,12 +44,13 @@ export default function Home({ posts }) {
         <div className="mt-8">
           <Gallery />
         </div>
-        <div className="mt-8">
-          <History />
-        </div>
         <div className="mt-12">
           <Quotes />
         </div>
+        <div className="mt-8">
+          <History />
+        </div>
+
         <div className="mt-8">
           <PostWidget />
         </div>
