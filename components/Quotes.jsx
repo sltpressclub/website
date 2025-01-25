@@ -55,13 +55,12 @@ const Quotes = () => {
   }
 
   return (
-    <div className="container mx-auto px-6 py-8">
+    <div className="container mx-auto px-6 py-6">
       {/* Title Section */}
-      <div className="text-center mb-8">
-        <h2 className="text-4xl font-bold text-white inline-block relative pb-2">
+      <div className="text-center mb-6">
+        <h4 className="text-4xl font-bold text-white inline-block relative pb-2">
           Quotes
-          <span className="absolute bottom-0 left-1/2 w-full h-1 bg-white opacity-50 transform -translate-x-1/2 hover:opacity-75 hover:bg-black transition-all duration-300"></span>
-        </h2>
+        </h4>
       </div>
 
       {/* Quote Carousel */}
