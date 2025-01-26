@@ -43,7 +43,7 @@ const Clubs = () => {
             {/* Club image */}
             <div className="relative w-40 h-40 mb-4 rounded-2xl overflow-hidden">
               <img
-                src={club.photo ? club.photo.url : "/default-image.jpg"} // Default image fallback
+                src={club.featuredImage ? club.photo.url : "/default-image.jpg"} // Default image fallback
                 alt={club.name}
                 className="object-cover w-full h-full"
               />

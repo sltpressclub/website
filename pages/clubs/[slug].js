@@ -34,7 +34,7 @@ export default ClubPost;
 export async function getServerSideProps({ params }) {
   try {
     // Fetch the posts for a specific club using the slug from params
-    const posts = await getClubPosts(params.slug); // get posts by the club's slug
+    const posts = await getClubPosts(params.slug); // Get posts by the club's slug
     return { props: { posts } }; // Return the posts as props
   } catch (error) {
     console.error("Error fetching posts for club:", error);
