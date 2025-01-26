@@ -17,7 +17,7 @@ const ClubPost = ({ posts }) => {
       <h1 className="text-2xl font-semibold mb-6">Posts for this Club</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Grid layout for posts */}
-        {posts.length > 0 ? (
+        {posts && posts.length > 0 ? (
           // If there are posts, display each post using the PostCard component
           posts.map((post, index) => <PostCard key={index} post={post} />)
         ) : (
@@ -35,6 +35,12 @@ export async function getServerSideProps({ params }) {
   try {
     // Fetch the posts for a specific club using the slug from params
     const posts = await getClubPosts(params.slug); // Get posts by the club's slug
+
+    // If no posts found, return empty array
+    if (!posts) {
+      return { props: { posts: [] } };
+    }
+
     return { props: { posts } }; // Return the posts as props
   } catch (error) {
     console.error("Error fetching posts for club:", error);
