@@ -10,21 +10,16 @@ const Clubs = () => {
   // Fetch clubs on component mount
   useEffect(() => {
     const fetchClubs = async () => {
-      try {
-        const clubsData = await getClubs(); // Fetch club data
-        setClubs(clubsData); // Set the state with fetched clubs
-      } catch (error) {
-        console.error("Error fetching clubs:", error);
-      } finally {
-        setLoading(false); // Stop loading after fetching data
-      }
+      const clubsData = await getClubs();
+      setClubs(clubsData);
+      setLoading(false);
     };
 
     fetchClubs();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading state while fetching clubs
+    return <div>Loading...</div>;
   }
 
   const handleViewClub = (slug) => {
@@ -43,7 +38,7 @@ const Clubs = () => {
             {/* Club image */}
             <div className="relative w-40 h-40 mb-4 rounded-2xl overflow-hidden">
               <img
-                src={club.featuredImage ? club.photo.url : "/default-image.jpg"} // Default image fallback
+                src={club.featuredImage.url}
                 alt={club.name}
                 className="object-cover w-full h-full"
               />
