@@ -11,17 +11,22 @@ const ClubPost = ({ posts }) => {
     return <Loader />;
   }
 
+  // Log posts data to see what is being passed into the component
+  console.log("Posts data received:", posts);
+
   return (
     <div className="container mx-auto px-10 mb-8">
-      {/* Main container for the page */}
       <h1 className="text-2xl font-semibold mb-6">Posts for this Club</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Grid layout for posts */}
-        {posts && posts.length > 0 ? (
-          // If there are posts, display each post using the PostCard component
-          posts.map((post, index) => <PostCard key={index} post={post} />)
+        {/* Check if posts are available */}
+        {posts.length > 0 ? (
+          posts.map((post, index) => {
+            // Log each individual post to see its structure
+            console.log("Post details:", post);
+            return <PostCard key={index} post={post} />;
+          })
         ) : (
-          <p>No posts available for this club</p> // Display message if no posts found
+          <p>No posts available for this club</p>
         )}
       </div>
     </div>
@@ -36,15 +41,12 @@ export async function getServerSideProps({ params }) {
     // Fetch the posts for a specific club using the slug from params
     const posts = await getClubPosts(params.slug); // Get posts by the club's slug
 
-    // If no posts found, return empty array
-    if (!posts) {
-      return { props: { posts: [] } };
-    }
+    // Log the fetched posts data before returning it to the page
+    console.log("Fetched posts for club:", posts);
 
-    return { props: { posts } }; // Return the posts as props
+    return { props: { posts } };
   } catch (error) {
     console.error("Error fetching posts for club:", error);
-    // If there's an error fetching posts, return an empty array
-    return { props: { posts: [] } };
+    return { props: { posts: [] } }; // Return an empty array in case of an error
   }
 }
