@@ -449,7 +449,7 @@ export const getClubPosts = async (slug) => {
               id
               name
               description
-              logo {
+              featuredImage {
                 url
               }
             }
@@ -459,5 +459,5 @@ export const getClubPosts = async (slug) => {
     }
   `;
   const result = await request(graphqlAPI, query, { slug });
-  return result.postsConnection.edges.map((edge) => edge.node); // Map the response to extract the posts
+  return result.postsConnection.edges.map((edge) => edge.node); // Extract and return the posts
 };

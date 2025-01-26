@@ -16,3 +16,4 @@ export { default as Quotes } from "./Quotes";
 export { default as Mission } from "./Mission";
 export { default as Clubs } from "./Clubs";
 export { default as FeaturedPost } from "./FeaturedPost";
+export { default as Awards } from "./Awards";
