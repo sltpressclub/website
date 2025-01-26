@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router"; // Import useRouter for navigation
 import { getClubs } from "../services"; // Import the function to fetch clubs
 
 const Clubs = () => {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter(); // Initialize useRouter
 
   // Fetch clubs on component mount
   useEffect(() => {
@@ -19,6 +21,10 @@ const Clubs = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  const handleViewClub = (slug) => {
+    router.push(`/clubs/${slug}`); // Navigate to the club's slug page
+  };
 
   return (
     <div className="relative">
@@ -42,6 +48,12 @@ const Clubs = () => {
             <div>
               <h3 className="text-lg font-semibold text-white">{club.name}</h3>
               <p className="text-sm text-white mt-2">{club.description}</p>
+              <button
+                onClick={() => handleViewClub(club.slug)} // Navigate on button click
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                View Club
+              </button>
             </div>
           </div>
         ))}

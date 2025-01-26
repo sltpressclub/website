@@ -430,3 +430,34 @@ export const getClubs = async () => {
   const result = await request(graphqlAPI, query);
   return result.clubs;
 };
+
+export const getClubPosts = async (slug) => {
+  const query = gql`
+    query GetClubPosts($slug: String!) {
+      postsConnection(where: { club: { slug: $slug } }) {
+        edges {
+          node {
+            id
+            title
+            slug
+            excerpt
+            createdAt
+            featuredImage {
+              url
+            }
+            club {
+              id
+              name
+              description
+              logo {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await request(graphqlAPI, query, { slug });
+  return result.postsConnection.edges.map((edge) => edge.node); // Map the response to extract the posts
+};
