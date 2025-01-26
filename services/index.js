@@ -445,6 +445,14 @@ export const getClubPosts = async (slug) => {
             featuredImage {
               url
             }
+            member {
+              id
+              name
+              bio
+              photo {
+                url
+              }
+            }
             club {
               id
               name
