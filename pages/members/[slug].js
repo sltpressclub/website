@@ -15,7 +15,7 @@ const MemberPost = ({ posts }) => {
   return (
     <div className="container mx-auto px-5 md:px-10 mb-8">
       {member && (
-        <div className="flex flex-col md:flex-row items-center md:items-start bg-gray-100 p-6 rounded-lg shadow-md mb-8">
+        <div className="flex flex-col md:flex-row items-center md:items-start bg-black bg-opacity-30 rounded-3xl p-6  shadow-md mb-8">
           <img
             src={member.photo.url}
             alt={member.name}

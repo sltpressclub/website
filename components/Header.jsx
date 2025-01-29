@@ -10,6 +10,13 @@ const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    if (!isMenuOpen) {
+      // Disable body scroll when menu is open
+      document.body.style.overflow = "hidden";
+    } else {
+      // Enable body scroll when menu is closed
+      document.body.style.overflow = "auto";
+    }
   };
 
   return (
@@ -59,65 +66,83 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="bg-black bg-opacity-90 text-white absolute top-0 left-0 w-full h-screen flex flex-col items-center justify-center z-50">
-          <ul className="space-y-6 text-center">
-            <li>
-              <Link href="/" passHref>
-                <a
-                  onClick={toggleMenu}
-                  className="text-xl font-bold hover:text-gray-400"
-                >
-                  Home
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/members" passHref>
-                <a
-                  onClick={toggleMenu}
-                  className="text-xl font-bold hover:text-gray-400"
-                >
-                  Members
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/about" passHref>
-                <a
-                  onClick={toggleMenu}
-                  className="text-xl font-bold hover:text-gray-400"
-                >
-                  About Us
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" passHref>
-                <a
-                  onClick={toggleMenu}
-                  className="text-xl font-bold hover:text-gray-400"
-                >
-                  Contact Us
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/privacy" passHref>
-                <a
-                  onClick={toggleMenu}
-                  className="text-xl font-bold hover:text-gray-400"
-                >
-                  Privacy Policy
-                </a>
-              </Link>
-            </li>
-            <li className="pt-6">
-              {/* Mobile Search Bar */}
-              <div className="w-full px-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-50">
+          <div className="bg-black bg-opacity-90 text-white w-full h-full flex flex-col items-center justify-start pt-6">
+            {/* Close Button and Search Bar */}
+            <div className="w-full px-4 flex justify-between items-center mb-6">
+              <button onClick={toggleMenu} className="text-white text-3xl">
+                <AiOutlineClose />
+              </button>
+              {/* Search Bar at the top */}
+              <div className="w-full">
                 <SearchBar />
               </div>
-            </li>
-          </ul>
+            </div>
+
+            {/* Menu Links */}
+            <ul className="w-full text-center space-y-6">
+              <li>
+                <Link href="/" passHref>
+                  <a
+                    onClick={toggleMenu}
+                    className="text-xl font-bold hover:text-gray-400"
+                  >
+                    Home
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/members" passHref>
+                  <a
+                    onClick={toggleMenu}
+                    className="text-xl font-bold hover:text-gray-400"
+                  >
+                    Members
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" passHref>
+                  <a
+                    onClick={toggleMenu}
+                    className="text-xl font-bold hover:text-gray-400"
+                  >
+                    About Us
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" passHref>
+                  <a
+                    onClick={toggleMenu}
+                    className="text-xl font-bold hover:text-gray-400"
+                  >
+                    Contact Us
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" passHref>
+                  <a
+                    onClick={toggleMenu}
+                    className="text-xl font-bold hover:text-gray-400"
+                  >
+                    Privacy Policy
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" passHref>
+                  <a
+                    onClick={toggleMenu}
+                    className="text-xl font-bold hover:text-gray-400"
+                  >
+                    Terms and Conditions
+                  </a>
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

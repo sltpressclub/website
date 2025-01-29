@@ -15,7 +15,7 @@ const ClubPost = ({ posts }) => {
   return (
     <div className="container mx-auto px-5 md:px-10 mb-8">
       {club && (
-        <div className="flex flex-col md:flex-row items-center md:items-start bg-gray-100 p-6 rounded-lg shadow-md mb-8">
+        <div className="flex flex-col md:flex-row items-center md:items-start bg-black bg-opacity-30 p-6 rounded-3xl shadow-md mb-8">
           <img
             src={club.featuredImage.url}
             alt={club.name}
