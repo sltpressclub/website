@@ -63,7 +63,7 @@ const FeaturedPost = () => {
             <Link
               key={post.slug}
               href={`/post/${post.slug}`}
-              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-2xl overflow-hidden group cursor-pointer"
+              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105"
             >
               <div
                 className="w-full h-full bg-cover bg-center"
@@ -73,10 +73,14 @@ const FeaturedPost = () => {
                 <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition"></div>
 
                 {/* Post Details */}
-                <div className="absolute bottom-2 right-2 text-white text-sm p-2 rounded bg-black bg-opacity-50">
-                  <h2 className="font-semibold text-lg">{post.title}</h2>
-                  <p>By {post.member.name}</p>
-                  <p>{moment(post.createdAt).format("DD MMM YYYY")}</p>
+                <div className="absolute bottom-2 left-2 right-2 text-white text-sm p-2 rounded bg-black bg-opacity-50">
+                  <h2 className="font-semibold text-xs sm:text-sm md:text-base line-clamp-2">
+                    {post.title}
+                  </h2>
+                  <p className="text-xs">{`By ${post.member.name}`}</p>
+                  <p className="text-xs">
+                    {moment(post.createdAt).format("DD MMM YYYY")}
+                  </p>
                 </div>
               </div>
             </Link>

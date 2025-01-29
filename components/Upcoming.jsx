@@ -99,7 +99,7 @@ const Upcoming = () => {
   };
 
   return (
-    <div className="relative bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1 transition duration-500 p-8 rounded-3xl">
+    <div className="relative bg-black bg-opacity-30 hover:bg-opacity-50  p-8 rounded-3xl">
       <h1 className="text-white text-xl mb-8 font-semibold border-b pb-4">
         Upcoming Events
       </h1>
@@ -116,7 +116,7 @@ const Upcoming = () => {
           {upcomings.map((upcoming) => (
             <li
               key={upcoming.id}
-              className="bg-black bg-opacity-30 hover:bg-opacity-50 hover:-translate-y-1 p-4 rounded-2xl transition duration-500 cursor-pointer"
+              className="bg-black bg-opacity-30 hover:bg-opacity-50 transform hover:scale-105 p-4 rounded-2xl transition duration-500 cursor-pointer"
               onClick={() => setSelectedEvent(upcoming)}
             >
               <p className="text-xl font-semibold text-white">

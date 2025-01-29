@@ -33,7 +33,7 @@ const Clubs = () => {
         {clubs.map((club) => (
           <div
             key={club.id}
-            className="relative flex-none w-64 h-40 rounded-xl overflow-hidden bg-black bg-opacity-50 flex items-center justify-center"
+            className="relative flex-none w-80 h-80 rounded-xl overflow-hidden bg-black bg-opacity-50 flex items-center justify-center aspect-square"
             style={{
               backgroundImage: `url(${club.featuredImage.url})`,
               backgroundSize: "cover",
