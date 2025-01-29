@@ -13,7 +13,7 @@ const MemberPost = ({ posts }) => {
   const member = posts.length > 0 ? posts[0].member : null;
 
   return (
-    <div className="container mx-auto px-5 md:px-10 mb-8">
+    <div className="container mx-auto px-5 md:px-10 mb-8 text-white">
       {member && (
         <div className="flex flex-col md:flex-row items-center md:items-start bg-black bg-opacity-30 rounded-3xl p-6  shadow-md mb-8">
           <img
@@ -23,13 +23,9 @@ const MemberPost = ({ posts }) => {
           />
           <div className="md:ml-6 mt-4 md:mt-0 text-center md:text-left">
             <h2 className="text-2xl font-semibold">{member.name}</h2>
-            <p className="text-gray-500 text-sm md:text-base">
-              {member.role.name}
-            </p>
-            <p className="text-gray-700 mt-2">{member.bio}</p>
-            <p className="text-gray-600 mt-2 font-medium">
-              Posts: {posts.length}
-            </p>
+            <p className=" text-sm md:text-base">{member.role.name}</p>
+            <p className=" mt-2">{member.bio}</p>
+            <p className=" mt-2 font-medium">Posts: {posts.length}</p>
           </div>
         </div>
       )}

@@ -13,7 +13,7 @@ const ClubPost = ({ posts }) => {
   const club = posts.length > 0 ? posts[0].club : null;
 
   return (
-    <div className="container mx-auto px-5 md:px-10 mb-8">
+    <div className="container mx-auto px-5 md:px-10 mb-8 text-white">
       {club && (
         <div className="flex flex-col md:flex-row items-center md:items-start bg-black bg-opacity-30 p-6 rounded-3xl shadow-md mb-8">
           <img
@@ -23,10 +23,8 @@ const ClubPost = ({ posts }) => {
           />
           <div className="md:ml-6 mt-4 md:mt-0 text-center md:text-left">
             <h2 className="text-2xl font-semibold">{club.name}</h2>
-            <p className="text-gray-700 mt-2">{club.description}</p>
-            <p className="text-gray-600 mt-2 font-medium">
-              Posts: {posts.length}
-            </p>
+            <p className=" mt-2">{club.description}</p>
+            <p className=" mt-2 font-medium">Posts: {posts.length}</p>
           </div>
         </div>
       )}
