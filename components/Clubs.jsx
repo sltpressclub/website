@@ -33,7 +33,7 @@ const Clubs = () => {
         {clubs.map((club) => (
           <div
             key={club.id}
-            className="relative flex-none w-80 h-80 rounded-xl overflow-hidden bg-black bg-opacity-50 flex items-center justify-center aspect-square"
+            className="relative flex-none w-60 h-60 rounded-xl overflow-hidden flex items-center justify-center aspect-square"
             style={{
               backgroundImage: `url(${club.featuredImage.url})`,
               backgroundSize: "cover",
@@ -41,7 +41,7 @@ const Clubs = () => {
             }}
           >
             {/* Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl"></div>
+            <div className="absolute inset-0 bg-black bg-opacity-30 rounded-xl"></div>
 
             {/* Club info */}
             <div className="relative text-center text-white px-4">

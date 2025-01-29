@@ -30,7 +30,7 @@ const Quotes = () => {
 
   return (
     <div
-      className="relative w-full  flex flex-col justify-center items-center bg-black bg-opacity-30 " // Reduced vertical padding
+      className="relative w-full  flex flex-col justify-center items-center bg-transparent" // Reduced vertical padding
     >
       {/* Title Section */}
       <div className="relative text-center mb-4 z-10">
