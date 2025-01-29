@@ -51,7 +51,7 @@ const Quotes = () => {
           {quotes.map((quote, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-[250px] h-[250px] bg-cover bg-center text-white p-4 rounded-2xl shadow-lg transform transition-transform duration-300 flex items-center justify-center"
+              className="flex-shrink-0 w-[250px] h-[250px] bg-cover bg-center text-white p-4 rounded-2xl transform transition-transform duration-300 flex items-center justify-center"
               style={{ backgroundImage: "url('/quote.jpg')" }} // Each quote background
             >
               <p className="text-xl font-semibold italic text-center">
