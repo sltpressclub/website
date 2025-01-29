@@ -44,39 +44,39 @@ const PostWidget = () => {
         </div>
       ) : (
         <>
-          {/* Posts grid: 3 columns, 2 rows */}
-          <div className="grid grid-cols-3 gap-4 mb-4">
+          {/* Responsive Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
             {recentPosts.slice(0, 6).map((post) => (
-              <div
-                key={post.title} // Unique key for each post
-                className="bg-black bg-opacity-30 hover:-translate-y-1 hover:bg-opacity-50 transition duration-200 rounded-xl p-4 flex flex-col justify-between"
+              <Link
+                key={post.title}
+                href={`/post/${post.slug}`}
+                className="group"
               >
-                {/* Featured image */}
-                <div className="relative w-full aspect-square mb-4">
+                <div className="relative w-full aspect-square rounded-xl overflow-hidden cursor-pointer transition duration-300 transform hover:scale-105">
+                  {/* Background Image */}
                   <Image
                     loader={graphCMSImageLoader}
-                    src={post.featuredImage.url} // Post's featured image URL
-                    alt={post.title} // Alt text for accessibility
-                    layout="fill" // Ensure the image fills the square
-                    objectFit="cover" // Make sure the image covers the square
-                    className="rounded-lg"
+                    src={post.featuredImage.url}
+                    alt={post.title}
+                    layout="fill"
+                    objectFit="cover"
+                    className="absolute inset-0 z-0"
                   />
+
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-30 transition duration-300"></div>
+
+                  {/* Post Content */}
+                  <div className="absolute bottom-4 left-4 right-4 text-white z-10">
+                    <p className="text-sm">
+                      {moment(post.createdAt).format("DD MMM YYYY")}
+                    </p>
+                    <h3 className="text-lg font-semibold group-hover:underline">
+                      {post.title}
+                    </h3>
+                  </div>
                 </div>
-                {/* Post details */}
-                <div>
-                  {/* Post creation date */}
-                  <p className="text-white text-sm">
-                    {moment(post.createdAt).format("DD MMM YYYY")}
-                  </p>
-                  {/* Link to post */}
-                  <Link
-                    href={`/post/${post.slug}`}
-                    className="text-lg text-white hover:underline"
-                  >
-                    {post.title}
-                  </Link>
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
 

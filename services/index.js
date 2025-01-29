@@ -367,6 +367,9 @@ export const getMemberPosts = async (slug) => {
               photo {
                 url
               }
+              role {
+                name
+              }
             }
           }
         }
@@ -468,4 +471,23 @@ export const getClubPosts = async (slug) => {
   `;
   const result = await request(graphqlAPI, query, { slug });
   return result.postsConnection.edges.map((edge) => edge.node); // Extract and return the posts
+};
+
+export const getAwardsData = async () => {
+  const query = gql`
+    query MyQuery {
+      awards {
+        date
+        description
+        name
+        photo {
+          url
+        }
+        slug
+      }
+    }
+  `;
+
+  const result = await request(graphqlAPI, query);
+  return result.awards;
 };

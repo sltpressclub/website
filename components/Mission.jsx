@@ -3,13 +3,13 @@ import React from "react";
 const Mission = () => {
   return (
     <div
-      className="relative h-screen bg-cover bg-center flex items-center justify-center"
+      className="relative h-[500px] bg-cover bg-center flex items-center justify-center rounded-3xl overflow-hidden"
       style={{
-        backgroundImage: `url('/mission.png')`, // Update the image to a relevant mission-themed image
+        backgroundImage: `url('/mission.png')`,
       }}
     >
       {/* Overlay for dark effect */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-50 rounded-3xl"></div>
 
       {/* Content */}
       <div className="relative text-center text-white p-4">
@@ -20,7 +20,7 @@ const Mission = () => {
         </p>
         <a
           href="/mission"
-          className="inline-block bg-green-600 hover:bg-green-800 text-white font-semibold py-2 px-6 rounded transition duration-300"
+          className="inline-block bg-green-600 hover:bg-green-800 text-white font-semibold py-2 px-6 rounded-3xl transition duration-300"
         >
           Learn More
         </a>

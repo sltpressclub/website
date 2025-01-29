@@ -7,7 +7,7 @@ const FeaturedPost = () => {
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [dots, setDots] = useState(""); // State for animated dots
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,22 +24,18 @@ const FeaturedPost = () => {
     fetchData();
   }, []);
 
-  // Navigate to the next slide
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === featuredPosts.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  // Navigate to the previous slide
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? featuredPosts.length - 1 : prevIndex - 1
-    );
-  };
+  // useEffect to animate the dots in "Loading..."
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setDots((prev) => (prev.length < 3 ? prev + "." : ""));
+      }, 500);
+      return () => clearInterval(interval);
+    }
+  }, [loading]);
 
   if (loading) {
-    return <div className="text-white text-center">Loading...</div>;
+    return <div className="text-white text-center">Loading{dots}</div>;
   }
 
   if (error) {
@@ -56,51 +52,36 @@ const FeaturedPost = () => {
     );
   }
 
-  const post = featuredPosts[currentIndex].node;
-
   return (
     <div className="relative container mx-auto p-8 bg-black bg-opacity-30 rounded-3xl">
       <h1 className="text-white text-2xl mb-5 font-semibold">Featured Posts</h1>
-      <div className="relative">
-        {/* Featured Post */}
-        <div className="flex flex-col items-center">
-          {/* Post Image */}
-          <div
-            className="w-full h-96 bg-cover bg-center rounded-3xl"
-            style={{
-              backgroundImage: `url(${post.featuredImage.url})`,
-            }}
-          ></div>
 
-          {/* Post Details */}
-          <div className="mt-4 text-center text-white">
-            <h2 className="text-xl font-semibold">{post.title}</h2>
-            <p className="text-sm">
-              By {post.member.name} on{" "}
-              {moment(post.createdAt).format("DD MMMM YYYY")}
-            </p>
-            {/* Read More Button */}
-            <Link href={`/post/${post.slug}`}>
-              <a className="mt-4 inline-block bg-white text-black text-sm font-medium rounded-full px-6 py-2 shadow-lg hover:bg-gray-300 transition">
-                Read More
-              </a>
+      {/* Scrollable Carousel */}
+      <div className="overflow-x-auto whitespace-nowrap">
+        <div className="flex gap-6 lg:gap-10">
+          {featuredPosts.map(({ node: post }) => (
+            <Link
+              key={post.slug}
+              href={`/post/${post.slug}`}
+              className="relative flex-shrink-0 w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gray-200 rounded-2xl overflow-hidden group cursor-pointer"
+            >
+              <div
+                className="w-full h-full bg-cover bg-center"
+                style={{ backgroundImage: `url(${post.featuredImage.url})` }}
+              >
+                {/* Overlay for dark effect */}
+                <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-60 transition"></div>
+
+                {/* Post Details */}
+                <div className="absolute bottom-2 right-2 text-white text-sm p-2 rounded bg-black bg-opacity-50">
+                  <h2 className="font-semibold text-lg">{post.title}</h2>
+                  <p>By {post.member.name}</p>
+                  <p>{moment(post.createdAt).format("DD MMM YYYY")}</p>
+                </div>
+              </div>
             </Link>
-          </div>
+          ))}
         </div>
-
-        {/* Carousel Navigation */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hover:bg-gray-300"
-        >
-          ◀
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white text-black rounded-full p-2 shadow-md hover:bg-gray-300"
-        >
-          ▶
-        </button>
       </div>
     </div>
   );

@@ -1,30 +1,40 @@
 import React from "react";
-import { useRouter } from "next/router"; // Importing useRouter for routing and dynamic paths
-import { getClubPosts } from "../../services"; // Importing function to fetch posts by a specific club
-import { PostCard, Loader } from "../../components"; // Importing components for displaying post cards and a loading indicator
+import { useRouter } from "next/router";
+import { getClubPosts } from "../../services";
+import { PostCard, Loader } from "../../components";
 
 const ClubPost = ({ posts }) => {
   const router = useRouter();
 
-  // Show loading state while the page is being generated in the background (for fallback pages)
   if (router.isFallback) {
     return <Loader />;
   }
 
-  // Log posts data to see what is being passed into the component
-  console.log("Posts data received:", posts);
+  const club = posts.length > 0 ? posts[0].club : null;
 
   return (
-    <div className="container mx-auto px-10 mb-8">
+    <div className="container mx-auto px-5 md:px-10 mb-8">
+      {club && (
+        <div className="flex flex-col md:flex-row items-center md:items-start bg-gray-100 p-6 rounded-lg shadow-md mb-8">
+          <img
+            src={club.featuredImage.url}
+            alt={club.name}
+            className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
+          />
+          <div className="md:ml-6 mt-4 md:mt-0 text-center md:text-left">
+            <h2 className="text-2xl font-semibold">{club.name}</h2>
+            <p className="text-gray-700 mt-2">{club.description}</p>
+            <p className="text-gray-600 mt-2 font-medium">
+              Posts: {posts.length}
+            </p>
+          </div>
+        </div>
+      )}
+
       <h1 className="text-2xl font-semibold mb-6">Posts for this Club</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Check if posts are available */}
         {posts.length > 0 ? (
-          posts.map((post, index) => {
-            // Log each individual post to see its structure
-            console.log("Post details:", post);
-            return <PostCard key={index} post={post} />;
-          })
+          posts.map((post, index) => <PostCard key={index} post={post} />)
         ) : (
           <p>No posts available for this club</p>
         )}
@@ -35,18 +45,12 @@ const ClubPost = ({ posts }) => {
 
 export default ClubPost;
 
-// Fetch data on each request using getServerSideProps
 export async function getServerSideProps({ params }) {
   try {
-    // Fetch the posts for a specific club using the slug from params
-    const posts = await getClubPosts(params.slug); // Get posts by the club's slug
-
-    // Log the fetched posts data before returning it to the page
-    console.log("Fetched posts for club:", posts);
-
+    const posts = await getClubPosts(params.slug);
     return { props: { posts } };
   } catch (error) {
     console.error("Error fetching posts for club:", error);
-    return { props: { posts: [] } }; // Return an empty array in case of an error
+    return { props: { posts: [] } };
   }
 }

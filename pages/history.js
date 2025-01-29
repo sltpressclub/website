@@ -12,7 +12,7 @@ const History = () => {
         </Head>
 
         {/* Main content wrapper with padding and centered text */}
-        <div className="flex-grow container mx-auto px-6 py-12 text-white">
+        <div className="flex-grow container mx-auto lg:p-8 p-2 py-12 text-white">
           <div className="bg-black bg-opacity-50 hover:bg-opacity-75 transition duration-500 rounded-3xl shadow-2xl p-8">
             {/* Title of the History page */}
             <h1 className="text-3xl text-white font-bold text-center mb-8">

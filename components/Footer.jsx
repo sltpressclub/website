@@ -49,6 +49,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/posts" passHref>
+                  <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
+                    All Posts
+                  </a>
+                </Link>
+              </li>
+              <li>
                 <Link href="/members" passHref>
                   <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
                     Members
@@ -73,6 +80,13 @@ const Footer = () => {
                 <Link href="/privacy" passHref>
                   <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
                     Privacy Policy
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" passHref>
+                  <a className="text-gray-400 border-b-2 border-transparent hover:border-white hover:text-white transition duration-300">
+                    Terms and Conditions
                   </a>
                 </Link>
               </li>
@@ -103,6 +117,14 @@ const Footer = () => {
             <div className="flex space-x-4">
               <a
                 href="https://www.instagram.com/slt_pressclub/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-pink-500 transition duration-300"
+              >
+                <FaInstagram size={24} />
+              </a>
+              <a
+                href="https://www.instagram.com/sirleckraz_teelock_academy/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-pink-500 transition duration-300"

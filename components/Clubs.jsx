@@ -27,29 +27,28 @@ const Clubs = () => {
   };
 
   return (
-    <div className="relative">
-      <h2 className="text-2xl font-semibold mb-4">Our Clubs</h2>
+    <div className="relative px-6">
+      <h2 className="text-2xl font-semibold mb-4 text-white">Our Clubs</h2>
       <div className="flex overflow-x-scroll no-scrollbar space-x-6 py-4">
         {clubs.map((club) => (
           <div
             key={club.id}
-            className="flex-none w-64 bg-black bg-opacity-30 rounded-xl p-4"
+            className="relative flex-none w-64 h-40 rounded-xl overflow-hidden bg-black bg-opacity-50 flex items-center justify-center"
+            style={{
+              backgroundImage: `url(${club.featuredImage.url})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
           >
-            {/* Club image */}
-            <div className="relative w-40 h-40 mb-4 rounded-2xl overflow-hidden">
-              <img
-                src={club.featuredImage.url}
-                alt={club.name}
-                className="object-cover w-full h-full"
-              />
-            </div>
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl"></div>
 
             {/* Club info */}
-            <div>
-              <h3 className="text-lg font-semibold text-white">{club.name}</h3>
-              <p className="text-sm text-white mt-2">{club.description}</p>
+            <div className="relative text-center text-white px-4">
+              <h3 className="text-lg font-semibold">{club.name}</h3>
+              <p className="text-sm mt-2 line-clamp-2">{club.description}</p>
               <button
-                onClick={() => handleViewClub(club.slug)} // Navigate on button click
+                onClick={() => handleViewClub(club.slug)}
                 className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 View Club

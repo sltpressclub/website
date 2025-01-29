@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router"; // Importing useRouter for routing and dynamic paths
 import { getCategories, getCategoryPost } from "../../services"; // Importing functions to fetch categories and posts for a specific category
-import { PostCard, Categories, Loader } from "../../components"; // Importing components for displaying post cards, categories, and a loading indicator
+import { PostCard, Loader } from "../../components"; // Importing components for displaying post cards, categories, and a loading indicator
 
 const CategoryPost = ({ posts }) => {
   // Get the Next.js router object to manage routes and dynamic behavior
