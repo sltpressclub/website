@@ -266,6 +266,10 @@ export const searchPostsAndUpcoming = async (searchTerm) => {
           photo {
             url
           }
+          slug
+          role {
+            name
+          }
         }
       }
     `;

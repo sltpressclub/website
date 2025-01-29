@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { searchPostsAndUpcoming } from "../services"; // Service function to fetch search results
 import { FaSearch } from "react-icons/fa"; // Magnifying glass icon
 import Image from "next/image"; // Optimized image component
-import { useRouter } from "next/router"; // To navigate to individual member pages
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Search input
@@ -13,7 +12,6 @@ const SearchBar = () => {
   const [error, setError] = useState(null); // Error state
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false); // Modal visibility
   const [selectedEvent, setSelectedEvent] = useState(null); // Selected event for detailed view
-  const router = useRouter(); // For navigating to member slug pages
 
   // Format date for display
   const formatDateTime = (date) => {
@@ -60,11 +58,7 @@ const SearchBar = () => {
 
   return (
     <div className="w-full max-w-sm mx-auto">
-      {/* Search Bar */}
-      <form
-        onSubmit={handleSearch}
-        className="flex items-center space-x-2 mb-6"
-      >
+      <form onSubmit={handleSearch} className="flex items-center space-x-2">
         <input
           type="text"
           placeholder="Search..."
@@ -83,33 +77,23 @@ const SearchBar = () => {
       {/* Search Results Modal */}
       {isSearchModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-md flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-3xl w-3/4 max-w-2xl max-h-[80vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-semibold text-xl text-gray-900">
-                Search Results
-              </h2>
-              <button
-                onClick={closeSearchModal}
-                className="bg-red-500 text-white px-4 py-2 rounded-3xl hover:bg-red-600"
-              >
-                Close
-              </button>
-            </div>
+          <div className="bg-black bg-opacity-30 p-6 rounded-3xl w-3/4 max-w-2xl max-h-[80vh] overflow-y-auto">
+            <h2 className="font-semibold text-xl text-white mb-4">
+              Search Results
+            </h2>
 
-            {loading && <p className="text-gray-500 text-center">Loading...</p>}
+            {loading && <p className="text-white text-center">Loading...</p>}
             {error && <p className="text-red-500 text-center">{error}</p>}
 
             {/* Posts Results */}
             {posts.length > 0 && (
               <div className="mt-4">
-                <h3 className="font-semibold text-lg text-gray-900 mb-4">
-                  Posts
-                </h3>
+                <h3 className="font-semibold text-lg text-white mb-4">Posts</h3>
                 <ul className="space-y-2">
                   {posts.map((post) => (
                     <li
                       key={post.id}
-                      className="p-2 bg-gray-100 hover:bg-opacity-75 rounded-xl"
+                      className="p-2 bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl"
                     >
                       <a
                         href={`/post/${post.slug}`}
@@ -117,7 +101,7 @@ const SearchBar = () => {
                       >
                         {post.title}
                       </a>
-                      <p className="text-gray-700 text-sm">{post.excerpt}</p>
+                      <p className="text-white text-sm">{post.excerpt}</p>
                     </li>
                   ))}
                 </ul>
@@ -127,18 +111,18 @@ const SearchBar = () => {
             {/* Upcoming Events Results */}
             {upcomings.length > 0 && (
               <div className="mt-4">
-                <h3 className="font-semibold text-lg text-gray-900 mb-4">
+                <h3 className="font-semibold text-lg text-white mb-4">
                   Upcoming Events
                 </h3>
                 <ul className="space-y-4">
                   {upcomings.map((upcoming) => (
                     <li
                       key={upcoming.id}
-                      className="p-2 bg-gray-100 hover:bg-opacity-75 rounded-xl cursor-pointer"
+                      className="p-2 bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl cursor-pointer"
                       onClick={() => openEventModal(upcoming)}
                     >
                       <div className="text-blue-300">{upcoming.name}</div>
-                      <p className="text-gray-700 text-sm">
+                      <p className="text-white text-sm">
                         {upcoming.description}
                       </p>
                     </li>
@@ -150,20 +134,17 @@ const SearchBar = () => {
             {/* Members Results */}
             {members.length > 0 && (
               <div className="mt-4">
-                <h3 className="font-semibold text-lg text-gray-900 mb-4">
+                <h3 className="font-semibold text-lg text-white mb-4">
                   Members
                 </h3>
                 <ul className="space-y-2">
                   {members.map((member) => (
                     <li
                       key={member.id}
-                      className="bg-gray-100 hover:bg-opacity-75 rounded-xl p-3 cursor-pointer"
+                      className="bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 transition duration-500 rounded-xl p-3"
                     >
-                      <a
-                        href={`/members/${member.slug}`}
-                        className="flex items-center space-x-4"
-                      >
-                        <Image
+                      <div className="flex items-center space-x-4">
+                        <img
                           src={member.photo.url}
                           alt={member.name}
                           width={40}
@@ -172,11 +153,13 @@ const SearchBar = () => {
                         />
                         <div>
                           <h4 className="text-blue-300 font-medium">
-                            {member.name}
+                            <a href={`/members/${member.slug}`}>
+                              {member.name}
+                            </a>
                           </h4>
-                          <p className="text-gray-700 text-sm">{member.bio}</p>
+                          <p className="text-white text-sm">{member.bio}</p>
                         </div>
-                      </a>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -192,29 +175,13 @@ const SearchBar = () => {
                 <p className="text-gray-500 text-center">No results found.</p>
               )}
 
-            {/* Navigation Links */}
-            <div className="mt-4 flex justify-center space-x-4 text-blue-500">
-              <a href="/" className="hover:underline">
-                Home
-              </a>
-              <a href="/members" className="hover:underline">
-                Members
-              </a>
-              <a href="/posts" className="hover:underline">
-                Posts
-              </a>
-              <a href="/about" className="hover:underline">
-                About Us
-              </a>
-              <a href="/contact" className="hover:underline">
-                Contact Us
-              </a>
-              <a href="/privacy-policy" className="hover:underline">
-                Privacy Policy
-              </a>
-              <a href="/terms" className="hover:underline">
-                Terms & Conditions
-              </a>
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={closeSearchModal}
+                className="bg-red-500 text-white px-4 py-2 rounded-3xl hover:bg-red-600"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -223,20 +190,20 @@ const SearchBar = () => {
       {/* Event Details Modal */}
       {selectedEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-3xl w-3/4 max-w-lg shadow-lg">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+          <div className="bg-black bg-opacity-30 p-6 rounded-3xl w-3/4 max-w-lg shadow-lg">
+            <h2 className="text-2xl font-semibold text-white mb-4">
               {selectedEvent.name}
             </h2>
-            <p className="text-gray-700 mb-2">
+            <p className="text-white mb-2">
               <strong>Date & Time:</strong> {formatDateTime(selectedEvent.date)}
             </p>
-            <p className="text-gray-700 mb-2">
+            <p className="text-white mb-2">
               <strong>Description:</strong> {selectedEvent.description}
             </p>
-            <p className="text-gray-700 mb-2">
+            <p className="text-white mb-2">
               <strong>Venue:</strong> {selectedEvent.venue || "Not specified"}
             </p>
-            <p className="text-gray-700 mb-2">
+            <p className="text-white mb-2">
               <strong>Requirements:</strong>{" "}
               {selectedEvent.requirement || "Not specified"}
             </p>

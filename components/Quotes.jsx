@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { getQuotes } from "../services";
 
 const Quotes = () => {
@@ -30,12 +30,8 @@ const Quotes = () => {
 
   return (
     <div
-      className="relative w-full min-h-screen flex flex-col justify-center items-center bg-cover bg-center"
-      style={{ backgroundImage: "url('/quote.jpg')" }} // Background Image
+      className="relative w-full min-h-screen flex flex-col justify-center items-center bg-black bg-opacity-30" // Main component background
     >
-      {/* Overlay for better readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-
       {/* Title Section */}
       <div className="relative text-center mb-6 z-10">
         <h4 className="text-4xl font-bold text-white inline-block pb-2">
@@ -49,7 +45,8 @@ const Quotes = () => {
           {quotes.map((quote, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-[250px] h-[250px] bg-black bg-opacity-50 text-white p-6 rounded-2xl shadow-lg transform transition-transform duration-300 flex items-center justify-center"
+              className="flex-shrink-0 w-[250px] h-[250px] bg-cover bg-center text-white p-6 rounded-2xl shadow-lg transform transition-transform duration-300 flex items-center justify-center"
+              style={{ backgroundImage: "url('/quote.jpg')" }} // Each quote background
             >
               <p className="text-xl font-semibold italic text-center">
                 "{quote.quote}"
