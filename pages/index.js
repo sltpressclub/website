@@ -18,7 +18,7 @@ export default function Home({ posts }) {
   return (
     <div className="flex flex-col min-h-screen w-full">
       {/* Content Wrapper */}
-      <div className="w-full px-4 md:px-10 mb-8 flex-grow">
+      <div className="w-full px-2 md:px-10 mb-8 flex-grow">
         {/* Page Head Section */}
         <Head>
           <title>SLT Pressclub</title> {/* Page title */}

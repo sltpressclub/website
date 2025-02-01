@@ -51,7 +51,7 @@ const PostDetail = ({ post }) => {
       case "image":
         return (
           <div key={index} className="my-8">
-            <Image
+            <img
               alt={obj.title || "Image"}
               src={obj.src || "/default-image.jpg"} // Default image if obj.src is missing
               width={obj.width || 800}
