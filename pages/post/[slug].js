@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import {
   PostDetail,
@@ -12,25 +13,23 @@ import { getPostDetails, getComments } from "../../services";
 
 const PostDetails = ({ post }) => {
   const router = useRouter();
-  const [comments, setComments] = useState([]); // State to store comments
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     if (post?.slug) {
       const fetchComments = async () => {
         const fetchedComments = await getComments(post.slug);
-        console.log("Fetched Comments:", fetchedComments); // Log the comments
+        console.log("Fetched Comments:", fetchedComments);
         setComments(fetchedComments);
       };
       fetchComments();
     }
   }, [post?.slug]);
 
-  // Show loading state while the page is being generated
   if (router.isFallback) {
     return <Loader />;
   }
 
-  // If no post is found, show a 404 page
   if (!post) {
     return (
       <div className="flex items-center justify-center h-screen text-center">
@@ -39,49 +38,48 @@ const PostDetails = ({ post }) => {
     );
   }
 
-  // Log post details to the console for debugging
-  console.log("Post Details:", post);
-
   return (
-    <div className="min-h-screen w-full text-white lg:p-8 p-2">
-      {/* Post Detail */}
-      <PostDetail post={post} />
+    <>
+      {/* Metadata for SEO */}
+      <Head>
+        <title>{post.title} | SLT Press Club</title>
+        <meta name="description" content={post.excerpt} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:image" content={post.featuredImage?.url} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://yourwebsite.com/posts/${post.slug}`}
+        />
+      </Head>
 
-      {/* Member Details */}
-      {post.member && <Member member={post.member} />}
-
-      {/* Comments Section */}
-      <Comments slug={post.slug} />
-      <CommentsForm slug={post.slug} />
-      <PostWidget />
-    </div>
+      <div className="min-h-screen w-full text-white lg:p-8 p-2">
+        <PostDetail post={post} />
+        {post.member && <Member member={post.member} />}
+        <Comments slug={post.slug} />
+        <CommentsForm slug={post.slug} />
+        <PostWidget />
+      </div>
+    </>
   );
 };
 
-// Use getServerSideProps instead of getStaticProps for SSR
 export async function getServerSideProps({ params }) {
   try {
     const data = await getPostDetails(params.slug);
 
     if (!data) {
-      return {
-        notFound: true,
-      };
+      return { notFound: true };
     }
 
-    return {
-      props: {
-        post: data,
-      },
-    };
+    return { props: { post: data } };
   } catch (error) {
     console.error(
       `Error in getServerSideProps for slug: ${params.slug}`,
       error
     );
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 }
 
