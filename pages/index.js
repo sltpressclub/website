@@ -39,19 +39,33 @@ export default function Home({ posts }) {
             property="og:description"
             content="Stay updated with the latest news and events from SLT Pressclub, the voice of SLTIANS."
           />
-          <meta property="og:image" content="/sltsss.jpg" />{" "}
-          {/* Updated image */}
-          <meta property="og:url" content="https://yourwebsite.com" />{" "}
-          {/* Replace with your actual site URL */}
-          {/* Twitter Card metadata */}
+          <meta
+            property="og:image"
+            content="https://sltpressclub.vercel.app/sltsss.jpg"
+          />{" "}
+          {/* Updated absolute image URL */}
+          <meta
+            property="og:url"
+            content="https://sltpressclub.vercel.app"
+          />{" "}
+          {/* Actual site URL */}
+          <meta property="og:type" content="website" />{" "}
+          {/* Ensuring it's treated as a website */}
+          {/* WhatsApp specific metadata */}
           <meta name="twitter:title" content="SLT Pressclub" />
           <meta
             name="twitter:description"
             content="Stay updated with the latest news and events from SLT Pressclub, the voice of SLTIANS."
           />
-          <meta name="twitter:image" content="/sltsss.jpg" />{" "}
-          {/* Updated image */}
+          <meta
+            name="twitter:image"
+            content="https://sltpressclub.vercel.app/sltsss.jpg"
+          />{" "}
+          {/* Updated absolute image URL */}
           <meta name="twitter:card" content="summary_large_image" />
+          {/* Additional WhatsApp Open Graph Meta Tags (they rely on og:image too) */}
+          <meta name="twitter:creator" content="@sltpressclub" />{" "}
+          {/* Handle or username */}
         </Head>
         {/* Main Content Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
@@ -94,7 +108,7 @@ export default function Home({ posts }) {
         </div>
         <div className="mt-8">
           <Awards />
-        </div>{" "}
+        </div>
       </div>
     </div>
   );

@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 
 const games = [
   {
-    name: "Game 1",
-    image: "/noinfo.png", // Default image set to noinfo.png
-    slug: "game-1",
+    name: "Tic Tac Toe",
+    image: "/tictactoe.png", // Default image set to noinfo.png
+    slug: "tictactoe",
   },
   {
     name: "Game 2",
