@@ -35,9 +35,17 @@ const SubmitPost = () => {
     setSuccess(false);
 
     try {
+      // Upload the featured image first
       const imageUploadResponse = await uploadFeaturedImage(featuredImage);
+
+      // Check if image upload response contains URL
+      if (!imageUploadResponse.url) {
+        throw new Error("Failed to upload image");
+      }
+
       const { url: imageUrl } = imageUploadResponse;
 
+      // Send the post data with the image URL
       const response = await fetch("/api/createPost", {
         method: "POST",
         headers: {
@@ -46,13 +54,25 @@ const SubmitPost = () => {
         body: JSON.stringify({ ...formData, featuredImage: imageUrl }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Error creating post");
+      }
+
       const result = await response.json();
 
-      if (response.ok) {
-        setSuccess(true);
-      } else {
-        throw new Error(result.message || "Error creating post");
-      }
+      setSuccess(true);
+      setFormData({
+        nameOfStudent: "",
+        class: "",
+        email: "",
+        phoneNumber: "",
+        whatsapp: "",
+        title: "",
+        slug: "",
+        content: "",
+      });
+      setFeaturedImage(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -63,15 +83,24 @@ const SubmitPost = () => {
   const uploadFeaturedImage = async (imageFile) => {
     const formData = new FormData();
     formData.append("file", imageFile);
-    formData.append("upload_preset", "YOUR_UPLOAD_PRESET"); // Optional if using a service like Cloudinary
+    formData.append("upload_preset", "YOUR_UPLOAD_PRESET"); // Replace with your preset
 
-    const response = await fetch("YOUR_IMAGE_UPLOAD_URL", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("YOUR_IMAGE_UPLOAD_URL", {
+        // Replace with your upload URL
+        method: "POST",
+        body: formData,
+      });
 
-    const data = await response.json();
-    return data; // Assuming the response contains the image URL
+      if (!response.ok) {
+        throw new Error("Image upload failed");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      throw new Error("Failed to upload image: " + err.message);
+    }
   };
 
   return (

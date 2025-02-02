@@ -1,34 +1,10 @@
 import { GraphQLClient } from "graphql-request";
 
-const hygraphAPI = new GraphQLClient(
-  process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT,
-  {
-    headers: {
-      Authorization: `Bearer ${process.env.GRAPHCMS_TOKEN}`,
-    },
-  }
-);
-
-const CREATE_POST_MUTATION = `
-  mutation CreatePost($nameOfStudent: String!, $class: String!, $email: String!, $phoneNumber: String!, $whatsapp: String, $content: String!, $title: String!, $slug: String!, $featuredImage: String) {
-    createPost(data: {
-      nameOfStudent: $nameOfStudent
-      class: $class
-      email: $email
-      phoneNumber: $phoneNumber
-      whatsapp: $whatsapp
-      content: $content
-      title: $title
-      slug: $slug
-      featuredImage: { url: $featuredImage }
-    }) {
-      id
-      title
-      slug
-      content
-    }
-  }
-`;
+const client = new GraphQLClient(process.env.GRAPHCMS_ENDPOINT, {
+  headers: {
+    Authorization: `Bearer ${process.env.GRAPHCMS_TOKEN}`,
+  },
+});
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -38,34 +14,70 @@ export default async function handler(req, res) {
       email,
       phoneNumber,
       whatsapp,
-      content,
       title,
       slug,
+      content,
       featuredImage,
     } = req.body;
 
+    const createPostMutation = `
+      mutation CreatePost(
+        $nameOfStudent: String!
+        $class: String!
+        $email: String!
+        $phoneNumber: String!
+        $whatsapp: String
+        $title: String!
+        $slug: String!
+        $content: String!
+        $featuredImage: String!
+      ) {
+        createPost(
+          data: {
+            nameOfStudent: $nameOfStudent
+            class: $class
+            email: $email
+            phoneNumber: $phoneNumber
+            whatsapp: $whatsapp
+            title: $title
+            slug: $slug
+            content: $content
+            featuredImage: { url: $featuredImage }
+          }
+        ) {
+          id
+          title
+          slug
+        }
+      }
+    `;
+
     try {
-      const variables = {
+      // Send the mutation request to Hygraph to create the post
+      const response = await client.request(createPostMutation, {
         nameOfStudent,
         class: studentClass,
         email,
         phoneNumber,
         whatsapp,
-        content,
         title,
         slug,
+        content,
         featuredImage,
-      };
+      });
 
-      const data = await hygraphAPI.request(CREATE_POST_MUTATION, variables);
-
-      res.status(200).json({ message: "Post created successfully", data });
+      return res.status(200).json({
+        message: "Post created successfully!",
+        postId: response.createPost.id,
+      });
     } catch (error) {
-      res
+      console.error("Error creating post:", error);
+      return res
         .status(500)
         .json({ message: "Error creating post", error: error.message });
     }
   } else {
+    // If the request method is not POST
     res.status(405).json({ message: "Method Not Allowed" });
   }
 }
