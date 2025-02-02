@@ -1,104 +1,158 @@
-import React, { useState, useEffect } from "react";
-import { submitPost } from "../services"; // Service function to handle post submission
+import { useState } from "react";
 
 const SubmitPost = () => {
-  const [error, setError] = useState(false);
-  const [localStorage, setLocalStorage] = useState(null);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
   const [formData, setFormData] = useState({
     nameOfStudent: "",
-    storeData: false,
+    class: "",
+    email: "",
+    phoneNumber: "",
+    whatsapp: "",
+    title: "",
+    slug: "",
+    content: "",
   });
+  const [featuredImage, setFeaturedImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    setLocalStorage(window.localStorage);
-    const initialFormData = {
-      nameOfStudent: window.localStorage.getItem("nameOfStudent") || "",
-      storeData: !!window.localStorage.getItem("nameOfStudent"),
-    };
-    setFormData(initialFormData);
-  }, []);
-
-  const onInputChange = (e) => {
-    const { target } = e;
-    setFormData((prevState) => ({
-      ...prevState,
-      [target.name]: target.type === "checkbox" ? target.checked : target.value,
-    }));
-  };
-
-  const handlePostSubmission = () => {
-    setError(false);
-    const { nameOfStudent, storeData } = formData;
-
-    if (!nameOfStudent) {
-      setError(true);
-      return;
-    }
-
-    if (storeData) {
-      localStorage.setItem("nameOfStudent", nameOfStudent);
-    } else {
-      localStorage.removeItem("nameOfStudent");
-    }
-
-    submitPost({ nameOfStudent }).then((res) => {
-      if (res.createPost) {
-        setFormData({ nameOfStudent: "", storeData: false });
-        setShowSuccessMessage(true);
-        setTimeout(() => setShowSuccessMessage(false), 3000);
-      }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
   };
 
+  const handleImageChange = (e) => {
+    setFeaturedImage(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const imageUploadResponse = await uploadFeaturedImage(featuredImage);
+      const { url: imageUrl } = imageUploadResponse;
+
+      const response = await fetch("/api/createPost", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData, featuredImage: imageUrl }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+      } else {
+        throw new Error(result.message || "Error creating post");
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const uploadFeaturedImage = async (imageFile) => {
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("upload_preset", "YOUR_UPLOAD_PRESET"); // Optional if using a service like Cloudinary
+
+    const response = await fetch("YOUR_IMAGE_UPLOAD_URL", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    return data; // Assuming the response contains the image URL
+  };
+
   return (
-    <div className="rounded-3xl bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 duration-500 p-8 pb-12 mb-8">
-      <h3 className="text-xl text-white mb-8 font-semibold border-b pb-4">
-        Submit Student Name
-      </h3>
-      <div className="grid grid-cols-1 gap-4 mb-4">
+    <div>
+      <h2>Create a New Post</h2>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={formData.nameOfStudent}
-          onChange={onInputChange}
-          className="py-2 px-4 outline-none w-full focus:ring-2 focus:ring-gray-200 rounded-3xl bg-black bg-opacity-50 hover:bg-opacity-75 duration-500 text-white"
-          placeholder="Enter Student Name"
           name="nameOfStudent"
+          value={formData.nameOfStudent}
+          onChange={handleChange}
+          placeholder="Name of Student"
+          required
         />
-      </div>
-      <div className="grid grid-cols-1 gap-4 mb-4">
-        <div>
-          <input
-            checked={formData.storeData}
-            onChange={onInputChange}
-            type="checkbox"
-            id="storeData"
-            name="storeData"
-            value="true"
-          />
-          <label className="text-white cursor-pointer ml-2" htmlFor="storeData">
-            Save this name for future submissions.
-          </label>
-        </div>
-      </div>
-      {error && (
-        <p className="text-xs text-red-500">Student name is required</p>
-      )}
-      <div className="mt-8">
-        <button
-          type="button"
-          onClick={handlePostSubmission}
-          className="transition duration-500 ease hover:bg-indigo-900 inline-block bg-pink-600 text-lg font-medium rounded-full text-white px-8 py-3 cursor-pointer"
-        >
-          Submit Name
+        <input
+          type="text"
+          name="class"
+          value={formData.class}
+          onChange={handleChange}
+          placeholder="Class"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email"
+          required
+        />
+        <input
+          type="text"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          placeholder="Phone Number"
+          required
+        />
+        <input
+          type="text"
+          name="whatsapp"
+          value={formData.whatsapp}
+          onChange={handleChange}
+          placeholder="WhatsApp"
+        />
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="Title"
+          required
+        />
+        <input
+          type="text"
+          name="slug"
+          value={formData.slug}
+          onChange={handleChange}
+          placeholder="Slug"
+          required
+        />
+        <input
+          type="file"
+          name="featuredImage"
+          onChange={handleImageChange}
+          required
+        />
+        <textarea
+          name="content"
+          value={formData.content}
+          onChange={handleChange}
+          placeholder="Content"
+          required
+        ></textarea>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit Post"}
         </button>
-        {showSuccessMessage && (
-          <span className="text-xl float-right font-semibold mt-3 text-green-500">
-            Name submitted successfully!
-          </span>
-        )}
-      </div>
+      </form>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>Post created successfully!</p>}
     </div>
   );
 };
