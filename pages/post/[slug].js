@@ -50,7 +50,7 @@ const PostDetails = ({ post }) => {
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://yourwebsite.com/posts/${post.slug}`}
+          content={`https://sltpressclub.vercel.app/posts/${post.slug}`}
         />
       </Head>
 

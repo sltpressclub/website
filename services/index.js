@@ -495,3 +495,24 @@ export const getAwardsData = async () => {
   const result = await request(graphqlAPI, query);
   return result.awards;
 };
+
+export const submitPost = async (postData) => {
+  try {
+    const response = await fetch("/api/submitPost", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit post.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error submitting post:", error);
+    throw new Error("Failed to submit post.");
+  }
+};
