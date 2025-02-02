@@ -21,6 +21,19 @@ export default async function handler(req, res) {
     content,
   } = req.body;
 
+  console.log("Received Form Data:", {
+    nameOfStudent,
+    studentClass,
+    email,
+    phoneNumber,
+    whatsapp,
+    title,
+    slug,
+    excerpt,
+    featuredImage,
+    content,
+  }); // Log the incoming data for debugging
+
   if (
     !nameOfStudent ||
     !studentClass ||

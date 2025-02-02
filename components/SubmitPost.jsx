@@ -21,6 +21,7 @@ const SubmitPost = () => {
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     if (type === "file") {
+      console.log("Selected file:", e.target.files[0]); // Log selected file for debugging
       setFormData((prevState) => ({
         ...prevState,
         [name]: e.target.files[0], // ✅ Store file object
@@ -37,6 +38,8 @@ const SubmitPost = () => {
     e.preventDefault();
     setError(false);
     setSuccess(false);
+
+    console.log("Form Data before Submit:", formData); // Log form data before submission
 
     const {
       nameOfStudent,
