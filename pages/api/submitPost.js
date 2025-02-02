@@ -41,6 +41,22 @@ export default async function handler(req, res) {
       },
     });
 
+    // ✅ First, upload the image
+    const uploadMutation = gql`
+      mutation UploadImage($file: Upload!) {
+        uploadImage(data: { file: $file }) {
+          url
+        }
+      }
+    `;
+
+    const imageUploadResponse = await graphQLClient.request(uploadMutation, {
+      file: featuredImage,
+    });
+
+    const uploadedImageUrl = imageUploadResponse.uploadImage.url;
+
+    // ✅ Now, create the post with the uploaded image URL
     const mutation = gql`
       mutation CreatePost(
         $nameOfStudent: String!
@@ -52,7 +68,7 @@ export default async function handler(req, res) {
         $slug: String!
         $excerpt: String!
         $featuredImage: String!
-        $content: RichText!
+        $content: RichTextAST!
       ) {
         createPost(
           data: {
@@ -65,7 +81,7 @@ export default async function handler(req, res) {
             slug: $slug
             excerpt: $excerpt
             featuredImage: { create: { url: $featuredImage } }
-            content: { raw: $content }
+            content: $content
           }
         ) {
           id
@@ -82,9 +98,10 @@ export default async function handler(req, res) {
       title,
       slug,
       excerpt,
-      featuredImage,
+      featuredImage: uploadedImageUrl, // ✅ Use the uploaded image URL
       content: { raw: content },
     };
+
     const result = await graphQLClient.request(mutation, variables);
 
     return res.status(200).json(result);

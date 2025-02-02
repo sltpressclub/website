@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { submitPost } from "../services"; // Import the function to submit posts
+import { submitPost } from "../services";
 
 const SubmitPost = () => {
   const [formData, setFormData] = useState({
@@ -11,29 +11,33 @@ const SubmitPost = () => {
     title: "",
     slug: "",
     excerpt: "",
-    featuredImage: "",
+    featuredImage: null, // ✅ File instead of text
     content: "",
   });
 
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Handle input change
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    const { name, value, type } = e.target;
+    if (type === "file") {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: e.target.files[0], // ✅ Store file object
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(false);
     setSuccess(false);
 
-    // Validate fields
     const {
       nameOfStudent,
       class: studentClass,
@@ -59,7 +63,10 @@ const SubmitPost = () => {
     }
 
     try {
-      await submitPost(formData);
+      await submitPost({
+        ...formData,
+        content: { raw: formData.content }, // ✅ Wrap content in { raw: content }
+      });
       setSuccess(true);
       setFormData({
         nameOfStudent: "",
@@ -70,7 +77,7 @@ const SubmitPost = () => {
         title: "",
         slug: "",
         excerpt: "",
-        featuredImage: "",
+        featuredImage: null,
         content: "",
       });
     } catch (error) {
@@ -148,20 +155,21 @@ const SubmitPost = () => {
         />
         <input
           type="text"
-          name="featuredImage"
-          value={formData.featuredImage}
-          onChange={handleChange}
-          placeholder="Featured Image URL"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="text"
           name="excerpt"
           value={formData.excerpt}
           onChange={handleChange}
           placeholder="Short Summary of the Post"
           className="p-2 rounded bg-black bg-opacity-50 text-white"
         />
+
+        {/* ✅ Image Upload Field */}
+        <input
+          type="file"
+          name="featuredImage"
+          onChange={handleChange}
+          className="p-2 rounded bg-black bg-opacity-50 text-white"
+        />
+
         <textarea
           name="content"
           value={formData.content}
@@ -169,6 +177,7 @@ const SubmitPost = () => {
           placeholder="Write your post content here..."
           className="p-2 rounded bg-black bg-opacity-50 text-white h-40"
         />
+
         <button
           type="submit"
           className="bg-pink-600 text-white p-3 rounded hover:bg-pink-700"
