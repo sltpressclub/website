@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const { nameOfStudent } = req.body;
 
   if (!nameOfStudent) {
-    return res.status(400).json({ message: "Name is required" });
+    return res.status(400).json({ message: "Student name is required" });
   }
 
   try {
@@ -34,7 +34,10 @@ export default async function handler(req, res) {
 
     return res.status(200).json(result);
   } catch (error) {
-    console.error("Error during GraphQL request:", error);
-    return res.status(500).json({ message: "Failed to submit post" });
+    console.error("GraphQL Request Error:", error.response || error.message);
+    return res.status(500).json({
+      message: "Failed to submit post",
+      error: error.response?.errors || error.message,
+    });
   }
 }

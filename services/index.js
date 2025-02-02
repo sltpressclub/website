@@ -506,20 +506,13 @@ export const submitPost = async (postData) => {
       body: JSON.stringify(postData),
     });
 
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error("Invalid JSON response from API");
-    }
-
     if (!response.ok) {
-      throw new Error(data?.message || "Failed to submit post");
+      throw new Error("Failed to submit post.");
     }
 
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error("Post submission failed:", error);
-    throw error; // Re-throw to let the component handle the error
+    console.error("Error submitting post:", error);
+    throw new Error("Failed to submit post.");
   }
 };

@@ -1,70 +1,101 @@
-import React, { useState } from "react";
-import { submitPost } from "../services"; // Import the submit function
+import React, { useState, useEffect } from "react";
+import { submitPost } from "../services"; // Service function to handle post submission
 
 const SubmitPost = () => {
   const [error, setError] = useState(false);
+  const [localStorage, setLocalStorage] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [formData, setFormData] = useState({ nameOfStudent: "" });
+
+  const [formData, setFormData] = useState({
+    nameOfStudent: "",
+    storeData: false,
+  });
+
+  useEffect(() => {
+    setLocalStorage(window.localStorage);
+    const initialFormData = {
+      nameOfStudent: window.localStorage.getItem("nameOfStudent") || "",
+      storeData: !!window.localStorage.getItem("nameOfStudent"),
+    };
+    setFormData(initialFormData);
+  }, []);
 
   const onInputChange = (e) => {
-    const { name, value } = e.target;
+    const { target } = e;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [target.name]: target.type === "checkbox" ? target.checked : target.value,
     }));
   };
 
-  const handlePostSubmission = async () => {
+  const handlePostSubmission = () => {
     setError(false);
-    const { nameOfStudent } = formData;
+    const { nameOfStudent, storeData } = formData;
 
     if (!nameOfStudent) {
       setError(true);
       return;
     }
 
-    try {
-      const res = await submitPost({ nameOfStudent });
-      if (res?.createPost?.id) {
-        setFormData({ nameOfStudent: "" });
+    if (storeData) {
+      localStorage.setItem("nameOfStudent", nameOfStudent);
+    } else {
+      localStorage.removeItem("nameOfStudent");
+    }
+
+    submitPost({ nameOfStudent }).then((res) => {
+      if (res.createPost) {
+        setFormData({ nameOfStudent: "", storeData: false });
         setShowSuccessMessage(true);
         setTimeout(() => setShowSuccessMessage(false), 3000);
       }
-    } catch (error) {
-      console.error("Post submission failed:", error);
-    }
+    });
   };
 
   return (
     <div className="rounded-3xl bg-black bg-opacity-50 hover:bg-opacity-75 hover:-translate-y-1 duration-500 p-8 pb-12 mb-8">
       <h3 className="text-xl text-white mb-8 font-semibold border-b pb-4">
-        Submit Your Post
+        Submit Student Name
       </h3>
-
       <div className="grid grid-cols-1 gap-4 mb-4">
         <input
           type="text"
           value={formData.nameOfStudent}
           onChange={onInputChange}
           className="py-2 px-4 outline-none w-full focus:ring-2 focus:ring-gray-200 rounded-3xl bg-black bg-opacity-50 hover:bg-opacity-75 duration-500 text-white"
-          placeholder="Student Name"
+          placeholder="Enter Student Name"
           name="nameOfStudent"
         />
       </div>
-
-      {error && <p className="text-xs text-red-500">Name is required</p>}
-
+      <div className="grid grid-cols-1 gap-4 mb-4">
+        <div>
+          <input
+            checked={formData.storeData}
+            onChange={onInputChange}
+            type="checkbox"
+            id="storeData"
+            name="storeData"
+            value="true"
+          />
+          <label className="text-white cursor-pointer ml-2" htmlFor="storeData">
+            Save this name for future submissions.
+          </label>
+        </div>
+      </div>
+      {error && (
+        <p className="text-xs text-red-500">Student name is required</p>
+      )}
       <div className="mt-8">
         <button
           type="button"
           onClick={handlePostSubmission}
           className="transition duration-500 ease hover:bg-indigo-900 inline-block bg-pink-600 text-lg font-medium rounded-full text-white px-8 py-3 cursor-pointer"
         >
-          Submit Post
+          Submit Name
         </button>
         {showSuccessMessage && (
           <span className="text-xl float-right font-semibold mt-3 text-green-500">
-            Post submitted successfully
+            Name submitted successfully!
           </span>
         )}
       </div>
