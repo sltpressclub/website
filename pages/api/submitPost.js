@@ -8,18 +8,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const {
-    nameOfStudent,
-    class: studentClass,
-    email,
-    phoneNumber,
-    whatsapp,
-    title,
-    slug,
-    excerpt,
-    featuredImage,
-    content,
-  } = req.body;
+  const { nameOfStudent } = req.body;
+
+  if (!nameOfStudent) {
+    return res.status(400).json({ message: "Name of student is required." });
+  }
 
   try {
     const graphQLClient = new GraphQLClient(graphqlAPI, {
@@ -28,52 +21,10 @@ export default async function handler(req, res) {
       },
     });
 
-    // Handle the image upload only if the image exists
-    let uploadedImageUrl = null;
-    if (featuredImage) {
-      const uploadMutation = gql`
-        mutation UploadImage($file: Upload!) {
-          uploadImage(data: { file: $file }) {
-            url
-          }
-        }
-      `;
-
-      const imageUploadResponse = await graphQLClient.request(uploadMutation, {
-        file: featuredImage,
-      });
-
-      uploadedImageUrl = imageUploadResponse.uploadImage.url;
-    }
-
-    // Create the post with any missing fields handled accordingly
+    // Create a post with just the nameOfStudent
     const mutation = gql`
-      mutation CreatePost(
-        $nameOfStudent: String!
-        $class: String!
-        $email: String!
-        $phoneNumber: String
-        $whatsapp: String
-        $title: String!
-        $slug: String!
-        $excerpt: String!
-        $featuredImage: String
-        $content: RichTextAST!
-      ) {
-        createPost(
-          data: {
-            nameOfStudent: $nameOfStudent
-            class: $class
-            email: $email
-            phoneNumber: $phoneNumber
-            whatsapp: $whatsapp
-            title: $title
-            slug: $slug
-            excerpt: $excerpt
-            featuredImage: { create: { url: $featuredImage } }
-            content: $content
-          }
-        ) {
+      mutation CreatePost($nameOfStudent: String!) {
+        createPost(data: { nameOfStudent: $nameOfStudent }) {
           id
         }
       }
@@ -81,15 +32,6 @@ export default async function handler(req, res) {
 
     const variables = {
       nameOfStudent,
-      class: studentClass,
-      email,
-      phoneNumber,
-      whatsapp,
-      title,
-      slug,
-      excerpt,
-      featuredImage: uploadedImageUrl, // ✅ Use uploaded image URL or null
-      content: { raw: content || "" }, // ✅ Handle missing content as empty string
     };
 
     const result = await graphQLClient.request(mutation, variables);

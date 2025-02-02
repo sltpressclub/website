@@ -4,33 +4,17 @@ import { submitPost } from "../services";
 const SubmitPost = () => {
   const [formData, setFormData] = useState({
     nameOfStudent: "",
-    class: "",
-    email: "",
-    phoneNumber: "",
-    whatsapp: "",
-    title: "",
-    slug: "",
-    excerpt: "",
-    featuredImage: null, // ✅ File instead of text
-    content: "",
   });
 
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    if (type === "file") {
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: e.target.files[0], // ✅ Store file object
-      }));
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -38,23 +22,19 @@ const SubmitPost = () => {
     setError(false);
     setSuccess(false);
 
+    const { nameOfStudent } = formData;
+    if (!nameOfStudent) {
+      setError(true);
+      return;
+    }
+
     try {
       await submitPost({
-        ...formData,
-        content: { raw: formData.content }, // ✅ Wrap content in { raw: content }
+        nameOfStudent,
       });
       setSuccess(true);
       setFormData({
         nameOfStudent: "",
-        class: "",
-        email: "",
-        phoneNumber: "",
-        whatsapp: "",
-        title: "",
-        slug: "",
-        excerpt: "",
-        featuredImage: null,
-        content: "",
       });
     } catch (error) {
       console.error("Error submitting post:", error);
@@ -67,9 +47,7 @@ const SubmitPost = () => {
       <h3 className="text-xl text-white mb-6 font-semibold border-b pb-4">
         Submit Your Post
       </h3>
-      {error && (
-        <p className="text-red-500">There was an error submitting the post.</p>
-      )}
+      {error && <p className="text-red-500">Name of student is required.</p>}
       {success && (
         <p className="text-green-500">Post submitted successfully!</p>
       )}
@@ -82,78 +60,6 @@ const SubmitPost = () => {
           onChange={handleChange}
           placeholder="Your Name"
           className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="text"
-          name="class"
-          value={formData.class}
-          onChange={handleChange}
-          placeholder="Your Class"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Your Email"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="text"
-          name="phoneNumber"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          placeholder="Your Phone Number (Optional)"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="text"
-          name="whatsapp"
-          value={formData.whatsapp}
-          onChange={handleChange}
-          placeholder="Your WhatsApp (Optional)"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder="Post Title"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="text"
-          name="slug"
-          value={formData.slug}
-          onChange={handleChange}
-          placeholder="Slug (Unique identifier, e.g., post-title)"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-        <input
-          type="text"
-          name="excerpt"
-          value={formData.excerpt}
-          onChange={handleChange}
-          placeholder="Short Summary of the Post"
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-
-        {/* ✅ Image Upload Field */}
-        <input
-          type="file"
-          name="featuredImage"
-          onChange={handleChange}
-          className="p-2 rounded bg-black bg-opacity-50 text-white"
-        />
-
-        <textarea
-          name="content"
-          value={formData.content}
-          onChange={handleChange}
-          placeholder="Write your post content here..."
-          className="p-2 rounded bg-black bg-opacity-50 text-white h-40"
         />
 
         <button
