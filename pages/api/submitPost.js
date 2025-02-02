@@ -21,7 +21,9 @@ export default async function handler(req, res) {
       },
     });
 
-    // Define the mutation inside the handler
+    // Log the request data for debugging
+    console.log("Request Data:", req.body);
+
     const mutation = gql`
       mutation CreatePost($nameOfStudent: String!) {
         createPost(data: { nameOfStudent: $nameOfStudent }) {
@@ -32,6 +34,9 @@ export default async function handler(req, res) {
 
     const variables = { nameOfStudent };
     const result = await graphQLClient.request(mutation, variables);
+
+    // Log the response for debugging
+    console.log("GraphQL Response:", result);
 
     return res.status(200).json(result);
   } catch (error) {

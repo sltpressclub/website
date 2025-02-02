@@ -40,15 +40,19 @@ const SubmitPost = () => {
     };
 
     // Submit the post using the service function
-    submitPost(postObj).then((res) => {
-      if (res.createPost) {
-        setFormData({ nameOfStudent: "" }); // Clear input field upon successful submission
-        setShowSuccessMessage(true); // Display success message
-        setTimeout(() => {
-          setShowSuccessMessage(false); // Hide success message after 3 seconds
-        }, 3000);
-      }
-    });
+    submitPost(postObj)
+      .then((res) => {
+        if (res.createPost) {
+          setFormData({ nameOfStudent: "" }); // Clear input field upon successful submission
+          setShowSuccessMessage(true); // Display success message
+          setTimeout(() => {
+            setShowSuccessMessage(false); // Hide success message after 3 seconds
+          }, 3000);
+        }
+      })
+      .catch((error) => {
+        console.error("Post submission failed:", error);
+      });
   };
 
   return (

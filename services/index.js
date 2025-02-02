@@ -507,12 +507,13 @@ export const submitPost = async (postData) => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to submit post.");
+      const errorDetails = await response.json();
+      throw new Error(`Failed to submit post. Error: ${errorDetails.message}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Error submitting post:", error);
+    console.error("Error submitting post:", error.message);
     throw new Error("Failed to submit post.");
   }
 };
