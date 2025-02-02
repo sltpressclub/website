@@ -1,20 +1,11 @@
 import React, { useState } from "react";
-import { submitPost } from "../services"; // Service function to handle post submission
+import { submitPost } from "../services"; // Import the submit function
 
-// SubmitPost Component
 const SubmitPost = () => {
-  // State to manage form error state
   const [error, setError] = useState(false);
-
-  // State to display success message upon post submission
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [formData, setFormData] = useState({ nameOfStudent: "" });
 
-  // State to manage form input value
-  const [formData, setFormData] = useState({
-    nameOfStudent: "",
-  });
-
-  // Handler to update formData state when input changes
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -23,36 +14,25 @@ const SubmitPost = () => {
     }));
   };
 
-  // Handler to validate and submit the form
-  const handlePostSubmission = () => {
-    setError(false); // Reset error state
+  const handlePostSubmission = async () => {
+    setError(false);
     const { nameOfStudent } = formData;
 
-    // Validate required fields
     if (!nameOfStudent) {
-      setError(true); // Show error if field is missing
+      setError(true);
       return;
     }
 
-    // Create post object to be submitted
-    const postObj = {
-      nameOfStudent,
-    };
-
-    // Submit the post using the service function
-    submitPost(postObj)
-      .then((res) => {
-        if (res.createPost) {
-          setFormData({ nameOfStudent: "" }); // Clear input field upon successful submission
-          setShowSuccessMessage(true); // Display success message
-          setTimeout(() => {
-            setShowSuccessMessage(false); // Hide success message after 3 seconds
-          }, 3000);
-        }
-      })
-      .catch((error) => {
-        console.error("Post submission failed:", error);
-      });
+    try {
+      const res = await submitPost({ nameOfStudent });
+      if (res?.createPost?.id) {
+        setFormData({ nameOfStudent: "" });
+        setShowSuccessMessage(true);
+        setTimeout(() => setShowSuccessMessage(false), 3000);
+      }
+    } catch (error) {
+      console.error("Post submission failed:", error);
+    }
   };
 
   return (
@@ -60,7 +40,7 @@ const SubmitPost = () => {
       <h3 className="text-xl text-white mb-8 font-semibold border-b pb-4">
         Submit Your Post
       </h3>
-      {/* Name input field */}
+
       <div className="grid grid-cols-1 gap-4 mb-4">
         <input
           type="text"
@@ -72,10 +52,8 @@ const SubmitPost = () => {
         />
       </div>
 
-      {/* Error message if validation fails */}
       {error && <p className="text-xs text-red-500">Name is required</p>}
 
-      {/* Submit button and success message */}
       <div className="mt-8">
         <button
           type="button"
