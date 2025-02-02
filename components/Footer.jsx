@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaInstagram } from "react-icons/fa";
+import { useRouter } from "next/router"; // Import useRouter for redirection
 import { getCategories } from "../services"; // Import the function to fetch categories
 
 const Footer = () => {
-  // State to store the list of categories
   const [categories, setCategories] = useState([]);
+  const [clickCount, setClickCount] = useState(0); // Track the click count
+  const router = useRouter(); // Initialize router for navigation
 
   // useEffect to fetch categories when the component mounts
   useEffect(() => {
@@ -14,6 +16,18 @@ const Footer = () => {
       setCategories(newCategories);
     });
   }, []);
+
+  // Handle logo click
+  const handleLogoClick = () => {
+    setClickCount((prevCount) => {
+      const newCount = prevCount + 1;
+      if (newCount === 5) {
+        // Redirect to game.js after 5 clicks
+        router.push("/game");
+      }
+      return newCount;
+    });
+  };
 
   return (
     <footer className="bg-black bg-opacity-50 hover:bg-opacity-75 transition duration-500 text-white mt-8 p-8 rounded-t-3xl">
@@ -27,7 +41,8 @@ const Footer = () => {
                 alt="SLT Pressclub Logo"
                 width={48}
                 height={48}
-                className="rounded-full"
+                className="rounded-full cursor-pointer"
+                onClick={handleLogoClick} // Add onClick event
               />
               <h2 className="text-2xl font-semibold">SLT Pressclub</h2>
             </div>

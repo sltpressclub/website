@@ -67,9 +67,6 @@ export default function Home({ posts }) {
         <div className="mt-8">
           <Awards />
         </div>{" "}
-        <div className="mt-8">
-          <SubmitPost />
-        </div>
       </div>
     </div>
   );
