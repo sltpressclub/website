@@ -496,7 +496,7 @@ export const getAwardsData = async () => {
   return result.awards;
 };
 
-const submitPost = async (postData) => {
+export const submitPost = async (postData) => {
   try {
     const response = await fetch("/api/submitPost", {
       method: "POST",
