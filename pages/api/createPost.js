@@ -8,43 +8,17 @@ const client = new GraphQLClient(process.env.GRAPHCMS_ENDPOINT, {
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const {
-      nameOfStudent,
-      class: studentClass,
-      email,
-      phoneNumber,
-      whatsapp,
-      title,
-      slug,
-      content, // Assuming content is a JSON object for RichText
-    } = req.body;
+    const { nameOfStudent } = req.body;
 
     const createPostMutation = `
-      mutation CreatePost(
-        $nameOfStudent: String!
-        $class: String!
-        $email: String!
-        $phoneNumber: String!
-        $whatsapp: String
-        $title: String!
-        $slug: String!
-        $content: RichText!
-      ) {
+      mutation CreatePost($nameOfStudent: String!) {
         createPost(
           data: {
             nameOfStudent: $nameOfStudent
-            class: $class
-            email: $email
-            phoneNumber: $phoneNumber
-            whatsapp: $whatsapp
-            title: $title
-            slug: $slug
-            content: $content
           }
         ) {
           id
-          title
-          slug
+          nameOfStudent
         }
       }
     `;
@@ -53,13 +27,6 @@ export default async function handler(req, res) {
       // Send the mutation request to Hygraph to create the post
       const response = await client.request(createPostMutation, {
         nameOfStudent,
-        class: studentClass,
-        email,
-        phoneNumber,
-        whatsapp,
-        title,
-        slug,
-        content, // Ensure this is a structured JSON object for RichText
       });
 
       return res.status(200).json({
@@ -73,7 +40,6 @@ export default async function handler(req, res) {
         .json({ message: "Error creating post", error: error.message });
     }
   } else {
-    // If the request method is not POST
     res.status(405).json({ message: "Method Not Allowed" });
   }
 }
