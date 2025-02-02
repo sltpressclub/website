@@ -9,8 +9,9 @@ const SubmitPost = () => {
     whatsapp: "",
     title: "",
     slug: "",
-    content: "",
+    content: "", // Raw content (for simplicity)
   });
+  const [featuredImage, setFeaturedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -23,6 +24,10 @@ const SubmitPost = () => {
     });
   };
 
+  const handleImageChange = (e) => {
+    setFeaturedImage(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -30,13 +35,16 @@ const SubmitPost = () => {
     setSuccess(false);
 
     try {
-      // Send the post data without the image
+      // Send the post data with content as a JSON object for RichText
       const response = await fetch("/api/createPost", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          content: JSON.parse(formData.content), // Parse content into JSON if it's a string
+        }),
       });
 
       if (!response.ok) {
@@ -45,7 +53,6 @@ const SubmitPost = () => {
       }
 
       const result = await response.json();
-
       setSuccess(true);
       setFormData({
         nameOfStudent: "",
@@ -57,6 +64,7 @@ const SubmitPost = () => {
         slug: "",
         content: "",
       });
+      setFeaturedImage(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -121,6 +129,12 @@ const SubmitPost = () => {
           value={formData.slug}
           onChange={handleChange}
           placeholder="Slug"
+          required
+        />
+        <input
+          type="file"
+          name="featuredImage"
+          onChange={handleImageChange}
           required
         />
         <textarea

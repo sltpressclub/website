@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       whatsapp,
       title,
       slug,
-      content,
+      content, // Assuming content is a JSON object for RichText
     } = req.body;
 
     const createPostMutation = `
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         $whatsapp: String
         $title: String!
         $slug: String!
-        $content: String!
+        $content: RichText!
       ) {
         createPost(
           data: {
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
         whatsapp,
         title,
         slug,
-        content,
+        content, // Ensure this is a structured JSON object for RichText
       });
 
       return res.status(200).json({
