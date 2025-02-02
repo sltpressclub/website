@@ -17,4 +17,3 @@ export { default as Mission } from "./Mission";
 export { default as Clubs } from "./Clubs";
 export { default as FeaturedPost } from "./FeaturedPost";
 export { default as Awards } from "./Awards";
-export { default as SubmitPost } from "./SubmitPost";

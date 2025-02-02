@@ -11,7 +11,6 @@ import {
   Clubs,
   FeaturedPost,
   Awards,
-  SubmitPost,
 } from "../components"; // Importing required components
 import { getPost } from "../services"; // Importing API call for fetching posts
 
@@ -24,6 +23,35 @@ export default function Home({ posts }) {
         <Head>
           <title>SLT Pressclub</title> {/* Page title */}
           <link rel="icon" href="/slt_pressclub_logo.png" /> {/* Favicon */}
+          {/* Meta tags for SEO */}
+          <meta
+            name="description"
+            content="SLT Pressclub: The Voice of SLTIANS. Stay updated with the latest news, events, and more."
+          />
+          <meta
+            name="keywords"
+            content="SLT Pressclub, SLTIANS, news, events, SLT, student club, press club, student media"
+          />
+          <meta name="author" content="SLT Pressclub" />
+          {/* Open Graph metadata for better sharing on social media */}
+          <meta property="og:title" content="SLT Pressclub" />
+          <meta
+            property="og:description"
+            content="Stay updated with the latest news and events from SLT Pressclub, the voice of SLTIANS."
+          />
+          <meta property="og:image" content="/sltsss.jpg" />{" "}
+          {/* Updated image */}
+          <meta property="og:url" content="https://yourwebsite.com" />{" "}
+          {/* Replace with your actual site URL */}
+          {/* Twitter Card metadata */}
+          <meta name="twitter:title" content="SLT Pressclub" />
+          <meta
+            name="twitter:description"
+            content="Stay updated with the latest news and events from SLT Pressclub, the voice of SLTIANS."
+          />
+          <meta name="twitter:image" content="/sltsss.jpg" />{" "}
+          {/* Updated image */}
+          <meta name="twitter:card" content="summary_large_image" />
         </Head>
         {/* Main Content Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
