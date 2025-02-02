@@ -15,13 +15,23 @@ export default async function handler(req, res) {
     phoneNumber,
     whatsapp,
     title,
+    slug,
+    excerpt,
+    featuredImage,
     content,
   } = req.body;
 
-  if (!nameOfStudent || !studentClass || !email || !title || !content) {
-    return res
-      .status(400)
-      .json({ message: "All required fields must be filled" });
+  if (
+    !nameOfStudent ||
+    !studentClass ||
+    !email ||
+    !title ||
+    !slug ||
+    !excerpt ||
+    !featuredImage ||
+    !content
+  ) {
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
@@ -39,6 +49,9 @@ export default async function handler(req, res) {
         $phoneNumber: String
         $whatsapp: String
         $title: String!
+        $slug: String!
+        $excerpt: String!
+        $featuredImage: String!
         $content: RichText!
       ) {
         createPost(
@@ -49,6 +62,9 @@ export default async function handler(req, res) {
             phoneNumber: $phoneNumber
             whatsapp: $whatsapp
             title: $title
+            slug: $slug
+            excerpt: $excerpt
+            featuredImage: { create: { url: $featuredImage } }
             content: { raw: $content }
           }
         ) {
@@ -64,6 +80,9 @@ export default async function handler(req, res) {
       phoneNumber,
       whatsapp,
       title,
+      slug,
+      excerpt,
+      featuredImage,
       content: { raw: content },
     };
     const result = await graphQLClient.request(mutation, variables);

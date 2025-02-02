@@ -9,6 +9,9 @@ const SubmitPost = () => {
     phoneNumber: "",
     whatsapp: "",
     title: "",
+    slug: "",
+    excerpt: "",
+    featuredImage: "",
     content: "",
   });
 
@@ -36,9 +39,21 @@ const SubmitPost = () => {
       class: studentClass,
       email,
       title,
+      slug,
+      excerpt,
+      featuredImage,
       content,
     } = formData;
-    if (!nameOfStudent || !studentClass || !email || !title || !content) {
+    if (
+      !nameOfStudent ||
+      !studentClass ||
+      !email ||
+      !title ||
+      !slug ||
+      !excerpt ||
+      !featuredImage ||
+      !content
+    ) {
       setError(true);
       return;
     }
@@ -53,6 +68,9 @@ const SubmitPost = () => {
         phoneNumber: "",
         whatsapp: "",
         title: "",
+        slug: "",
+        excerpt: "",
+        featuredImage: "",
         content: "",
       });
     } catch (error) {
@@ -118,6 +136,30 @@ const SubmitPost = () => {
           value={formData.title}
           onChange={handleChange}
           placeholder="Post Title"
+          className="p-2 rounded bg-black bg-opacity-50 text-white"
+        />
+        <input
+          type="text"
+          name="slug"
+          value={formData.slug}
+          onChange={handleChange}
+          placeholder="Slug (Unique identifier, e.g., post-title)"
+          className="p-2 rounded bg-black bg-opacity-50 text-white"
+        />
+        <input
+          type="text"
+          name="featuredImage"
+          value={formData.featuredImage}
+          onChange={handleChange}
+          placeholder="Featured Image URL"
+          className="p-2 rounded bg-black bg-opacity-50 text-white"
+        />
+        <input
+          type="text"
+          name="excerpt"
+          value={formData.excerpt}
+          onChange={handleChange}
+          placeholder="Short Summary of the Post"
           className="p-2 rounded bg-black bg-opacity-50 text-white"
         />
         <textarea
