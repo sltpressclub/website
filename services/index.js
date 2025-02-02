@@ -498,7 +498,7 @@ export const getAwardsData = async () => {
 
 export const submitPost = async (postData) => {
   try {
-    const response = await fetch("/api/submitPost", {
+    const response = await fetch("/api/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -507,13 +507,12 @@ export const submitPost = async (postData) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json(); // Get detailed error response
-      throw new Error(errorData.message || "Failed to submit post.");
+      throw new Error("Failed to submit post.");
     }
 
     return await response.json();
   } catch (error) {
     console.error("Error submitting post:", error);
-    throw new Error(error.message || "Failed to submit post.");
+    throw new Error("Failed to submit post.");
   }
 };

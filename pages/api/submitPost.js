@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const { nameOfStudent } = req.body;
 
   if (!nameOfStudent) {
-    return res.status(400).json({ message: "Name of student is required." });
+    return res.status(400).json({ message: "Name is required" });
   }
 
   try {
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       },
     });
 
-    // Create a post with just the nameOfStudent
+    // Define the mutation inside the handler
     const mutation = gql`
       mutation CreatePost($nameOfStudent: String!) {
         createPost(data: { nameOfStudent: $nameOfStudent }) {
@@ -30,10 +30,7 @@ export default async function handler(req, res) {
       }
     `;
 
-    const variables = {
-      nameOfStudent,
-    };
-
+    const variables = { nameOfStudent };
     const result = await graphQLClient.request(mutation, variables);
 
     return res.status(200).json(result);
