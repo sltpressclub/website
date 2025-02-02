@@ -496,9 +496,9 @@ export const getAwardsData = async () => {
   return result.awards;
 };
 
-export const submitPost = async (postData) => {
+const submitPost = async (postData) => {
   try {
-    const response = await fetch("/api/posts", {
+    const response = await fetch("/api/submitPost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -508,12 +508,12 @@ export const submitPost = async (postData) => {
 
     if (!response.ok) {
       const errorDetails = await response.json();
-      throw new Error(`Failed to submit post. Error: ${errorDetails.message}`);
+      throw new Error(`Failed to submit post: ${errorDetails.message}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error("Error submitting post:", error.message);
-    throw new Error("Failed to submit post.");
+    console.error("Post submission failed:", error);
+    throw error; // Re-throw to let the component handle the error
   }
 };
