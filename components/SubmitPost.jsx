@@ -11,7 +11,6 @@ const SubmitPost = () => {
     slug: "",
     content: "",
   });
-  const [featuredImage, setFeaturedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -24,10 +23,6 @@ const SubmitPost = () => {
     });
   };
 
-  const handleImageChange = (e) => {
-    setFeaturedImage(e.target.files[0]);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -35,23 +30,13 @@ const SubmitPost = () => {
     setSuccess(false);
 
     try {
-      // Upload the featured image first
-      const imageUploadResponse = await uploadFeaturedImage(featuredImage);
-
-      // Check if image upload response contains URL
-      if (!imageUploadResponse.url) {
-        throw new Error("Failed to upload image");
-      }
-
-      const { url: imageUrl } = imageUploadResponse;
-
-      // Send the post data with the image URL
+      // Send the post data without the image
       const response = await fetch("/api/createPost", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...formData, featuredImage: imageUrl }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -72,34 +57,10 @@ const SubmitPost = () => {
         slug: "",
         content: "",
       });
-      setFeaturedImage(null);
     } catch (err) {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const uploadFeaturedImage = async (imageFile) => {
-    const formData = new FormData();
-    formData.append("file", imageFile);
-    formData.append("upload_preset", "YOUR_UPLOAD_PRESET"); // Replace with your preset
-
-    try {
-      const response = await fetch("YOUR_IMAGE_UPLOAD_URL", {
-        // Replace with your upload URL
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Image upload failed");
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      throw new Error("Failed to upload image: " + err.message);
     }
   };
 
@@ -160,12 +121,6 @@ const SubmitPost = () => {
           value={formData.slug}
           onChange={handleChange}
           placeholder="Slug"
-          required
-        />
-        <input
-          type="file"
-          name="featuredImage"
-          onChange={handleImageChange}
           required
         />
         <textarea

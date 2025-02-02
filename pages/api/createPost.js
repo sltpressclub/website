@@ -17,7 +17,6 @@ export default async function handler(req, res) {
       title,
       slug,
       content,
-      featuredImage,
     } = req.body;
 
     const createPostMutation = `
@@ -30,7 +29,6 @@ export default async function handler(req, res) {
         $title: String!
         $slug: String!
         $content: String!
-        $featuredImage: String!
       ) {
         createPost(
           data: {
@@ -42,7 +40,6 @@ export default async function handler(req, res) {
             title: $title
             slug: $slug
             content: $content
-            featuredImage: { url: $featuredImage }
           }
         ) {
           id
@@ -63,7 +60,6 @@ export default async function handler(req, res) {
         title,
         slug,
         content,
-        featuredImage,
       });
 
       return res.status(200).json({
