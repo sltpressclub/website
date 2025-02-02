@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 const games = [
   {
@@ -27,6 +26,17 @@ const games = [
 ];
 
 const GamePage = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  // This effect will ensure the code inside it only runs on the client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // or a loading state
+  }
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-semibold text-center mb-8">Games</h1>
