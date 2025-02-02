@@ -21,32 +21,6 @@ export default async function handler(req, res) {
     content,
   } = req.body;
 
-  console.log("Received Form Data:", {
-    nameOfStudent,
-    studentClass,
-    email,
-    phoneNumber,
-    whatsapp,
-    title,
-    slug,
-    excerpt,
-    featuredImage,
-    content,
-  }); // Log the incoming data for debugging
-
-  if (
-    !nameOfStudent ||
-    !studentClass ||
-    !email ||
-    !title ||
-    !slug ||
-    !excerpt ||
-    !featuredImage ||
-    !content
-  ) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
   try {
     const graphQLClient = new GraphQLClient(graphqlAPI, {
       headers: {
@@ -54,22 +28,25 @@ export default async function handler(req, res) {
       },
     });
 
-    // ✅ First, upload the image
-    const uploadMutation = gql`
-      mutation UploadImage($file: Upload!) {
-        uploadImage(data: { file: $file }) {
-          url
+    // Handle the image upload only if the image exists
+    let uploadedImageUrl = null;
+    if (featuredImage) {
+      const uploadMutation = gql`
+        mutation UploadImage($file: Upload!) {
+          uploadImage(data: { file: $file }) {
+            url
+          }
         }
-      }
-    `;
+      `;
 
-    const imageUploadResponse = await graphQLClient.request(uploadMutation, {
-      file: featuredImage,
-    });
+      const imageUploadResponse = await graphQLClient.request(uploadMutation, {
+        file: featuredImage,
+      });
 
-    const uploadedImageUrl = imageUploadResponse.uploadImage.url;
+      uploadedImageUrl = imageUploadResponse.uploadImage.url;
+    }
 
-    // ✅ Now, create the post with the uploaded image URL
+    // Create the post with any missing fields handled accordingly
     const mutation = gql`
       mutation CreatePost(
         $nameOfStudent: String!
@@ -80,7 +57,7 @@ export default async function handler(req, res) {
         $title: String!
         $slug: String!
         $excerpt: String!
-        $featuredImage: String!
+        $featuredImage: String
         $content: RichTextAST!
       ) {
         createPost(
@@ -111,8 +88,8 @@ export default async function handler(req, res) {
       title,
       slug,
       excerpt,
-      featuredImage: uploadedImageUrl, // ✅ Use the uploaded image URL
-      content: { raw: content },
+      featuredImage: uploadedImageUrl, // ✅ Use uploaded image URL or null
+      content: { raw: content || "" }, // ✅ Handle missing content as empty string
     };
 
     const result = await graphQLClient.request(mutation, variables);

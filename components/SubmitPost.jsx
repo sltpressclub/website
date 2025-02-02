@@ -21,7 +21,6 @@ const SubmitPost = () => {
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     if (type === "file") {
-      console.log("Selected file:", e.target.files[0]); // Log selected file for debugging
       setFormData((prevState) => ({
         ...prevState,
         [name]: e.target.files[0], // ✅ Store file object
@@ -38,32 +37,6 @@ const SubmitPost = () => {
     e.preventDefault();
     setError(false);
     setSuccess(false);
-
-    console.log("Form Data before Submit:", formData); // Log form data before submission
-
-    const {
-      nameOfStudent,
-      class: studentClass,
-      email,
-      title,
-      slug,
-      excerpt,
-      featuredImage,
-      content,
-    } = formData;
-    if (
-      !nameOfStudent ||
-      !studentClass ||
-      !email ||
-      !title ||
-      !slug ||
-      !excerpt ||
-      !featuredImage ||
-      !content
-    ) {
-      setError(true);
-      return;
-    }
 
     try {
       await submitPost({
@@ -94,7 +67,9 @@ const SubmitPost = () => {
       <h3 className="text-xl text-white mb-6 font-semibold border-b pb-4">
         Submit Your Post
       </h3>
-      {error && <p className="text-red-500">All fields are required.</p>}
+      {error && (
+        <p className="text-red-500">There was an error submitting the post.</p>
+      )}
       {success && (
         <p className="text-green-500">Post submitted successfully!</p>
       )}
