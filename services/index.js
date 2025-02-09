@@ -215,7 +215,7 @@ export const getUpcoming = async () => {
   // Updated GraphQL query to fetch events in descending order of the date
   const query = gql`
     query MyQuery {
-      upcomings(orderBy: date_ASC, last: 3) {
+      upcomings(orderBy: date_DESC, last: 4) {
         id
         name
         slug
