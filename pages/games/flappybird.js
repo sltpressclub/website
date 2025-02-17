@@ -10,9 +10,23 @@ const FlappyBird = () => {
   const [pipeHeight, setPipeHeight] = useState(150);
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Game speed (time interval for game loop)
   const gameSpeed = 20;
+
+  // Check if device is mobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Detect screen width
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Call on mount
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // Handle bird movement and gravity
   useEffect(() => {
@@ -69,76 +83,96 @@ const FlappyBird = () => {
     <div
       className="flappy-bird-game"
       style={{
-        width: "400px",
-        height: "600px",
+        width: "100%",
+        height: "100vh",
         backgroundColor: "#70c5ce",
         position: "relative",
         overflow: "hidden",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <div
-        className="bird"
+        className="game-container"
         style={{
-          position: "absolute",
-          top: `${birdY}px`,
-          left: "50px",
-          width: "40px",
-          height: "40px",
-          backgroundColor: "yellow",
-          borderRadius: "50%",
-        }}
-      />
-      <div
-        className="pipe top-pipe"
-        style={{
-          position: "absolute",
-          top: "0",
-          left: `${pipeX}px`,
-          width: "50px",
-          height: `${pipeHeight}px`,
-          backgroundColor: "green",
-        }}
-      />
-      <div
-        className="pipe bottom-pipe"
-        style={{
-          position: "absolute",
-          bottom: "0",
-          left: `${pipeX}px`,
-          width: "50px",
-          height: `calc(100% - ${pipeHeight + 100}px)`,
-          backgroundColor: "green",
-        }}
-      />
-      <div
-        className="score"
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          fontSize: "24px",
-          color: "white",
+          width: isMobile ? "100%" : "400px", // Adjust size based on device
+          height: "600px",
+          position: "relative",
+          overflow: "hidden",
+          backgroundColor: "#70c5ce",
         }}
       >
-        {isGameOver ? `Game Over! Score: ${score}` : `Score: ${score}`}
+        <div
+          className="bird"
+          style={{
+            position: "absolute",
+            top: `${birdY}px`,
+            left: "50px",
+            width: "40px",
+            height: "40px",
+            backgroundColor: "#ffcc00",
+            borderRadius: "50%",
+            transition: "top 0.1s ease-in-out", // Smooth vertical movement
+          }}
+        />
+        <div
+          className="pipe top-pipe"
+          style={{
+            position: "absolute",
+            top: "0",
+            left: `${pipeX}px`,
+            width: "50px",
+            height: `${pipeHeight}px`,
+            backgroundColor: "green",
+            transition: "left 0.1s linear",
+          }}
+        />
+        <div
+          className="pipe bottom-pipe"
+          style={{
+            position: "absolute",
+            bottom: "0",
+            left: `${pipeX}px`,
+            width: "50px",
+            height: `calc(100% - ${pipeHeight + 100}px)`,
+            backgroundColor: "green",
+            transition: "left 0.1s linear",
+          }}
+        />
+        <div
+          className="score"
+          style={{
+            position: "absolute",
+            top: "20px",
+            left: "20px",
+            fontSize: "24px",
+            color: "white",
+          }}
+        >
+          {isGameOver ? `Game Over! Score: ${score}` : `Score: ${score}`}
+        </div>
+        <button
+          onClick={handleFlap}
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "10px 20px",
+            backgroundColor: "#ff6347",
+            border: "none",
+            borderRadius: "5px",
+            color: "white",
+            fontSize: "16px",
+            cursor: "pointer",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+            transition: "background-color 0.3s ease",
+          }}
+        >
+          {isGameOver ? "Restart" : "Flap"}
+        </button>
       </div>
-      <button
-        onClick={handleFlap}
-        style={{
-          position: "absolute",
-          bottom: "20px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          padding: "10px 20px",
-          backgroundColor: "#ff6347",
-          border: "none",
-          borderRadius: "5px",
-          color: "white",
-          fontSize: "16px",
-        }}
-      >
-        {isGameOver ? "Restart" : "Flap"}
-      </button>
     </div>
   );
 };
