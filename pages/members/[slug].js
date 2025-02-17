@@ -1,8 +1,3 @@
-import React from "react";
-import { useRouter } from "next/router";
-import { getMemberPosts } from "../../services";
-import { PostCard, Loader } from "../../components";
-
 const MemberPost = ({ posts }) => {
   const router = useRouter();
 
@@ -29,6 +24,8 @@ const MemberPost = ({ posts }) => {
           </div>
         </div>
       )}
+      {/* Show member info even if no posts */}
+      {!member && <p>No member info available</p>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.length > 0 ? (
@@ -40,15 +37,3 @@ const MemberPost = ({ posts }) => {
     </div>
   );
 };
-
-export default MemberPost;
-
-export async function getServerSideProps({ params }) {
-  try {
-    const posts = await getMemberPosts(params.slug);
-    return { props: { posts } };
-  } catch (error) {
-    console.error("Error fetching posts for member:", error);
-    return { props: { posts: [] } };
-  }
-}

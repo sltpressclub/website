@@ -8,9 +8,9 @@ const games = [
     slug: "tictactoe",
   },
   {
-    name: "Game 2",
-    image: "/noinfo.png", // Default image set to noinfo.png
-    slug: "game-2",
+    name: "Flappy Bird",
+    image: "/flappybird.png", // Default image set to noinfo.png
+    slug: "flappybird",
   },
   {
     name: "Game 3",
