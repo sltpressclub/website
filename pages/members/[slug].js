@@ -1,3 +1,8 @@
+import React from "react";
+import { useRouter } from "next/router";
+import { getMemberPosts } from "../../services";
+import { PostCard, Loader } from "../../components";
+
 const MemberPost = ({ posts }) => {
   const router = useRouter();
 
@@ -5,12 +10,14 @@ const MemberPost = ({ posts }) => {
     return <Loader />;
   }
 
+  // If posts are empty, set member to null, otherwise get member from the first post
   const member = posts.length > 0 ? posts[0].member : null;
 
   return (
     <div className="container mx-auto px-5 md:px-10 mb-8 text-white">
-      {member && (
-        <div className="flex flex-col md:flex-row items-center md:items-start bg-black bg-opacity-30 rounded-3xl p-6  shadow-md mb-8">
+      {/* Always render member info */}
+      {member ? (
+        <div className="flex flex-col md:flex-row items-center md:items-start bg-black bg-opacity-30 rounded-3xl p-6 shadow-md mb-8">
           <img
             src={member.photo.url}
             alt={member.name}
@@ -23,17 +30,32 @@ const MemberPost = ({ posts }) => {
             <p className=" mt-2 font-medium">Posts: {posts.length}</p>
           </div>
         </div>
+      ) : (
+        <p className="text-center">No member information available</p>
       )}
-      {/* Show member info even if no posts */}
-      {!member && <p>No member info available</p>}
 
+      {/* Render posts if available */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.length > 0 ? (
           posts.map((post, index) => <PostCard key={index} post={post} />)
         ) : (
-          <p>No posts available for this member</p>
+          <p className="text-center text-white">
+            No posts available for this member
+          </p>
         )}
       </div>
     </div>
   );
 };
+
+export default MemberPost;
+
+export async function getServerSideProps({ params }) {
+  try {
+    const posts = await getMemberPosts(params.slug);
+    return { props: { posts } };
+  } catch (error) {
+    console.error("Error fetching posts for member:", error);
+    return { props: { posts: [] } };
+  }
+}
