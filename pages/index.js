@@ -94,9 +94,7 @@ export default function Home({ posts }) {
         <div className="mt-8">
           <History />
         </div>
-        <div className="mt-8">
-          <PostWidget />
-        </div>
+
         <div className="mt-8">
           <Mission />
         </div>
