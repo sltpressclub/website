@@ -347,6 +347,9 @@ export const getMembers = async () => {
     }
   `;
   const result = await request(graphqlAPI, query);
+
+  console.log("Fetched Members:", result.members.length, result.members); // Debugging output
+
   return result.members;
 };
 
