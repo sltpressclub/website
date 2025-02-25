@@ -332,7 +332,7 @@ export const getComments = async (slug) => {
 export const getMembers = async () => {
   const query = gql`
     query GetMembers {
-      members {
+      members(first: 100) {
         id
         name
         bio
