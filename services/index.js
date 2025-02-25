@@ -352,7 +352,27 @@ export const getMembers = async () => {
 
   return result.members;
 };
+export const getMemberBySlug = async (slug) => {
+  const query = gql`
+    query GetMemberBySlug($slug: String!) {
+      member(where: { slug: $slug }) {
+        id
+        name
+        bio
+        role {
+          name
+        }
+        photo {
+          url
+        }
+      }
+    }
+  `;
 
+  const result = await request(graphqlAPI, query, { slug });
+
+  return result.member;
+};
 export const getMemberPosts = async (slug) => {
   const query = gql`
     query GetMemberPosts($slug: String!) {
