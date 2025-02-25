@@ -1,21 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { getMemberPosts } from "../../services";
+import { getMemberPosts, getMemberBySlug } from "../../services";
 import { PostCard, Loader } from "../../components";
 
-const MemberPost = ({ posts }) => {
+const MemberPost = ({ posts, member }) => {
   const router = useRouter();
 
   if (router.isFallback) {
     return <Loader />;
   }
 
-  // If posts are empty, set member to null, otherwise get member from the first post
-  const member = posts.length > 0 ? posts[0].member : null;
-
   return (
     <div className="container mx-auto px-5 md:px-10 mb-8 text-white">
-      {/* Always render member info */}
+      {/* Render member info */}
       {member ? (
         <div className="flex flex-col md:flex-row items-center md:items-start bg-black bg-opacity-30 rounded-3xl p-6 shadow-md mb-8">
           <img
@@ -25,9 +22,9 @@ const MemberPost = ({ posts }) => {
           />
           <div className="md:ml-6 mt-4 md:mt-0 text-center md:text-left">
             <h2 className="text-2xl font-semibold">{member.name}</h2>
-            <p className=" text-sm md:text-base">{member.role.name}</p>
-            <p className=" mt-2">{member.bio}</p>
-            <p className=" mt-2 font-medium">Posts: {posts.length}</p>
+            <p className="text-sm md:text-base">{member.role.name}</p>
+            <p className="mt-2">{member.bio}</p>
+            <p className="mt-2 font-medium">Posts: {posts.length}</p>
           </div>
         </div>
       ) : (
@@ -53,9 +50,16 @@ export default MemberPost;
 export async function getServerSideProps({ params }) {
   try {
     const posts = await getMemberPosts(params.slug);
-    return { props: { posts } };
+    let member = posts.length > 0 ? posts[0].member : null;
+
+    // Fetch member data separately if no posts exist
+    if (!member) {
+      member = await getMemberBySlug(params.slug);
+    }
+
+    return { props: { posts, member } };
   } catch (error) {
-    console.error("Error fetching posts for member:", error);
-    return { props: { posts: [] } };
+    console.error("Error fetching data for member:", error);
+    return { props: { posts: [], member: null } };
   }
 }
