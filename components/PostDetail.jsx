@@ -74,6 +74,24 @@ const PostDetail = ({ post }) => {
             </video>
           </div>
         );
+      case "bulleted-list":
+        return (
+          <ul key={index} className="list-disc pl-5 text-white">
+            {modifiedText}
+          </ul>
+        );
+      case "numbered-list":
+        return (
+          <ol key={index} className="list-decimal pl-5 text-white">
+            {modifiedText}
+          </ol>
+        );
+      case "list-item":
+        return (
+          <li key={index} className="mb-2">
+            {modifiedText}
+          </li>
+        );
       default:
         return modifiedText;
     }
