@@ -20,76 +20,111 @@ const TermsAndConditions = () => {
               Terms and Conditions
             </h1>
 
-            {/* Introduction section of the terms */}
+            {/* Introduction section */}
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">Introduction</h2>
               <p>
-                Welcome to SLT Pressclub! By using our website and services, you
-                agree to comply with and be bound by the following Terms and
-                Conditions. If you do not agree to these terms, please do not
-                use our website.
+                Welcome to the SLT Press Club website (“Site”). By accessing or
+                using our website, you agree to comply with and be bound by the
+                following Terms and Conditions. If you do not agree with any
+                part of these terms, please do not use our website.
               </p>
             </section>
 
-            {/* Acceptable Use section */}
+            {/* Use of Website */}
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-2">Acceptable Use</h2>
+              <h2 className="text-2xl font-semibold mb-2">Use of Website</h2>
               <p>
-                You agree to use our website and services only for lawful
-                purposes and in a manner that does not infringe upon the rights
-                of others or restrict their use and enjoyment of the website.
+                - The Site is intended for students, staff, and the general
+                public to read, share, and interact with content related to the
+                SLT Press Club.
+                <br />
+                - You must be at least 13 years old to use the Site.
+                <br />- You agree to use the Site only for lawful purposes and
+                in a way that does not infringe on the rights of others.
               </p>
+            </section>
+
+            {/* User-Generated Content */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-2">
+                User-Generated Content (Comments and Posts)
+              </h2>
+              <p>
+                Users may submit comments on posts. By submitting a comment, you
+                grant SLT Press Club a non-exclusive, royalty-free license to
+                use, reproduce, and display your content on the Site.
+              </p>
+              <p>Users must not:</p>
               <ul className="list-disc pl-6 mt-2">
-                <li>Do not engage in any illegal activity.</li>
-                <li>
-                  Do not upload harmful content, such as malware or viruses.
-                </li>
-                <li>
-                  Respect other users' privacy and intellectual property rights.
-                </li>
+                <li>Share false, misleading, or defamatory information.</li>
+                <li>Post content that is offensive or discriminatory.</li>
+                <li>Violate any laws or regulations.</li>
               </ul>
-            </section>
-
-            {/* User Account and Registration section */}
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold mb-2">User Account</h2>
               <p>
-                To access certain features of our website, you may need to
-                register for an account. You are responsible for maintaining the
-                confidentiality of your account credentials and for all
-                activities that occur under your account.
+                We reserve the right to remove any comments that violate these
+                terms.
               </p>
             </section>
 
-            {/* Intellectual Property section */}
+            {/* Privacy and Data Collection */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-2">
+                Privacy and Data Collection
+              </h2>
+              <p>
+                - By using our website, you agree to our{" "}
+                <a href="/privacy-policy" className="text-blue-600">
+                  Privacy Policy
+                </a>
+                .
+                <br />
+                - We collect names and email addresses when users post comments.
+                <br />
+                - We do not sell, rent, or share this information with third
+                parties.
+                <br />- We use industry-standard security measures to protect
+                user data but cannot guarantee absolute security.
+              </p>
+            </section>
+
+            {/* Intellectual Property */}
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">
                 Intellectual Property
               </h2>
               <p>
-                The content and materials available on our website, including
-                text, images, logos, and other intellectual property, are
-                protected by copyright and other intellectual property laws. You
-                may not use, reproduce, or distribute any content without proper
-                authorization.
+                The content published on this Site, including articles, images,
+                and logos, is the intellectual property of SLT Press Club unless
+                otherwise stated. You may not copy, distribute, or reproduce any
+                content without permission.
               </p>
             </section>
 
-            {/* Limitation of Liability section */}
+            {/* External Links */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-2">External Links</h2>
+              <p>
+                The Site may contain links to third-party websites. We do not
+                control or endorse these external sites and are not responsible
+                for their content or privacy policies.
+              </p>
+            </section>
+
+            {/* Limitation of Liability */}
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">
                 Limitation of Liability
               </h2>
               <p>
-                SLT Pressclub will not be liable for any direct, indirect,
-                incidental, special, or consequential damages arising from your
-                use of our website or services, including but not limited to
-                loss of data, loss of profits, or other damages resulting from
-                the use or inability to use our services.
+                The information on this Site is for general purposes only. We do
+                not guarantee the accuracy, completeness, or reliability of any
+                content. SLT Press Club is not responsible for any direct or
+                indirect damages resulting from your use of the Site.
               </p>
             </section>
 
-            {/* Termination section */}
+            {/* Termination */}
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">Termination</h2>
               <p>
@@ -99,18 +134,18 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* Governing Law section */}
+            {/* Governing Law */}
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">Governing Law</h2>
               <p>
                 These Terms and Conditions will be governed by and construed in
-                accordance with the laws of your jurisdiction. Any disputes
+                accordance with the laws of our jurisdiction. Any disputes
                 arising from the use of our website or services will be subject
-                to the exclusive jurisdiction of the courts in your location.
+                to the exclusive jurisdiction of the courts in our location.
               </p>
             </section>
 
-            {/* Changes to Terms section */}
+            {/* Changes to Terms */}
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">
                 Changes to These Terms
@@ -124,12 +159,12 @@ const TermsAndConditions = () => {
               </p>
             </section>
 
-            {/* Contact Us section */}
+            {/* Contact Us */}
             <section className="mb-8">
               <h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
               <p>
-                If you have any questions or concerns regarding these Terms and
-                Conditions, please contact us at:
+                If you have any questions about these Terms and Conditions,
+                please contact us at:
               </p>
               <p>
                 Email:{" "}

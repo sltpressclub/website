@@ -7,21 +7,7 @@ const games = [
     image: "/tictactoe.png", // Default image set to noinfo.png
     slug: "tictactoe",
   },
-  {
-    name: "Flappy Bird",
-    image: "/flappybird.png", // Default image set to noinfo.png
-    slug: "flappybird",
-  },
-  {
-    name: "Game 3",
-    image: "/noinfo.png", // Default image set to noinfo.png
-    slug: "game-3",
-  },
-  {
-    name: "Game 4",
-    image: "/noinfo.png", // Default image set to noinfo.png
-    slug: "game-4",
-  },
+
   // Add more games as needed
 ];
 
