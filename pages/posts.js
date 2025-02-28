@@ -11,9 +11,13 @@ const AllPosts = ({ posts }) => {
   return (
     <div className="container mx-auto px-10 mb-8">
       <h1 className="text-3xl font-semibold mb-8 text-center">All Posts</h1>
+      {/* Display number of posts */}
+      <p className="text-white text-center mb-8">
+        {posts.length} Posts Available
+      </p>
       {/* Main grid container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Render posts */}
+        {/* Render posts with white text */}
         {posts.map((post) => (
           <PostCard post={post.node} key={post.node.id} />
         ))}
